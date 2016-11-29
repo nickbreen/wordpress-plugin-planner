@@ -1,15 +1,18 @@
 .planner {
     border-collapse: collapse;
     border-spacing: 0;
+    width: auto;
+    margin-left: 0;
+    margin-right: 1em;
 }
 
 .planner td,
 .planner th {
     border-collapse: collapse;
     border: solid 0.125em #999;
-    padding: 0.25em 0.5em;
     width: 12.5%;
     vertical-align: top;
+    padding: 0;
 }
 
 .planner caption {
@@ -17,13 +20,40 @@
     line-height: 2em;
 }
 
-.planner nav > * {
+nav.planner > * {
     display: inline-block;
 }
 
-.planner nav a.new-thing::before {
+nav.planner a.new-thing::before {
     font-family: dashicons;
     content: '\f132'; /* dashicons-plus */
+}
+
+.planner td:first-child,
+.planner th,
+.planner dl {
+    padding: 0.5em;
+}
+
+
+.planner dl {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+}
+
+.planner dt,
+.planner dd {
+    flex: 1 1 50%;
+    margin: auto;
+}
+
+.planner dl {
+    border-top: 0.125em solid #999;
+}
+
+.planner dl:first-child {
+    border-top: none;
 }
 
 table.wc_bookings_calendar_weekly td.booked {

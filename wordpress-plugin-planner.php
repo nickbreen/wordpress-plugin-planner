@@ -11,7 +11,7 @@ Domain Path: /languages
 */
 
 register_activation_hook(__FILE__, function () {
-    $role = add_role('planner', 'Planner', array('edit_plan' => true));
+    $role = add_role('planner', 'Planner', ['edit_plan' => true]);
 });
 
 register_deactivation_hook(__FILE__, function () {
@@ -41,34 +41,35 @@ add_action('admin_menu', function () {
 
             $plans = [];
 
-            $planName = pods('plan_name', array());
+            $planName = pods('plan_name', []);
 
             while ($planName->fetch()) {
                 $plans[$planName->field('post_title')] = array_fill($iFirstDay, 7, []);
             }
+            $plans[''] = array_fill($iFirstDay, 7, []);
 
-            $plan = pods('plan')->find(array(
+            $plan = pods('plan')->find([
                 'where' => sprintf(
                     'UNIX_TIMESTAMP(plan_date.meta_value) BETWEEN %d AND %d',
                     strtotime("midnight last sunday +{$iFirstDay} days", $time),
                     strtotime("midnight next sunday +{$iFirstDay} days", $time)
                 )
-            ));
+            ]);
+
+            $keys = ['plan_date', 'vehicle', 'driver', 'passengers'];
+            $fields = array_combine($keys, array_map([$plan, 'fields'], $keys));
 
             while ($plan->fetch()) {
-                $plans[$plan->field('plan.post_title') ?? 'No Plan'][date('w', strtotime($plan->field('plan_date')))][] = [
-                    'post_title' => $plan->field('post_title'),
-                    'plan_date' => $plan->field('plan_date'),
-                    'vehicle.post_title' => $plan->field('vehicle.post_title'),
-                    'driver.post_title' => $plan->field('driver.post_title'),
-                    'passengers' => $plan->field('passengers'),
-                ];
+                $plans[$plan->field('plan.post_title', null, true) ? $plan->field('plan.post_title', null, true) : '']
+                    [date('w', strtotime($plan->field('plan_date')))][$plan->field('ID')] =
+                        array_combine($keys, array_map([$plan, 'field'], $keys));
             }
+            // TODO form?
 
-            wp_enqueue_script('planner', plugins_url( 'assets/js/planner.js', __FILE__ ), array('jquery-ui-datepicker', 'jquery.chosen'), '0.0.0', true);
+            wp_enqueue_script('planner', plugins_url( 'assets/js/planner.js', __FILE__ ), ['jquery-ui-datepicker', 'jquery.chosen'], '0.0.0', true);
             wp_enqueue_style('planner', plugins_url( 'assets/css/planner.css', __FILE__ ));
 
-            return (function () use ($page, $time, $plans) {
+            return (function () use ($page, $time, $plans, $fields) {
                 return require( __DIR__ . '/includes/admin/planner.php');
             })();
         }, // function
