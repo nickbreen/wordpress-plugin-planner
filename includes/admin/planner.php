@@ -42,16 +42,19 @@
 				</tr>
 			</thead>
 			<tbody>
-				<?php foreach ($plans as $planName => $plan): ?>
+				<?php foreach ($plans as $planName => $planWeek): ?>
 					<tr data-plan-name="<?php echo $planName; ?>">
 						<td><?php echo $planName; ?></td>
-						<?php foreach ($plan as $i => $ps): ?>
+						<?php foreach ($planWeek as $i => $planDay): ?>
 							<td data-day-of-week="<?php echo $i; ?>" data-date="<?php echo date('Y-m-d', strtotime("last sunday +{$i} day", $time)); ?>">
-								<?php foreach ($ps as $j => $p): ?>
-									<dl data-plan-id="<?php echo $j; ?>" data-href="<?php echo get_edit_post_link($j); ?>">
-										<?php foreach ($p as $f => $d): ?>
-											<dt><?php echo $fields[$f]['label']; ?>
-											<dd><?php echo $d; ?>
+								<?php foreach ($planDay as $j): ?>
+									<dl title="Edit"
+										data-plan-id="<?php echo $j; ?>"
+										data-href="<?php echo get_edit_post_link($j); ?>">
+										<?php $p = pods('plan', $j); ?>
+										<?php foreach ($fields as $f => $fs): ?>
+											<dt><?php echo $fs['label']; ?>
+											<dd><?php echo $p->display($f); ?>
 										<?php endforeach; ?>
 									</dl>
 								<?php endforeach; ?>
@@ -61,10 +64,5 @@
 				<?php endforeach; ?>
 			</tbody>
 		</table>
-
 	</form>
 </div>
-
-<?php if (defined('WP_DEBUG')): ?>
-<pre><?php var_dump($fields, $plans); ?></pre>
-<?php endif; ?>

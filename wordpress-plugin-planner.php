@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Planner
-Version: 0.2.0
+Version: 0.3.0
 Description: Uses pods to plan group tours.
 Author: Nick Breen
 Author URI: http://foobar.net.nz
@@ -49,8 +49,7 @@ $function = function () use ($page) {
     while ($plan->fetch()) {
         $plans[$plan->field('plan.post_title', null, true) ? $plan->field('plan.post_title', null, true) : '']
             [date('w', strtotime($plan->field('plan_date')))]
-            [$plan->field('ID')] =
-                array_combine(array_keys($fields), array_map([$plan, 'display'], array_keys($fields)));
+            [] = $plan->id();
     }
 
     wp_enqueue_script('planner', plugins_url( 'assets/js/planner.js', __FILE__ ), ['jquery-ui-datepicker'], '0.0.0', true);
