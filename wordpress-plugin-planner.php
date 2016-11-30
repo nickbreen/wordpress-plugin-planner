@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Planner
-Version: 0.3.0
+Version: 0.3.1
 Description: Uses pods to plan group tours.
 Author: Nick Breen
 Author URI: http://foobar.net.nz
