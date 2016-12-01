@@ -13,7 +13,14 @@ Domain Path: /languages
 $capability = "plan";
 $page = 'wordpress-plugin-planner';
 
-$function = function () use ($page) {
+$contrast = function ($ch) {
+    $r = hexdec(substr($ch, 1, 2));
+    $g = hexdec(substr($ch, 3, 2));
+    $b = hexdec(substr($ch, 5, 2));
+    return ((($r*299)+($g*587)+($b*144))/1000) >= 131.5 ? "black" : "white";
+};
+
+$function = function () use ($page, $contrast) {
 
     // Work out the first day of the week
     $iFirstDay = get_option('start_of_week', 1);
@@ -52,20 +59,12 @@ $function = function () use ($page) {
             [] = $plan->id();
     }
 
+    $driver = pods('driver', []);
+
     wp_enqueue_script('planner', plugins_url( 'assets/js/planner.js', __FILE__ ), ['jquery-ui-datepicker'], '0.0.0', true);
     wp_enqueue_style('planner', plugins_url( 'assets/css/planner.css', __FILE__ ), ['jquery-ui']);
 
-    return (function () use ($page, $time, $plans, $fields) {
-
-         $contrast = function ($ch) {
-             $r = hexdec(substr($ch, 1, 2));
-             $g = hexdec(substr($ch, 3, 2));
-             $b = hexdec(substr($ch, 5, 2));
-             return ((($r*299)+($g*587)+($b*144))/1000) >= 131.5 ? "black" : "white";
-         };
-
-        return require( __DIR__ . '/includes/admin/planner.php');
-    })();
+    return require( __DIR__ . '/includes/admin/planner.php');
 };
 
 register_activation_hook(__FILE__, function () use ($capability) {
@@ -81,8 +80,22 @@ register_deactivation_hook(__FILE__, function () {
 
 add_filter('custom_menu_order', function ($menu_ord) use ($page) {
     global $submenu;
-    array_unshift($submenu[$page], array_pop($submenu[$page]));
+    while (next($submenu[$page])[2] != $page);
+    if (key($submenu[$page]))
+        array_unshift($submenu[$page], array_splice($submenu[$page], key($submenu[$page]), 1)[0]);
     return $menu_ord;
+});
+
+add_filter('redirect_post_location', function ($location) {
+    global $post;
+    if (
+        ($ref = wp_get_original_referer()) && $post &&
+        in_array($post->post_type, ['plan','driver','vehicle']) &&
+        (isset($_POST['publish']) || $post->post_status == 'publish')
+    ) {
+        return $ref;
+    }
+    return $location;
 });
 
 add_action('admin_menu', function () use ($function, $capability, $page) {
@@ -93,7 +106,7 @@ add_action('admin_menu', function () use ($function, $capability, $page) {
     $planner_page = add_menu_page(
         __('Planner', 'wordpress-plugin-planner'), // page_title
         __('Planner', 'wordpress-plugin-planner'), // menu_title
-        'plan', // capability
+        $capability, // capability$submenu[$page], array_pop($submenu[$page]));
         $page, // menu_slug
         $function,
         'dashicons-calendar', // icon_url
@@ -103,7 +116,7 @@ add_action('admin_menu', function () use ($function, $capability, $page) {
     /**
      * add_submenu_page( string $parent_slug, string $page_title, string $menu_title, string $capability, string $menu_slug, callable $function = '' )
      */
-     $calendar_page = add_submenu_page(
+    $calendar_page = add_submenu_page(
         $page,
         __('Planner', 'wordpress-plugin-planner'), // page_title
         __('Planner', 'wordpress-plugin-planner'), // menu_title
@@ -111,4 +124,5 @@ add_action('admin_menu', function () use ($function, $capability, $page) {
         $page, // menu_slug
         $function
     );
+
 }, 49 );

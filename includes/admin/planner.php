@@ -16,7 +16,7 @@
 			<caption>
 				<a class="prev" title="Week <?php echo date('W', strtotime('last week', $time)); ?>"
 					href="<?php echo add_query_arg('week', date('Y-m-d', strtotime('last week', $time))); ?>">&#x21e6;</a>
-				<label for="week-picker">
+				<label for="week-picker" data-label="<?php _e('Week ', 'wordpress-plugin-planner'); ?>">
 					<?php echo date('W', $time); ?>
 					<input id="week-picker"
 						data-datepicker.first-day="<?php echo get_option('start_of_week', 1); ?>"
@@ -66,5 +66,12 @@
 				<?php endforeach; ?>
 			</tbody>
 		</table>
+		<ul class="drivers" data-label="<?php _e('Drivers', 'wordpress-plugin-planner'); ?>">
+			<?php while ($driver->fetch()): ?>
+				<li style="color: <?php echo $contrast($driver->raw('colour')); ?>; background-color: <?php echo $driver->display('colour'); ?>">
+					<?php echo $driver->display('post_title'); ?>
+				</li>
+			<?php endwhile; ?>
+		</ul>
 	</form>
 </div>
