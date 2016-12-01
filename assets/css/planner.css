@@ -23,6 +23,7 @@
     vertical-align: top;
     border: solid 0.125em #ccc;
     height: 4.2em; /* min-height: 3 * 1.4em */
+    padding: 0;
 }
 
 .planner td:first-child {
@@ -66,9 +67,6 @@
 .planner dl {
     position: relative;
     cursor: pointer;
-}
-.planner dl:hover {
-    color: #0073aa;
 }
 
 .planner dl:hover::before {

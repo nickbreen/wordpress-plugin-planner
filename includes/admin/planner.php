@@ -46,16 +46,17 @@
 					<tr data-plan-name="<?php echo $planName; ?>">
 						<td><?php echo $planName; ?></td>
 						<?php foreach ($planWeek as $i => $planDay): ?>
-							<td data-day-of-week="<?php echo $i; ?>" data-date="<?php echo date('Y-m-d', strtotime("last sunday +{$i} day", $time)); ?>">
+							<td data-day-of-week="<?php echo $i; ?>"
+								data-date="<?php echo date('Y-m-d', strtotime("last sunday +{$i} day", $time)); ?>">
 								<?php foreach ($planDay as $j): ?>
 									<?php $p = pods('plan', $j); ?>
 									<dl title="Edit"
 										data-plan-id="<?php echo $j; ?>"
 										data-href="<?php echo get_edit_post_link($j); ?>"
-										style="background-color: <?php echo $p->display('driver.colour'); ?>">
+										style="color: <?php echo $contrast($p->raw('driver.colour')); ?>; background-color: <?php echo $p->display('driver.colour'); ?>">
 										<?php foreach ($fields as $f => $fs): ?>
-											<dt><?php echo $fs['label']; ?>
-											<dd><?php echo $p->display($f); ?>
+											<dt class="<?php echo $f;?>"><?php echo $fs['label']; ?>
+											<dd class="<?php echo $f;?>"><?php echo $p->display($f); ?>
 										<?php endforeach; ?>
 									</dl>
 								<?php endforeach; ?>
