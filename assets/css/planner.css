@@ -90,6 +90,12 @@
     margin: auto;
 }
 
+.planner dt.driver,
+.planner dd.driver {
+    display: none;
+}
+
+
 .planner dl:not(:first-of-type) {
     border-top: 0.125em solid #999;
 }
