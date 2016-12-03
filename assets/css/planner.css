@@ -22,13 +22,19 @@
 .planner td {
     vertical-align: top;
     border: solid 0.125em #ccc;
-    height: 4.2em; /* min-height: 3 * 1.4em */
+    min-height: 4.2em; /* min-height: 3 * 1.4em */
+    height: 7.0em; /* height: 5 * 1.4em */
     padding: 0;
 }
 
 .planner td:first-child {
     vertical-align: middle;
     font-weight: bold;
+}
+
+.planner td:only-child {
+    text-align: center;
+    font-weight: normal;
 }
 
 .planner caption {
@@ -71,23 +77,40 @@
 
 .planner dl:hover::before {
     font-family: dashicons;
-    content: "\f464";
     position: absolute;
     top: 0; right: 0;
     padding: 0.25em;
     font-size: 1.4em;
+    width: 1em;
+}
+
+.planner dl.edit:hover::before {
+    content: "\f464";
+}
+
+.planner dl.view:hover::before {
+    content: "\f177";
 }
 
 .planner dl {
     display: flex;
+    align-items: baseline;
+    align-content: flex-start;
     flex-wrap: wrap;
     margin: 0;
+    padding-right: 1.4em;
 }
 
 .planner dt,
 .planner dd {
-    flex: 1 1 50%;
+    flex: 1 1 auto;
     margin: auto;
+    width: 50%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    box-sizing: border-box;
+    overflow: hidden;
+    display: inline-block;
 }
 
 .planner dt.driver,
@@ -95,23 +118,8 @@
     display: none;
 }
 
-
 .planner dl:not(:first-of-type) {
     border-top: 0.125em solid #999;
-}
-
-.planner.add-new {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.planner.add-new > div {
-    flex: 1 1 auto;
-    margin: 1em;
-    padding: 1em;
-    min-width: 20em;
-    max-width: 35em;
 }
 
 .planner .drivers {

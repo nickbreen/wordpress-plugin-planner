@@ -2,10 +2,12 @@
 
 	<h1><?php _e('Planner', 'wordpress-plugin-planner'); ?>
 
-		<a id="add-plan" class="page-title-action" href="<?php echo admin_url('post-new.php?post_type=plan'); ?>"><?php _e('Add Plan', 'wordpress-plugin-planner'); ?></a>
-		<a id="add-driver" class="page-title-action" href="<?php echo admin_url('post-new.php?post_type=driver'); ?>"><?php _e('Add Driver', 'wordpress-plugin-planner'); ?></a>
-		<a id="add-vehicle" class="page-title-action" href="<?php echo admin_url('post-new.php?post_type=vehicle'); ?>"><?php _e('Add Vehicle', 'wordpress-plugin-planner'); ?></a>
-
+		<?php foreach (['plan' => 'Plan', 'driver' => 'Driver', 'vehicle' => 'Vehicle'] as $p => $l): ?>
+			<?php if (current_user_can("edit_${p}s")): ?>
+				<a id="add-<?php echo $p; ?>" class="page-title-action"
+					href="<?php echo admin_url("post-new.php?post_type=$p"); ?>"><?php _e("Add $l", 'wordpress-plugin-planner'); ?></a>
+			<?php endif; ?>
+		<?php endforeach; ?>
 	</h1>
 
 	<form method="get" enctype="multipart/form-data">
@@ -26,7 +28,6 @@
 						data-datepicker.show-other-months="true"
 						data-datepicker.select-other-months="true"
 						data-datepicker.show-week="true"
-						data-datepicker.show-button-panel="true"
 						size="16"
 						value="<?php echo date('D, j M Y', $time); /* e.g. Mon, 21 Nov 2016 */ ?>"/>
 				</label>
@@ -42,6 +43,13 @@
 				</tr>
 			</thead>
 			<tbody>
+				<?php if (!$plans): ?>
+					<tr>
+						<td colspan="8">
+							No plans for this week!
+						</td>
+					</tr>
+				<?php endif; ?>
 				<?php foreach ($plans as $planName => $planWeek): ?>
 					<tr data-plan-name="<?php echo $planName; ?>">
 						<td><?php echo $planName; ?></td>
@@ -50,13 +58,13 @@
 								data-date="<?php echo date('Y-m-d', strtotime("last sunday +{$i} day", $time)); ?>">
 								<?php foreach ($planDay as $j): ?>
 									<?php $p = pods('plan', $j); ?>
-									<dl title="Edit"
-										data-plan-id="<?php echo $j; ?>"
-										data-href="<?php echo get_edit_post_link($j); ?>"
+									<dl data-plan-id="<?php echo $j; ?>"
+										data-href="<?php echo get_edit_post_link($j) ?? get_permalink($j); ?>"
+										class="<?php echo current_user_can('edit_plans', $j) ? 'edit' : 'view'; ?>"
 										style="color: <?php echo $contrast($p->raw('driver.colour')); ?>; background-color: <?php echo $p->display('driver.colour'); ?>">
 										<?php foreach ($fields as $f => $fs): ?>
 											<dt class="<?php echo $f;?>"><?php echo $fs['label']; ?>
-											<dd class="<?php echo $f;?>"><?php echo $p->display($f); ?>
+											<dd class="<?php echo $f;?>" title="<?php echo $p->display($f); ?>"><?php echo $p->display($f); ?>
 										<?php endforeach; ?>
 									</dl>
 								<?php endforeach; ?>

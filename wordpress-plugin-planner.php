@@ -10,7 +10,6 @@ Text Domain: wordpress-plugin-planner
 Domain Path: /languages
 */
 
-$capability = "plan";
 $page = 'wordpress-plugin-planner';
 
 $contrast = function ($ch) {
@@ -40,7 +39,7 @@ $function = function () use ($page, $contrast) {
     }
     $plans[''] = array_fill($iFirstDay, 7, []);
 
-    $plan = pods('plan')->find([
+    $plan = pods('plan', [
         'where' => sprintf(
             'UNIX_TIMESTAMP(plan_date.meta_value) BETWEEN %d AND %d',
             strtotime("midnight last sunday +{$iFirstDay} days", $time),
@@ -59,6 +58,12 @@ $function = function () use ($page, $contrast) {
             [] = $plan->id();
     }
 
+    $plans = array_filter($plans, function ($days) {
+        return array_reduce($days, function ($carry, $item) {
+            return $carry + count($item);
+        }, 0);
+    });
+
     $driver = pods('driver', []);
 
     wp_enqueue_script('planner', plugins_url( 'assets/js/planner.js', __FILE__ ), ['jquery-ui-datepicker'], '0.0.0', true);
@@ -67,10 +72,17 @@ $function = function () use ($page, $contrast) {
     return require( __DIR__ . '/includes/admin/planner.php');
 };
 
-register_activation_hook(__FILE__, function () use ($capability) {
-    add_role('driver', __('Driver', 'wordpress-plugin-planner'), [$capability => true]);
-    add_role('planner', __('Planner', 'wordpress-plugin-planner'), [$capability => true]);
-    pods_api()->import_package(json_decode(file_get_contents('package.json')));
+register_activation_hook(__FILE__, function () {
+    add_role('driver', __('Driver', 'wordpress-plugin-planner'), [
+        'read_plans' => true,
+        'read_drivers' => true,
+        'read_vehicles' => true
+    ]);
+    add_role('planner', __('Planner', 'wordpress-plugin-planner'), [
+        'read_plans' => true, 'edit_plans' => true, 'publish_plans' => true,
+        'read_drivers' => true, 'edit_drivers' => true, 'publish_drivers' => true,
+        'read_vehicles' => true, 'edit_vehicles' => true, 'publish_vehicles' => true
+    ]);
 });
 
 register_deactivation_hook(__FILE__, function () {
@@ -98,7 +110,7 @@ add_filter('redirect_post_location', function ($location) {
     return $location;
 });
 
-add_action('admin_menu', function () use ($function, $capability, $page) {
+add_action('admin_menu', function () use ($function, $page) {
 
     /**
      * add_menu_page( string $page_title, string $menu_title, string $capability, string $menu_slug, callable $function = '', string $icon_url = '', int $position = null )
@@ -106,7 +118,7 @@ add_action('admin_menu', function () use ($function, $capability, $page) {
     $planner_page = add_menu_page(
         __('Planner', 'wordpress-plugin-planner'), // page_title
         __('Planner', 'wordpress-plugin-planner'), // menu_title
-        $capability, // capability$submenu[$page], array_pop($submenu[$page]));
+        'read_plans', // capability$submenu[$page], array_pop($submenu[$page]));
         $page, // menu_slug
         $function,
         'dashicons-calendar', // icon_url
@@ -120,7 +132,7 @@ add_action('admin_menu', function () use ($function, $capability, $page) {
         $page,
         __('Planner', 'wordpress-plugin-planner'), // page_title
         __('Planner', 'wordpress-plugin-planner'), // menu_title
-        $capability,
+        'read_plans',
         $page, // menu_slug
         $function
     );
