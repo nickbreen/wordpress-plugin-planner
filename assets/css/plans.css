@@ -7,7 +7,15 @@ dl.plan:first-of-type {
     border-top: 0.125em solid #ccc;
 }
 
-dl.plan dt:nth-of-type(even),
-dl.plan dd:nth-of-type(even) {
-    background-color: hsla(0, 100%, 100%, 0.1);
+dl.plan dt {
+    width: 20%;
+}
+
+dl.plan dd {
+    width: 30%;
+}
+
+dl.plan dt:nth-of-type(even) {
+    border-left: 0.125em solid #666;
+    padding-left: 0.25em;
 }

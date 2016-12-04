@@ -11,6 +11,13 @@ dl.plan dt {
     font-weight: bold;
 }
 
+dl.plan[title]::before {
+    content: attr(title);
+    text-align: center;
+    text-decoration: underline;
+    width: 100%;
+}
+
 dl.plan dt,
 dl.plan dd {
     flex: 1 1 auto;
