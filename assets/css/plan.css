@@ -22,6 +22,8 @@ dl.plan dd {
     overflow: hidden;
     display: inline-block;
     color: inherit;
+    line-height: 1.6em;
+    min-height: 1.6em;
 }
 
 dl.plan:not(:first-of-type) {

@@ -70,7 +70,7 @@ $function = function () use ($page) {
     wp_enqueue_script('planner', plugins_url('assets/js/planner.js', __FILE__), ['jquery-ui-datepicker'], '0.0.0', true);
     wp_enqueue_style('planner', plugins_url('assets/css/planner.css', __FILE__), ['jquery-ui', 'plan', 'driver']);
 
-    return require(__DIR__ . '/includes/admin/planner.php');
+    return require __DIR__ . '/includes/admin/planner.php';
 };
 
 add_action('init', function () {
@@ -197,5 +197,5 @@ add_action("woocommerce_account_${endpoint}_endpoint", function ($value) use ($e
         'orderby' => 'plan_date.meta_value, time.meta_value, driver.post_title'
     ]);
     wp_enqueue_style('plans', plugins_url('assets/css/plans.css', __FILE__), ['plan','driver']);
-    require(__DIR__ . "/templates/my-account/$endpoint.php");
+    return require __DIR__ . "/templates/my-account/$endpoint.php";
 });
