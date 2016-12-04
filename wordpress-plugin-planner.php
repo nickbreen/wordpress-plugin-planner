@@ -74,14 +74,14 @@ $function = function () use ($page, $contrast) {
 
 register_activation_hook(__FILE__, function () {
     add_role('driver', __('Driver', 'wordpress-plugin-planner'), [
-        'read_plans' => true,
-        'read_drivers' => true,
-        'read_vehicles' => true
+        'read_post' => true
     ]);
     add_role('planner', __('Planner', 'wordpress-plugin-planner'), [
-        'read_plans' => true, 'edit_plans' => true, 'publish_plans' => true,
-        'read_drivers' => true, 'edit_drivers' => true, 'publish_drivers' => true,
-        'read_vehicles' => true, 'edit_vehicles' => true, 'publish_vehicles' => true
+        'read_post' => true,
+        'edit_post' => true,
+        'publish_post' => true,
+        'delete_post' => true,
+        'edit_others_post' => true
     ]);
 });
 
@@ -118,7 +118,7 @@ add_action('admin_menu', function () use ($function, $page) {
     $planner_page = add_menu_page(
         __('Planner', 'wordpress-plugin-planner'), // page_title
         __('Planner', 'wordpress-plugin-planner'), // menu_title
-        'read_plans', // capability$submenu[$page], array_pop($submenu[$page]));
+        'planner', // capability$submenu[$page], array_pop($submenu[$page]));
         $page, // menu_slug
         $function,
         'dashicons-calendar', // icon_url
@@ -132,7 +132,7 @@ add_action('admin_menu', function () use ($function, $page) {
         $page,
         __('Planner', 'wordpress-plugin-planner'), // page_title
         __('Planner', 'wordpress-plugin-planner'), // menu_title
-        'read_plans',
+        'planner',
         $page, // menu_slug
         $function
     );
