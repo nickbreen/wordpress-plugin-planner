@@ -1,0 +1,14 @@
+dl.plan {
+    border-collapse: collapse;
+    border-bottom: 0.125em solid #ccc;
+}
+
+dl.plan:first-of-type {
+    border-top: 0.125em solid #ccc;
+}
+
+dl.plan dt:not(:first-of-type),
+dl.plan dd:not(:first-of-type) {
+    border-collapse: collapse;
+    border-top: 0.125em solid #333;
+}

@@ -52,17 +52,8 @@
 						<?php foreach ($planWeek as $i => $planDay): ?>
 							<td data-day-of-week="<?php echo $i; ?>"
 								data-date="<?php echo date('Y-m-d', strtotime("last sunday +{$i} day", $time)); ?>">
-								<?php foreach ($planDay as $j): ?>
-									<?php $p = pods('plan', $j); ?>
-									<dl data-plan-id="<?php echo $j; ?>"
-										data-href="<?php echo get_edit_post_link($j) ?? get_permalink($j); ?>"
-										class="<?php echo get_edit_post_link($j) ? 'edit' : 'view'; ?>"
-										style="color: <?php echo $contrast($p->raw('driver.colour')); ?>; background-color: <?php echo $p->display('driver.colour'); ?>">
-										<?php foreach ($fields as $f => $fs): ?>
-											<dt class="<?php echo $f;?>"><?php echo $fs['label']; ?>
-											<dd class="<?php echo $f;?>" title="<?php echo $p->display($f); ?>"><?php echo $p->display($f); ?>
-										<?php endforeach; ?>
-									</dl>
+								<?php foreach ($planDay as $j => $template): ?>
+									<?php echo pods('plan', $j)->template($template); ?>
 								<?php endforeach; ?>
 							</td>
 						<?php endforeach; ?>
@@ -70,12 +61,6 @@
 				<?php endforeach; ?>
 			</tbody>
 		</table>
-		<ul class="drivers" data-label="<?php _e('Drivers', 'wordpress-plugin-planner'); ?>">
-			<?php while ($driver->fetch()): ?>
-				<li style="color: <?php echo $contrast($driver->raw('colour')); ?>; background-color: <?php echo $driver->display('colour'); ?>">
-					<?php echo $driver->display('post_title'); ?>
-				</li>
-			<?php endwhile; ?>
-		</ul>
+		<?php echo $driver->template('driver'); ?>
 	</form>
 </div>

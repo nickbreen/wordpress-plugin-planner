@@ -1,0 +1,29 @@
+.drivers {
+    width: min-content;
+    margin: 1em auto !important;
+    white-space: nowrap;
+    background-color: transparent;
+    color: white;
+    border: solid 0.125em #ccc;
+    padding: 1em;
+}
+
+.drivers[title] {
+    margin: 4.8em auto !important;
+}
+
+.drivers[title]::before {
+    font-size: 2em;
+    line-height: 1em;
+    height: 1em;
+    content: attr(title);
+    text-align: center;
+    display: block;
+    margin: -2em 0.5em 1em;
+}
+
+.drivers li {
+    display: inline-block;
+    padding: 0.5em 1em;
+    margin: 0.5em;
+}

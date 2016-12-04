@@ -1,0 +1,29 @@
+dl.plan {
+    padding: 0.5em;
+    display: flex;
+    align-items: baseline;
+    align-content: flex-start;
+    flex-wrap: wrap;
+    margin: 0;
+}
+
+dl.plan dt {
+    font-weight: bold;
+}
+
+dl.plan dt,
+dl.plan dd {
+    flex: 1 1 auto;
+    margin: auto;
+    width: 50%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    box-sizing: border-box;
+    overflow: hidden;
+    display: inline-block;
+    color: inherit;
+}
+
+dl.plan:not(:first-of-type) {
+    border-top: 0.125em solid #999;
+}
