@@ -16,6 +16,8 @@ $text_domain = 'wordpress-plugin-planner';
 $page = 'wordpress-plugin-planner';
 
 function contrast_color($ch) {
+    if (!$ch)
+        return "inherit";
     $r = hexdec(substr($ch, 1, 2));
     $g = hexdec(substr($ch, 3, 2));
     $b = hexdec(substr($ch, 5, 2));
