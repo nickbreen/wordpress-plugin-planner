@@ -78,11 +78,9 @@ dl.plan[data-edit-href^="http"] {
     cursor: pointer;
 }
 
-dl.plan dt.contact,
-dl.plan dd.contact,
-dl.plan dt.date,
-dl.plan dd.date,
-dl.plan dt.driver,
-dl.plan dd.driver {
+dl.plan .contact,
+dl.plan .date,
+dl.plan .driver,
+dl.plan .notes {
     display: none;
 }

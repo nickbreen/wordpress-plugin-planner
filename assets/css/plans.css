@@ -19,3 +19,12 @@ dl.plan dt:nth-of-type(even) {
     border-left: 0.125em solid hsla(0, 100%, 100%, 0.5);
     padding-left: 0.25em;
 }
+
+dl.plan dt.notes {
+    text-align: center;
+}
+
+dl.plan .notes {
+    width: 100%;
+    white-space: normal;
+}

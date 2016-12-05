@@ -11,6 +11,10 @@ dl.plan dt {
     font-weight: bold;
 }
 
+dl.plan dd {
+    padding-left: 0;
+}
+
 dl.plan[title]::before {
     content: attr(title);
     text-align: center;
