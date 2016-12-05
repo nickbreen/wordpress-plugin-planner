@@ -74,7 +74,7 @@
     color: black;
 }
 
-dl.plan[data-edit-href=*] {
+dl.plan[data-edit-href^="http"] {
     cursor: pointer;
 }
 
