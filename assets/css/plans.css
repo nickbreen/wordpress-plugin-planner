@@ -1,10 +1,10 @@
 dl.plan {
     border-collapse: collapse;
-    border-bottom: 0.125em solid #ccc;
+    border-bottom: 0.125em solid hsla(0, 100%, 100%, 0.5);;
 }
 
 dl.plan:first-of-type {
-    border-top: 0.125em solid #ccc;
+    border-top: 0.125em solid hsla(0, 100%, 100%, 0.5);;
 }
 
 dl.plan dt {
@@ -16,6 +16,6 @@ dl.plan dd {
 }
 
 dl.plan dt:nth-of-type(even) {
-    border-left: 0.125em solid #666;
+    border-left: 0.125em solid hsla(0, 100%, 100%, 0.5);
     padding-left: 0.25em;
 }

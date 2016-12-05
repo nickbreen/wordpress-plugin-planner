@@ -10,6 +10,8 @@ Text Domain: wordpress-plugin-planner
 Domain Path: /languages
 */
 
+error_reporting(E_ALL ^ E_DEPRECATED);
+
 $text_domain = 'wordpress-plugin-planner';
 $page = 'wordpress-plugin-planner';
 
@@ -78,22 +80,46 @@ add_action('init', function () {
     wp_enqueue_style('driver', plugins_url('assets/css/drivers.css', __FILE__));
 });
 
+register_deactivation_hook(__FILE__, function () {
+    remove_role('planner');
+    remove_role('driver');
+});
+
 register_activation_hook(__FILE__, function () use ($text_domain) {
-    add_role('driver', __('Driver', $text_domain), [
-        'read_post' => true
-    ]);
-    add_role('planner', __('Planner', $text_domain), [
-        'read_post' => true,
-        'edit_post' => true,
-        'publish_post' => true,
-        'delete_post' => true,
-        'edit_others_post' => true
-    ]);
+    add_role('driver', __('Driver', $text_domain), array_fill_keys([
+        'read_posts'
+    ], true));
+    add_role('planner', __('Planner', $text_domain), array_fill_keys([
+        'delete_plans', 'edit_plans', 'read_plans',
+
+
+        'add_users',
+        'create_users',
+        'delete_others_posts',
+        'delete_posts',
+        'delete_private_posts',
+        'delete_published_posts',
+        'delete_users',
+        'edit_others_posts',
+        'edit_posts',
+        'edit_private_posts',
+        'edit_published_posts',
+        'edit_users',
+        'list_users',
+        'promote_users',
+        'publish_posts',
+        'read_posts',
+        'read_private_posts',
+        'remove_users'
+    ], true));
     add_option('activated_plugin_'.__FILE__, true);
 });
 
+if (defined('WP_DEBUG'))
+    add_option('activated_plugin_'.__FILE__, true);
+
 add_action('init', function () {
-    if (get_option('activated_plugin_'.__FILE__)) {
+    if (get_option('activated_plugin_'.__FILE__) && pods_access(['pods'])) {
         $files = glob(__DIR__.'/templates/pods/*.html');
         if (false !== $files) {
             foreach ($files as $file) {
@@ -105,14 +131,8 @@ add_action('init', function () {
                 $id = pods_api()->save_template($template);
             }
         }
-        if (!defined('WP_DEBUG'))
-            delete_option('activated_plugin_'.__FILE__);
+        delete_option('activated_plugin_'.__FILE__);
     }
-});
-
-register_deactivation_hook(__FILE__, function () {
-    remove_role('planner');
-    remove_role('driver');
 });
 
 add_filter('custom_menu_order', function ($menu_ord) use ($page) {
