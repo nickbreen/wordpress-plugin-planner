@@ -10,8 +10,6 @@ Text Domain: wordpress-plugin-planner
 Domain Path: /languages
 */
 
-error_reporting(E_ALL ^ E_DEPRECATED);
-
 $text_domain = 'wordpress-plugin-planner';
 $page = 'wordpress-plugin-planner';
 
@@ -24,7 +22,11 @@ function contrast_color($ch) {
     return ((($r*299)+($g*587)+($b*144))/1000) >= 131.5 ? "black" : "white";
 };
 
-$function = function () use ($page) {
+function fmt_date($time) {
+    return date(get_option('date_format'), strtotime($time));
+}
+
+$function = function () use ($page, $text_domain) {
 
     // Work out the first day of the week
     $iFirstDay = get_option('start_of_week', 1);
@@ -92,9 +94,6 @@ register_activation_hook(__FILE__, function () use ($text_domain) {
         'read_posts'
     ], true));
     add_role('planner', __('Planner', $text_domain), array_fill_keys([
-        'delete_plans', 'edit_plans', 'read_plans',
-
-
         'add_users',
         'create_users',
         'delete_others_posts',
@@ -214,7 +213,7 @@ add_action("woocommerce_account_${endpoint}_endpoint", function ($value) use ($e
             'driver.user.ID = %d AND UNIX_TIMESTAMP(plan_date.meta_value) BETWEEN %d AND %d',
             get_current_user_id(),
             strtotime("midnight last sunday +{$iFirstDay} days", $time),
-            strtotime("midnight next sunday +{$iFirstDay} days + 1 week", $time)
+            strtotime("midnight next sunday +{$iFirstDay} days + 1 year", $time)
         ),
         'orderby' => 'plan_date.meta_value, time.meta_value, driver.post_title'
     ]);

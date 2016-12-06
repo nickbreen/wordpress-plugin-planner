@@ -47,7 +47,7 @@
     display: inline-block;
 }
 
-#week-picker,
+.date-picker,
 .planner caption label {
     text-align: center;
     cursor: pointer;

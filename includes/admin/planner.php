@@ -1,8 +1,10 @@
 <div class="planner wrap">
 
-	<h1><?php _e('Planner', 'wordpress-plugin-planner'); ?>
-		<?php foreach (['plan' => 'Plan', 'driver' => 'Driver', 'vehicle' => 'Vehicle'] as $p => $l): ?>
-			<a class="page-title-action" href="<?php echo admin_url("post-new.php?post_type=$p"); ?>"><?php _e("Add $l", 'wordpress-plugin-planner'); ?></a>
+	<h1><?php _e('Planner', $text_domain); ?>
+		<?php foreach (['plan', 'driver', 'vehicle'] as $p): ?>
+			<a class="page-title-action" href="<?php echo admin_url("post-new.php?post_type=$p"); ?>">
+				<?php printf(__("Add %s", $text_domain), pods_data($p)->pod_data['options']['label_singular']); ?>
+			</a>
 		<?php endforeach; ?>
 	</h1>
 
@@ -14,9 +16,10 @@
 			<caption>
 				<a class="prev" title="Week <?php echo date('W', strtotime('last week', $time)); ?>"
 					href="<?php echo add_query_arg('week', date('Y-m-d', strtotime('last week', $time))); ?>">&#x21e6;</a>
-				<label for="week-picker" data-label="<?php _e('Week ', 'wordpress-plugin-planner'); ?>">
+				<label>
+					<?php _e('Week ', $text_domain); ?>
 					<?php echo date('W', $time); ?>
-					<input id="week-picker"
+					<input class="date-picker"
 						data-datepicker.first-day="<?php echo get_option('start_of_week', 1); ?>"
 						data-datepicker.date-format="D, d M yy"
 						data-datepicker.alt-field="#week"
@@ -25,14 +28,14 @@
 						data-datepicker.select-other-months="true"
 						data-datepicker.show-week="true"
 						size="16"
-						value="<?php echo date('D, j M Y', $time); /* e.g. Mon, 21 Nov 2016 */ ?>"/>
+						value="<?php echo date(get_option('date_format'), $time); ?>"/>
 				</label>
 				<a class="next" title="Week <?php echo date('W', strtotime('next week', $time)); ?>"
 					href="<?php echo add_query_arg('week', date('Y-m-d', strtotime('next week', $time))); ?>">&#x21e8;</a>
 			</caption>
 			<thead>
 				<tr>
-					<th><?php _e('Plan', 'wordpress-plugin-planner'); ?></th>
+					<th><?php _e('Plan', $text_domain); ?></th>
 					<?php for ($i = get_option('start_of_week', 1); $i < get_option('start_of_week', 1) + 7; $i ++) : ?>
 						<th><?php echo date("l\nj/n", strtotime("last sunday +{$i} day", $time)); ?></th>
 					<?php endfor; ?>
@@ -42,19 +45,16 @@
 				<?php if (!$plans): ?>
 					<tr>
 						<td colspan="8">
-							No plans for this week!
+							<?php _e('No plans for this week!', $text_domain); ?>
 						</td>
 					</tr>
 				<?php endif; ?>
 				<?php foreach ($plans as $planName => $planWeek): ?>
-					<tr data-plan-name="<?php echo $planName; ?>">
+					<tr>
 						<td><?php echo $planName; ?></td>
 						<?php foreach ($planWeek as $i => $planDay): ?>
-							<td data-day-of-week="<?php echo $i; ?>"
-								data-date="<?php echo date('Y-m-d', strtotime("last sunday +{$i} day", $time)); ?>">
-								<?php foreach ($planDay as $j => $template): ?>
-									<?php echo pods('plan', $j)->template($template); ?>
-								<?php endforeach; ?>
+							<td>
+								<?php foreach ($planDay as $j => $template) echo pods('plan', $j)->template($template); ?>
 							</td>
 						<?php endforeach; ?>
 					</tr>

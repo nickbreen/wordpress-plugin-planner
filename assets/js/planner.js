@@ -1,6 +1,6 @@
 jQuery(function($) {
 
-    $('#week-picker').datepicker({
+    $('.date-picker').datepicker({
         onSelect: function(dateText, inst) {
             var date = $(this).datepicker("getDate");
             date.setDate(date.getDate() - date.getDay() + parseInt(inst.settings.firstDay));
