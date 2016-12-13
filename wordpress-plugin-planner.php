@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Planner
-Version: 0.6.0
+Version: 0.7.0
 Description: Uses pods to plan group tours.
 Author: Nick Breen
 Author URI: http://foobar.net.nz
@@ -54,11 +54,6 @@ $function = function () use ($page, $text_domain) {
         )
     ]);
 
-    $fields = array_intersect_key(
-        $plan->fields(),
-        array_flip(['pu_loc', 'pu_time', 'passengers', 'flight', 'vehicle', 'driver'])
-    );
-
     while ($plan->fetch()) {
         $plans[$plan->field('plan.post_title', null, true) ? $plan->field('plan.post_title', null, true) : '']
             [date('w', strtotime($plan->field('plan_date')))]
@@ -77,6 +72,8 @@ $function = function () use ($page, $text_domain) {
     wp_enqueue_style('planner', plugins_url('assets/css/planner.css', __FILE__), ['jquery-ui', 'plan', 'driver']);
 
     return require __DIR__ . '/includes/admin/planner.php';
+    // TODO use pods_view, but this is wrong
+    // return pods_view(__DIR__ . '/includes/admin/planner.php', compact(array('page', 'text_domain', 'plans', 'driver', 'time')), 0, 'cache', true);
 };
 
 add_action('init', function () {
@@ -87,12 +84,11 @@ add_action('init', function () {
 register_deactivation_hook(__FILE__, function () {
     remove_role('planner');
     remove_role('driver');
+    remove_role('school');
+    remove_role('hotel');
 });
 
 register_activation_hook(__FILE__, function () use ($text_domain) {
-    add_role('driver', __('Driver', $text_domain), array_fill_keys([
-        'read_posts'
-    ], true));
     add_role('planner', __('Planner', $text_domain), array_fill_keys([
         'add_users',
         'create_users',
@@ -113,6 +109,11 @@ register_activation_hook(__FILE__, function () use ($text_domain) {
         'read_private_posts',
         'remove_users'
     ], true));
+    $customer = get_role('customer');
+    add_role('school', __('School', $text_domain), $customer->capabilities);
+    add_role('hotel', __('Hotel', $text_domain), $customer->capabilities);
+    $subscriber = get_role('subscriber');
+    add_role('driver', __('Driver', $text_domain), $subscriber->capabilities);
     add_option('activated_plugin_'.__FILE__, true);
 });
 
