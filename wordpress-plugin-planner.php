@@ -86,6 +86,8 @@ add_action('wp_enqueue_scripts', function () {
         wp_enqueue_style('plan', plugins_url('assets/css/plan.css', __FILE__));
         wp_enqueue_style('driver', plugins_url('assets/css/drivers.css', __FILE__));
         wp_enqueue_style('plans', plugins_url('assets/css/plans.css', __FILE__), ['plan','driver']);
+        wp_enqueue_style('passengers', plugins_url('assets/css/passengers.css', __FILE__));
+        wp_enqueue_script('plans.js', plugins_url('assets/js/plans.js', __FILE__), ['jquery'], '0.0.0', true);
     }
 });
 
@@ -231,4 +233,21 @@ add_action("woocommerce_account_${endpoint}_endpoint", function ($value) use ($e
     wp_enqueue_style('plans', plugins_url('assets/css/plans.css', __FILE__), ['plan','driver']);
     wp_enqueue_script('plans.js', plugins_url('assets/js/plans.js', __FILE__), ['jquery'], '0.0.0', true);
     return require __DIR__ . "/templates/my-account/$endpoint.php";
+});
+
+add_filter('the_content', function ($content) {
+    global $post;
+    if (is_singular('plan')) {
+        $field = pods('plan')->fields['passengers'];
+        $content .= pods('passenger', [
+                'where' => sprintf(
+                    'pandarf_parent_pod_id = %d AND pandarf_parent_post_id = %d AND pandarf_pod_field_id = %d',
+                    $field['pod_id'],
+                    $post->ID,
+                    $field['id']
+                ),
+                'orderby' => 'pandarf_order'
+            ])->template('passenger');
+    }
+    return $content;
 });

@@ -1,0 +1,25 @@
+table.passengers {
+    width: auto;
+    border-collapse: collapse;
+    line-height: 1.6em;
+}
+
+table.passengers tbody tr:nth-of-type(even) {
+    background-color: hsla(0, 100%, 100%, 0.125);
+}
+
+table.passengers caption,
+table.passengers th,
+table.passengers td {
+    padding: 0.125em 0.5em;
+}
+
+table.passengers caption,
+table.passengers thead th {
+    font-weight: bold;
+}
+
+table.passengers 
+table.passengers thead th {
+    border: 0.125em solid hsla(0, 100%, 100%, 0.5);
+}
