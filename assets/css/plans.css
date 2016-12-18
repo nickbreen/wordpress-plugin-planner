@@ -1,18 +1,29 @@
 dl.plan {
     border-collapse: collapse;
-    border-bottom: 0.125em solid hsla(0, 100%, 100%, 0.5);;
+    border: 0.125em solid transparent;
+    border-bottom-color: hsla(0, 100%, 100%, 0.5);
+}
+
+.woocommerce dl.plan:hover {
+    border-color: hsla(0, 100%, 100%, 0.5);
 }
 
 dl.plan:first-of-type {
-    border-top: 0.125em solid hsla(0, 100%, 100%, 0.5);;
+    border-top-color: hsla(0, 100%, 100%, 0.5);
+}
+
+dl.plan:last-of-type {
+    margin-bottom: 1.5em;
 }
 
 dl.plan dt {
     width: 20%;
+    max-width: 20%;
 }
 
 dl.plan dd {
     width: 30%;
+    max-width: 30%;
 }
 
 dl.plan dt:nth-of-type(even) {
@@ -20,11 +31,6 @@ dl.plan dt:nth-of-type(even) {
     padding-left: 0.25em;
 }
 
-dl.plan dt.notes {
-    text-align: center;
-}
-
-dl.plan .notes {
-    width: 100%;
-    white-space: normal;
+.woocommerce dl.plan[data-view-href^="http"] {
+    cursor: pointer;
 }

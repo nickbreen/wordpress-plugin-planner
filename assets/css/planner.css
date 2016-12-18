@@ -74,13 +74,13 @@
     color: black;
 }
 
-dl.plan[data-edit-href^="http"] {
-    cursor: pointer;
-}
-
 dl.plan .contact,
 dl.plan .date,
 dl.plan .driver,
 dl.plan .notes {
     display: none;
+}
+
+dl.plan[data-edit-href^="http"] {
+    cursor: pointer;
 }

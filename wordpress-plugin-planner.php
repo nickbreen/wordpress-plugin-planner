@@ -76,9 +76,17 @@ $function = function () use ($page, $text_domain) {
     // return pods_view(__DIR__ . '/includes/admin/planner.php', compact(array('page', 'text_domain', 'plans', 'driver', 'time')), 0, 'cache', true);
 };
 
-add_action('init', function () {
+add_action('admin_enqueue_scripts', function () {
     wp_enqueue_style('plan', plugins_url('assets/css/plan.css', __FILE__));
     wp_enqueue_style('driver', plugins_url('assets/css/drivers.css', __FILE__));
+});
+
+add_action('wp_enqueue_scripts', function () {
+    if (is_singular('plan')) {
+        wp_enqueue_style('plan', plugins_url('assets/css/plan.css', __FILE__));
+        wp_enqueue_style('driver', plugins_url('assets/css/drivers.css', __FILE__));
+        wp_enqueue_style('plans', plugins_url('assets/css/plans.css', __FILE__), ['plan','driver']);
+    }
 });
 
 register_deactivation_hook(__FILE__, function () {
@@ -128,7 +136,7 @@ add_action('init', function () {
                 $name = basename($file, '.html');
                 $template = pods_api()->load_template(['name' => $name]);
                 if (false === $template)
-                $template = ['name' => $name];
+                    $template = ['name' => $name];
                 $template['code'] = file_get_contents($file);
                 $id = pods_api()->save_template($template);
             }
@@ -218,6 +226,9 @@ add_action("woocommerce_account_${endpoint}_endpoint", function ($value) use ($e
         ),
         'orderby' => 'plan_date.meta_value, time.meta_value, driver.post_title'
     ]);
+    wp_enqueue_style('plan', plugins_url('assets/css/plan.css', __FILE__));
+    wp_enqueue_style('driver', plugins_url('assets/css/driver.css', __FILE__));
     wp_enqueue_style('plans', plugins_url('assets/css/plans.css', __FILE__), ['plan','driver']);
+    wp_enqueue_script('plans.js', plugins_url('assets/js/plans.js', __FILE__), ['jquery'], '0.0.0', true);
     return require __DIR__ . "/templates/my-account/$endpoint.php";
 });
