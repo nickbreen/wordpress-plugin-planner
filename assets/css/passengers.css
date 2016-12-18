@@ -2,6 +2,7 @@ table.passengers {
     width: auto;
     border-collapse: collapse;
     line-height: 1.6em;
+    white-space: nowrap;
 }
 
 table.passengers tbody tr:nth-of-type(even) {
@@ -19,7 +20,7 @@ table.passengers thead th {
     font-weight: bold;
 }
 
-table.passengers 
+table.passengers
 table.passengers thead th {
     border: 0.125em solid hsla(0, 100%, 100%, 0.5);
 }
