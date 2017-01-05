@@ -72,7 +72,7 @@ $function = function () use ($page, $text_domain) {
         'orderby' => '_booking_start.meta_value',
         'select' => 't.*, _booking_start.*',
         'where' => sprintf(
-            't.post_status = "confirmed" '.
+            't.post_status IN ("confirmed", "paid", "complete" ) '.
             'AND UNIX_TIMESTAMP(STR_TO_DATE(_booking_start.meta_value, GET_FORMAT(DATETIME,"INTERNAL"))) BETWEEN %d AND %d '.
             'AND plan.ID IS NULL',
             strtotime("midnight last sunday +{$iFirstDay} days", $time),
