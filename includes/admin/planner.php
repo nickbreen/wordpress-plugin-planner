@@ -8,12 +8,12 @@
 		<?php endforeach; ?>
 	</h1>
 
-	<form method="get" enctype="multipart/form-data">
-		<input type="hidden" name="page" value="<?php echo $page; ?>" />
-		<input type="hidden" name="week" id="week" value="<?php echo date('Y-m-d', $time); ?>" />
+	<table>
+		<caption>
+			<form method="get" enctype="multipart/form-data">
+				<input type="hidden" name="page" value="<?php echo $page; ?>" />
+				<input type="hidden" name="week" id="week" value="<?php echo date('Y-m-d', $time); ?>" />
 
-		<table>
-			<caption>
 				<a class="prev" title="Week <?php echo date('W', strtotime('last week', $time)); ?>"
 					href="<?php echo add_query_arg('week', date('Y-m-d', strtotime('last week', $time))); ?>">&#x21e6;</a>
 				<label>
@@ -32,35 +32,36 @@
 				</label>
 				<a class="next" title="Week <?php echo date('W', strtotime('next week', $time)); ?>"
 					href="<?php echo add_query_arg('week', date('Y-m-d', strtotime('next week', $time))); ?>">&#x21e8;</a>
-			</caption>
-			<thead>
+			</form>
+		</caption>
+		<thead>
+			<tr>
+				<th><?php _e('Plan', $text_domain); ?></th>
+				<?php for ($i = get_option('start_of_week', 1); $i < get_option('start_of_week', 1) + 7; $i ++) : ?>
+					<th><?php echo date("l\nj/n", strtotime("last sunday +{$i} day", $time)); ?></th>
+				<?php endfor; ?>
+			</tr>
+		</thead>
+		<tbody>
+			<?php if (!$plans): ?>
 				<tr>
-					<th><?php _e('Plan', $text_domain); ?></th>
-					<?php for ($i = get_option('start_of_week', 1); $i < get_option('start_of_week', 1) + 7; $i ++) : ?>
-						<th><?php echo date("l\nj/n", strtotime("last sunday +{$i} day", $time)); ?></th>
-					<?php endfor; ?>
+					<td colspan="8">
+						<?php _e('No plans for this week!', $text_domain); ?>
+					</td>
 				</tr>
-			</thead>
-			<tbody>
-				<?php if (!$plans): ?>
-					<tr>
-						<td colspan="8">
-							<?php _e('No plans for this week!', $text_domain); ?>
+			<?php endif; ?>
+			<?php foreach ($plans as $planName => $planWeek): ?>
+				<tr>
+					<td><?php echo $planName; ?></td>
+					<?php foreach ($planWeek as $i => $planDay): ?>
+						<td>
+							<?php foreach ($planDay as $j => $template) echo pods('plan', $j)->template($template); ?>
 						</td>
-					</tr>
-				<?php endif; ?>
-				<?php foreach ($plans as $planName => $planWeek): ?>
-					<tr>
-						<td><?php echo $planName; ?></td>
-						<?php foreach ($planWeek as $i => $planDay): ?>
-							<td>
-								<?php foreach ($planDay as $j => $template) echo pods('plan', $j)->template($template); ?>
-							</td>
-						<?php endforeach; ?>
-					</tr>
-				<?php endforeach; ?>
-			</tbody>
-		</table>
-		<?php echo $driver->template('driver'); ?>
-	</form>
+					<?php endforeach; ?>
+				</tr>
+			<?php endforeach; ?>
+		</tbody>
+	</table>
+	<?php echo $driver->template('driver'); ?>
+	<?php echo $booking->template('booking'); ?>
 </div>

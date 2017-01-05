@@ -68,6 +68,18 @@ $function = function () use ($page, $text_domain) {
 
     $driver = pods('driver', []);
 
+    $booking = pods('wc_booking', [
+        'orderby' => '_booking_start.meta_value',
+        'select' => 't.*, _booking_start.*',
+        'where' => sprintf(
+            't.post_status = "confirmed" '.
+            'AND UNIX_TIMESTAMP(STR_TO_DATE(_booking_start.meta_value, GET_FORMAT(DATETIME,"INTERNAL"))) BETWEEN %d AND %d '.
+            'AND plan.ID IS NULL',
+            strtotime("midnight last sunday +{$iFirstDay} days", $time),
+            strtotime("midnight next sunday +{$iFirstDay} days", $time)
+        )
+    ]);
+
     wp_enqueue_script('planner', plugins_url('assets/js/planner.js', __FILE__), ['jquery-ui-datepicker'], '0.0.0', true);
     wp_enqueue_style('planner', plugins_url('assets/css/planner.css', __FILE__), ['jquery-ui', 'plan', 'driver']);
 
@@ -79,6 +91,7 @@ $function = function () use ($page, $text_domain) {
 add_action('admin_enqueue_scripts', function () {
     wp_enqueue_style('plan', plugins_url('assets/css/plan.css', __FILE__));
     wp_enqueue_style('driver', plugins_url('assets/css/drivers.css', __FILE__));
+    wp_enqueue_style('bookings', plugins_url('assets/css/bookings.css', __FILE__));
 });
 
 add_action('wp_enqueue_scripts', function () {
@@ -166,6 +179,14 @@ add_filter('redirect_post_location', function ($location) {
     }
     return $location;
 });
+
+add_filter('default_title', function ($post_title, $post) {
+    if (in_array($post->post_type, ["plan"])) {
+        $post_type = get_post_type_object($post->post_type);
+        $post_title = sprintf("%s %s", $post_type->labels->singular_name, date("Y-m-d", strtotime($post->post_date)));
+    }
+    return $post_title;
+}, 10, 2);
 
 add_action('admin_menu', function () use ($function, $page, $text_domain) {
 

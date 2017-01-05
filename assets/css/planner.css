@@ -43,7 +43,7 @@
     padding: 0.5em;
 }
 
-.planner caption > * {
+.planner caption form > * {
     display: inline-block;
 }
 
@@ -69,7 +69,8 @@
     padding: 0.5em;
 }
 
-.drivers {
+.drivers,
+.bookings {
     background: white;
     color: black;
 }
