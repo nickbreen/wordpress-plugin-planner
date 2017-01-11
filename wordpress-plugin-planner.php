@@ -28,6 +28,10 @@ function wordpress_plugin_planner_fmt_date($time) {
     return date(get_option('date_format'), strtotime($time));
 }
 
+function wordpress_plugin_planner_plan_link($id) {
+    return get_edit_post_link($id) ?? get_permalink($id);
+}
+
 $function = function () use ($page, $text_domain) {
 
     // Work out the first day of the week
@@ -75,8 +79,8 @@ $function = function () use ($page, $text_domain) {
         'select' => 't.*, _booking_start.*',
         'where' => sprintf(
             't.post_status IN ("confirmed", "paid", "complete" ) '.
-            'AND UNIX_TIMESTAMP(STR_TO_DATE(_booking_start.meta_value, GET_FORMAT(DATETIME,"INTERNAL"))) BETWEEN %d AND %d '.
-            'AND plan.ID IS NULL',
+            'AND UNIX_TIMESTAMP(STR_TO_DATE(_booking_start.meta_value, GET_FORMAT(DATETIME,"INTERNAL"))) BETWEEN %d AND %d ',
+            //'AND plan.ID IS NULL',
             strtotime("midnight last sunday +{$iFirstDay} days", $time),
             strtotime("midnight next sunday +{$iFirstDay} days", $time)
         )

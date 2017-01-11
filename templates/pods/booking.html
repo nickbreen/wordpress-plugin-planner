@@ -1,7 +1,8 @@
 [before]
-    <ul class="bookings" title="Unplanned Bookings">
+    <ul class="bookings" title="Bookings">
 [/before]
 <li>
+    [if plan]Planned[else]Unplanned[/if]
     <a href="{@id,get_edit_post_link}" title="{@post_title}">{@id}: {@post_status}</a>
 </li>
 [after]

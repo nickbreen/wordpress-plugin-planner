@@ -24,14 +24,4 @@ jQuery(function($) {
     $('.ui-datepicker-calendar tr').live('mousemove', function () { $(this).find('td a').addClass('ui-state-hover'); });
     $('.ui-datepicker-calendar tr').live('mouseleave', function () { $(this).find('td a').removeClass('ui-state-hover'); });
 
-    $('.planner dl[data-edit-href^="http"]').live('click', function () {
-        window.location.assign(this.dataset.editHref);
-    });
-
-    $('ul.bookings li button').live('click', function (e) {
-        e.preventDefault();
-        console.log(e);
-    });
-
-
 });
