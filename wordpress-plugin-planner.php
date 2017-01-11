@@ -13,7 +13,9 @@ Domain Path: /languages
 $text_domain = 'wordpress-plugin-planner';
 $page = 'wordpress-plugin-planner';
 
-function contrast_color($ch) {
+function wordpress_plugin_planner_contrast_color($ch) {
+    if (is_array($ch))
+        $ch = current($ch);
     if (!$ch)
         return "inherit";
     $r = hexdec(substr($ch, 1, 2));
@@ -22,7 +24,7 @@ function contrast_color($ch) {
     return ((($r*299)+($g*587)+($b*144))/1000) >= 131.5 ? "black" : "white";
 };
 
-function fmt_date($time) {
+function wordpress_plugin_planner_fmt_date($time) {
     return date(get_option('date_format'), strtotime($time));
 }
 
@@ -39,10 +41,10 @@ $function = function () use ($page, $text_domain) {
 
     $plans = [];
 
-    $planName = pods('plan_name', []);
+    $planName = pods('plan_group', []);
 
     while ($planName->fetch()) {
-        $plans[$planName->field('post_title')] = array_fill($iFirstDay, 7, []);
+        $plans[$planName->field('name')] = array_fill($iFirstDay, 7, []);
     }
     $plans[''] = array_fill($iFirstDay, 7, []);
 
@@ -55,7 +57,7 @@ $function = function () use ($page, $text_domain) {
     ]);
 
     while ($plan->fetch()) {
-        $plans[$plan->field('plan.post_title', null, true) ? $plan->field('plan.post_title', null, true) : '']
+        $plans[$plan->field('plan_group.name', null, true) ? $plan->field('plan_group.name', null, true) : '']
             [date('w', strtotime($plan->field('plan_date')))]
             [$plan->id()] = 'plan';
     }
@@ -140,11 +142,8 @@ register_activation_hook(__FILE__, function () use ($text_domain) {
     add_option('activated_plugin_'.__FILE__, true);
 });
 
-if (defined('WP_DEBUG'))
-    add_option('activated_plugin_'.__FILE__, true);
-
-add_action('init', function () {
-    if (get_option('activated_plugin_'.__FILE__) && pods_access(['pods'])) {
+if (defined('WP_DEBUG')) add_action('init', function () {
+    if (pods_access(['pods'])) {
         $files = glob(__DIR__.'/templates/pods/*.html');
         if (false !== $files) {
             foreach ($files as $file) {
@@ -156,12 +155,21 @@ add_action('init', function () {
                 $id = pods_api()->save_template($template);
             }
         }
+    }
+});
+
+add_action('init', function () {
+    if (get_option('activated_plugin_'.__FILE__) && pods_access(['pods'])) {
+        pods_api()->replace_package(file_get_contents(__DIR__.'/package.json'));
         delete_option('activated_plugin_'.__FILE__);
     }
 });
 
 add_filter('custom_menu_order', function ($menu_ord) use ($page) {
     global $submenu;
+    // www: PHP Warning: next() expects parameter 1 to be array, null given in /var/www/wp-content/plugins/wordpress-plugin-planner/wordpress-plugin-planner.php on line 165
+    if (!array_key_exists($page, $submenu) || !is_array($submenu[$page]))
+        return $menu_ord;
     while (next($submenu[$page])[2] != $page);
     if (key($submenu[$page]))
         array_unshift($submenu[$page], array_splice($submenu[$page], key($submenu[$page]), 1)[0]);
