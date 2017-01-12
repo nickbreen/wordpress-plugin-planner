@@ -1,7 +1,7 @@
 {
     "meta": {
         "version": "2.6.7",
-        "build": 1484194608
+        "build": 1484210865
     },
     "pods": {
         "4054": {
@@ -247,6 +247,84 @@
                     "pick_where": "",
                     "pick_orderby": "",
                     "pick_groupby": ""
+                },
+                "rate": {
+                    "id": 7451,
+                    "name": "rate",
+                    "label": "Rate",
+                    "description": "",
+                    "help": "",
+                    "class": "",
+                    "type": "currency",
+                    "weight": 3,
+                    "pick_object": "",
+                    "pick_val": "",
+                    "sister_id": "",
+                    "required": "0",
+                    "currency_format_type": "number",
+                    "currency_format_sign": "usd",
+                    "currency_format_placement": "before",
+                    "currency_format": "i18n",
+                    "currency_decimals": "2",
+                    "currency_step": "1",
+                    "currency_min": "0",
+                    "currency_max": "1000",
+                    "currency_max_length": "12",
+                    "pick_post_status": [
+                        "publish"
+                    ],
+                    "admin_only": "0",
+                    "restrict_role": "0",
+                    "restrict_capability": "0",
+                    "hidden": "0",
+                    "read_only": "0",
+                    "roles_allowed": [
+                        "administrator"
+                    ],
+                    "rest_read": "0",
+                    "rest_write": "0",
+                    "rest_pick_response": "array",
+                    "rest_pick_depth": "2",
+                    "currency_repeatable": 0
+                },
+                "fee": {
+                    "id": 7452,
+                    "name": "fee",
+                    "label": "Fee",
+                    "description": "",
+                    "help": "",
+                    "class": "",
+                    "type": "currency",
+                    "weight": 4,
+                    "pick_object": "",
+                    "pick_val": "",
+                    "sister_id": "",
+                    "required": "0",
+                    "currency_format_type": "number",
+                    "currency_format_sign": "usd",
+                    "currency_format_placement": "before",
+                    "currency_format": "i18n",
+                    "currency_decimals": "2",
+                    "currency_step": "1",
+                    "currency_min": "0",
+                    "currency_max": "1000",
+                    "currency_max_length": "12",
+                    "pick_post_status": [
+                        "publish"
+                    ],
+                    "admin_only": "0",
+                    "restrict_role": "0",
+                    "restrict_capability": "0",
+                    "hidden": "0",
+                    "read_only": "0",
+                    "roles_allowed": [
+                        "administrator"
+                    ],
+                    "rest_read": "0",
+                    "rest_write": "0",
+                    "rest_pick_response": "array",
+                    "rest_pick_depth": "2",
+                    "currency_repeatable": 0
                 }
             },
             "show_in_menu": "1",
@@ -303,7 +381,9 @@
             "pfat_append_single": "append",
             "pfat_filter_single": "the_content",
             "pfat_append_archive": "append",
-            "pfat_filter_archive": "the_content"
+            "pfat_filter_archive": "the_content",
+            "built_in_taxonomies_location": "0",
+            "built_in_taxonomies_plan_group": "0"
         },
         "4063": {
             "id": 4063,
@@ -716,7 +796,7 @@
                     "weight": 10,
                     "pick_object": "post_type",
                     "pick_val": "wc_booking",
-                    "sister_id": "4233",
+                    "sister_id": "4985",
                     "required": "0",
                     "pick_format_type": "multi",
                     "pick_format_single": "dropdown",
@@ -743,12 +823,12 @@
                     "rest_pick_response": "array",
                     "rest_pick_depth": "2",
                     "unique": "0",
+                    "pick_display": "{@ID}",
+                    "pick_orderby": "ID DESC",
                     "pick_select_text": "",
                     "pick_table_id": "",
                     "pick_table_index": "",
-                    "pick_display": "",
                     "pick_where": "",
-                    "pick_orderby": "",
                     "pick_groupby": ""
                 },
                 "product": {
@@ -994,7 +1074,9 @@
             "pfat_filter_single": "the_content",
             "pfat_append_archive": "append",
             "pfat_filter_archive": "the_content",
-            "built_in_taxonomies_plan_name": "0"
+            "built_in_taxonomies_plan_name": "0",
+            "built_in_taxonomies_location": "0",
+            "built_in_taxonomies_plan_group": "0"
         },
         "4079": {
             "id": 4079,
@@ -1411,8 +1493,8 @@
             },
             "menu_location_custom": "wordpress-plugin-planner"
         },
-        "4232": {
-            "id": 4232,
+        "4984": {
+            "id": 4984,
             "name": "wc_booking",
             "label": "Wc Booking",
             "description": "",
@@ -1422,7 +1504,7 @@
             "alias": "",
             "fields": {
                 "plan": {
-                    "id": 4233,
+                    "id": 4985,
                     "name": "plan",
                     "label": "Plan",
                     "description": "",
@@ -1469,7 +1551,7 @@
                     "pick_groupby": ""
                 },
                 "pax": {
-                    "id": 4234,
+                    "id": 4986,
                     "name": "pax",
                     "label": "Passengers",
                     "description": "",
@@ -1515,52 +1597,52 @@
         }
     },
     "templates": {
-        "booking": {
-            "id": 4259,
-            "name": "booking",
-            "code": "[before]\n    <ul class=\"bookings\" title=\"Bookings\">\n[/before]\n<li>\n    [if plan]Planned[else]Unplanned[/if]\n    <a href=\"{@id,get_edit_post_link}\" title=\"{@post_title}\">{@id}: {@post_status}</a>\n</li>\n[after]\n    </ul>\n[/after]\n",
-            "type": "template",
-            "slug": "booking-6",
-            "options": {
-                "type": "template"
-            }
-        },
-        "driver": {
-            "id": 4260,
-            "name": "driver",
-            "code": "[before]\n    <ul class=\"drivers\" title=\"Drivers\">\n[/before]\n<li style=\"color: {@colour,wordpress_plugin_planner_contrast_color}; background-color: {@colour}\">{@post_title}</li>\n[after]\n    </ul>\n[/after]\n",
-            "type": "template",
-            "slug": "driver-6",
-            "options": {
-                "type": "template"
-            }
-        },
-        "passenger": {
-            "id": 4261,
-            "name": "passenger",
-            "code": "[before]\n<table class=\"passengers\">\n    <caption>Passengers</caption>\n    <thead>\n        <tr>\n            <th>Name</th>\n            <th>Gender</th>\n            <th title=\"Age at time of tour\">Age</th>\n            <th>Nationality</th>\n            <th title=\"Pick up location\">Location</th>\n            <th title=\"Pick up time\">Time</th>\n            <th title=\"Amount to pay\">Price</th>\n            <th title=\"Amount paid\">Paid</th>\n            <th>Mobile #</th>\n            <th>Address</th>\n        </tr>\n    </thead>\n    <tbody>\n[/before]\n    <tr>\n        <td>{@name}</td>\n        <td>{@gender}</td>\n        <td>{@age}</td>\n        <td>{@nationality}</td>\n        <td>{@pu_loc}</td>\n        <td class=\"time\">{@pu_time}</td>\n        <td class=\"currency\">{@price}</td>\n        <td class=\"currency\">{@paid}</td>\n        <td>{@mobile}</td>\n        <td>{@address}</td>\n    </tr>\n[after]\n    </tbody>\n</table>\n[/after]\n",
-            "type": "template",
-            "slug": "passenger-6",
-            "options": {
-                "type": "template"
-            }
-        },
         "plan": {
-            "id": 4262,
+            "id": 6399,
             "name": "plan",
-            "code": "<a href=\"{@id,wordpress_plugin_planner_plan_link}\">\n<dl class=\"plan\"\n    data-plan-id=\"{@id}\"\n    style=\"color: {@driver.colour,wordpress_plugin_planner_contrast_color}; background-color: {@driver.colour,current};\">\n    [if bookings]\n    <dt class=\"bookings\">Bookings</dt>\n    <dd class=\"bookings, {@bookings.id}\">{@bookings,count}</dd>\n    [/if]\n    [if post_title]\n    <dt class=\"name\">Plan</dt>\n    <dd class=\"name\" title=\"{@post_title,esc_attr}\">{@post_title}</dd>\n    [/if]\n    [if driver]\n    <dt class=\"driver\">Driver</dt>\n    <dd class=\"driver\" title=\"{@driver}\">{@driver}</dd>\n    [/if]\n    [if plan_date]\n    <dt class=\"date\">Date</dt>\n    <dd class=\"date\" title=\"{@plan_date,esc_attr}\">{@plan_date,wordpress_plugin_planner_fmt_date}</dd>\n    [/if]\n    [if pu_loc]\n    <dt class=\"pu_loc\">Location</dt>\n    <dd class=\"pu_loc\" title=\"{@pu_loc}\">{@pu_loc}</dd>\n    [/if]\n    [if pu_time]\n    <dt class=\"pu_time\">Time</dt>\n    <dd class=\"pu_time\" title=\"{@pu_time,esc_attr}\">{@pu_time}</dd>\n    [/if]\n    [if flight]\n    <dt class=\"flight\">Flight</dt>\n    <dd class=\"flight\" title=\"{@flight,esc_attr}\">{@flight}</dd>\n    [/if]\n    [if vehicle]\n    <dt class=\"vehicle\">Vehicle</dt>\n    <dd class=\"vehicle\" title=\"{@vehicle}\">{@vehicle}</dd>\n    [/if]\n    [if contact_name]\n    <dt class=\"contact\">Contact Name</dt>\n    <dd class=\"contact\" title=\"{@contact_name,esc_attr}\">{@contact_name}</dd>\n    [/if]\n    [if contact_phone]\n    <dt class=\"contact\">Contact Phone</dt>\n    <dd class=\"contact\" title=\"{@contact_phone,esc_attr}\">{@contact_phone}</dd>\n    [/if]\n</dl>\n</a>\n",
+            "code": "<a href=\"{@id,wordpress_plugin_planner_plan_link}\">\n<dl class=\"plan\"\n    data-plan-id=\"{@id}\"\n    style=\"color: {@driver.colour,wordpress_plugin_planner_contrast_color}; background-color: {@driver.colour,current};\">\n    [if bookings]\n    <dt class=\"bookings\">Bookings</dt>\n    <dd class=\"bookings\" title=\"{@bookings.id}\">{@bookings,count}</dd>\n    [/if]\n    [if post_title]\n    <dt class=\"name\">Plan</dt>\n    <dd class=\"name\" title=\"{@post_title,esc_attr}\">{@post_title}</dd>\n    [/if]\n    [if driver]\n    <dt class=\"driver\">Driver</dt>\n    <dd class=\"driver\" title=\"{@driver}\">{@driver}</dd>\n    [/if]\n    [if plan_date]\n    <dt class=\"date\">Date</dt>\n    <dd class=\"date\" title=\"{@plan_date,esc_attr}\">{@plan_date,wordpress_plugin_planner_fmt_date}</dd>\n    [/if]\n    [if pu_loc]\n    <dt class=\"pu_loc\">Location</dt>\n    <dd class=\"pu_loc\" title=\"{@pu_loc}\">{@pu_loc}</dd>\n    [/if]\n    [if pu_time]\n    <dt class=\"pu_time\">Time</dt>\n    <dd class=\"pu_time\" title=\"{@pu_time,esc_attr}\">{@pu_time}</dd>\n    [/if]\n    [if flight]\n    <dt class=\"flight\">Flight</dt>\n    <dd class=\"flight\" title=\"{@flight,esc_attr}\">{@flight}</dd>\n    [/if]\n    [if vehicle]\n    <dt class=\"vehicle\">Vehicle</dt>\n    <dd class=\"vehicle\" title=\"{@vehicle}\">{@vehicle}</dd>\n    [/if]\n    [if contact_name]\n    <dt class=\"contact\">Contact Name</dt>\n    <dd class=\"contact\" title=\"{@contact_name,esc_attr}\">{@contact_name}</dd>\n    [/if]\n    [if contact_phone]\n    <dt class=\"contact\">Contact Phone</dt>\n    <dd class=\"contact\" title=\"{@contact_phone,esc_attr}\">{@contact_phone}</dd>\n    [/if]\n</dl>\n</a>\n",
             "type": "template",
-            "slug": "plan-6",
+            "slug": "plan-429",
             "options": {
                 "type": "template"
             }
         },
         "vehicle": {
-            "id": 4263,
+            "id": 6655,
             "name": "vehicle",
             "code": "[before]\n    <ul class=\"vehicles\" title=\"Vehicles\">\n[/before]\n<li>{@post_title}</li>\n[after]\n    </ul>\n[/after]\n",
             "type": "template",
-            "slug": "vehicle-6",
+            "slug": "vehicle-480",
+            "options": {
+                "type": "template"
+            }
+        },
+        "booking": {
+            "id": 6911,
+            "name": "booking",
+            "code": "[before]\n<table class=\"bookings\">\n    <caption>Available Bookings</caption>\n    <thead>\n        <tr>\n            <th>Booking</th>\n            <th>Status</th>\n            <th>Product</th>\n            <th>Plan</th>\n        </tr>\n    </thead>\n[/before]\n<thead>\n</thead>\n<tr class=\"[if plan]planned[/if]\">\n    <td><a class=\"booking\" href=\"{@id,get_edit_post_link}\" title=\"{@post_title}\"><tt>{@id}</tt></a></td>\n    <td>{@post_status}</td>\n    <td><a class=\"product\" href=\"{@product_id,get_edit_post_link}\" title=\"{@product_id,get_the_title}\"><tt>{@product_id}</tt></a></td>\n    <td>[if plan]{@plan}[else]Unplanned[/if]</td>\n</tr>\n[after]\n</table>\n[/after]\n",
+            "type": "template",
+            "slug": "booking-532",
+            "options": {
+                "type": "template"
+            }
+        },
+        "driver": {
+            "id": 7167,
+            "name": "driver",
+            "code": "[before]\n    <ul class=\"drivers\" title=\"Drivers\">\n[/before]\n<li style=\"color: {@colour,wordpress_plugin_planner_contrast_color}; background-color: {@colour}\">{@post_title}</li>\n[after]\n    </ul>\n[/after]\n",
+            "type": "template",
+            "slug": "driver-583",
+            "options": {
+                "type": "template"
+            }
+        },
+        "passenger": {
+            "id": 7423,
+            "name": "passenger",
+            "code": "[before]\n<table class=\"passengers\">\n    <caption>Passengers</caption>\n    <thead>\n        <tr>\n            <th>Name</th>\n            <th>Gender</th>\n            <th title=\"Age at time of tour\">Age</th>\n            <th>Nationality</th>\n            <th title=\"Pick up location\">Location</th>\n            <th title=\"Pick up time\">Time</th>\n            <th title=\"Amount to pay\">Price</th>\n            <th title=\"Amount paid\">Paid</th>\n            <th>Mobile #</th>\n            <th>Address</th>\n        </tr>\n    </thead>\n    <tbody>\n[/before]\n    <tr>\n        <td>{@name}</td>\n        <td>{@gender}</td>\n        <td>{@age}</td>\n        <td>{@nationality}</td>\n        <td>{@pu_loc}</td>\n        <td class=\"time\">{@pu_time}</td>\n        <td class=\"currency\">{@price}</td>\n        <td class=\"currency\">{@paid}</td>\n        <td>{@mobile}</td>\n        <td>{@address}</td>\n    </tr>\n[after]\n    </tbody>\n</table>\n[/after]\n",
+            "type": "template",
+            "slug": "passenger-634",
             "options": {
                 "type": "template"
             }
