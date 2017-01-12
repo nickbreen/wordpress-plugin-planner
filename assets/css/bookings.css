@@ -1,8 +1,7 @@
-ul.bookings {
+table.bookings {
     width: auto;
     margin: 1em auto !important;
     background-color: transparent;
-    color: white;
     border: solid 0.125em #ccc;
     column-rule: solid 0.125em #ccc;
     padding: 1em;
@@ -10,11 +9,11 @@ ul.bookings {
     column-fill: auto;
 }
 
-ul.bookings[title] {
+table.bookings[title] {
     margin: 4.8em auto !important;
 }
 
-ul.bookings[title]::before {
+table.bookings[title]::before {
     font-size: 2em;
     line-height: 1em;
     height: 1em;
@@ -25,7 +24,7 @@ ul.bookings[title]::before {
     column-span: all;
 }
 
-ul.bookings li {
+table.bookings li {
     display: inline-block;
     max-width: 40em; /* ~80 chars */
     min-width: 25em; /* ~50 chars */
@@ -34,10 +33,7 @@ ul.bookings li {
     white-space: nowrap;
 }
 
-ul.bookings li.draggable::before {
-    content: '\2630\2003';
-}
-
-ul.bookings a.product[title]::after {
-    content: '\a0' attr(title);
+table.bookings tr.planned,
+table.bookings tr.planned a {
+    color: #999;
 }

@@ -77,8 +77,11 @@ $function = function () use ($page, $text_domain) {
     $vehicle = pods('vehicle', []);
 
     $booking = pods('wc_booking', [
-        'orderby' => 'plan.post_title, _booking_start.meta_value',
-        'select' => 't.*, _booking_start.*, CAST(_booking_product_id.meta_value AS UNSIGNED) AS product_id',
+        'orderby' => '_booking_start.meta_value',
+        'select' => 't.*, '.
+            '_booking_start.meta_value AS booking_start_date, '.
+            '_booking_resource_id.meta_value AS resource_id, '.
+            'CAST(_booking_product_id.meta_value AS UNSIGNED) AS product_id',
         'where' => sprintf(
             't.post_status IN ("confirmed", "paid", "complete" ) '.
             'AND UNIX_TIMESTAMP(STR_TO_DATE(_booking_start.meta_value, GET_FORMAT(DATETIME,"INTERNAL"))) BETWEEN %d AND %d',

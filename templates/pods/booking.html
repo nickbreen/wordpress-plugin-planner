@@ -1,12 +1,28 @@
 [before]
-<ul class="bookings" title="Bookings">
+<table class="bookings">
+    <caption>Available Bookings</caption>
+    <thead>
+        <tr>
+            <th colspan="2">Booking</th>
+            <th>Status</th>
+            <th>Start Date</th>
+            <th>Time</th>
+            <th>Product</th>
+            <th>Plan</th>
+        </tr>
+    </thead>
+    <tbody>
 [/before]
-<li>
-    <span class="plan">[if plan]{@plan}[else]Unplanned[/if]</span>
-    <a class="booking" href="{@id,get_edit_post_link}" title="{@post_title}">{@id}</a>
-    {@post_status}
-    <a class="product" href="{@product_id,get_edit_post_link}" title="{@product_id,get_the_title}">{@product_id}</a>
-</li>
+<tr class="[if plan]planned[/if]">
+    <td>{@id}</td>
+    <td><a href="{@id,get_edit_post_link}">{@post_title}</a></td>
+    <td>{@post_status}</td>
+    <td>{@booking_start_date,wordpress_plugin_planner_fmt_date}</td>
+    <td>[if resource_id]<a href="{@resource_id,get_edit_post_link}">{@resource_id,get_the_title}</a>[/if]</td>
+    <td>[if product_id]<a href="{@product_id,get_edit_post_link}">{@product_id,get_the_title}</a>[/if]</td>
+    <td>[if plan]<a href="{@plan.id,get_edit_post_link}">{@plan}</a>[/if]</td>
+</tr>
 [after]
-</ul>
+    </tbody>
+</table>
 [/after]

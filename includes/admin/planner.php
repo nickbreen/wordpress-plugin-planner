@@ -8,7 +8,7 @@
 		<?php endforeach; ?>
 	</h1>
 
-	<table>
+	<table class="planner">
 		<caption>
 			<form method="get" enctype="multipart/form-data">
 				<input type="hidden" name="page" value="<?php echo $page; ?>" />

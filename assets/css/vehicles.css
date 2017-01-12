@@ -29,13 +29,9 @@ ul.vehicles li {
     margin: 0.5em;
     white-space: nowrap;
     border: solid 0.125em #000;
-    border-radius: 0.5em;
+    border-radius: 0.3333em;
     font-family: "Share Tech Mono", monospace;
     font-size: 1.2310em;
     min-width: 4em;
     text-align: center;
-}
-
-ul.vehicles li.draggable::before {
-    content: '\2630\2003';
 }

@@ -30,7 +30,3 @@ ul.drivers li {
     white-space: nowrap;
     font-size: 1.2310em;
 }
-
-ul.drivers li.draggable::before {
-    content: '\2630\2003';
-}
