@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Planner
-Version: 0.7.0
+Version: 0.9.0
 Description: Uses pods to plan group tours.
 Author: Nick Breen
 Author URI: http://foobar.net.nz
@@ -74,6 +74,8 @@ $function = function () use ($page, $text_domain) {
 
     $driver = pods('driver', []);
 
+    $vehicle = pods('vehicle', []);
+
     $booking = pods('wc_booking', [
         'orderby' => '_booking_start.meta_value',
         'select' => 't.*, _booking_start.*',
@@ -86,27 +88,30 @@ $function = function () use ($page, $text_domain) {
         )
     ]);
 
-    wp_enqueue_script('planner', plugins_url('assets/js/planner.js', __FILE__), ['jquery-ui-datepicker'], '0.0.0', true);
-    wp_enqueue_style('planner', plugins_url('assets/css/planner.css', __FILE__), ['jquery-ui', 'plan', 'driver']);
+    wp_enqueue_script('planner', plugins_url('assets/js/planner.js', __FILE__), ['jquery-ui-datepicker']);
+    wp_enqueue_style('planner', plugins_url('assets/css/planner.css', __FILE__), ['jquery-ui', "$page-plan", "$page-driver"]);
 
     return require __DIR__ . '/includes/admin/planner.php';
     // TODO use pods_view, but this is wrong
     // return pods_view(__DIR__ . '/includes/admin/planner.php', compact(array('page', 'text_domain', 'plans', 'driver', 'time')), 0, 'cache', true);
 };
 
-add_action('admin_enqueue_scripts', function () {
-    wp_enqueue_style('plan', plugins_url('assets/css/plan.css', __FILE__));
-    wp_enqueue_style('driver', plugins_url('assets/css/drivers.css', __FILE__));
-    wp_enqueue_style('bookings', plugins_url('assets/css/bookings.css', __FILE__));
+add_action('admin_enqueue_scripts', function () use ($page) {
+    wp_enqueue_style("$page-fonts", 'https://fonts.googleapis.com/css?family=Share+Tech+Mono');
+    wp_enqueue_style("$page-plan", plugins_url('assets/css/plan.css', __FILE__));
+    wp_enqueue_style("$page-driver", plugins_url('assets/css/drivers.css', __FILE__));
+    wp_enqueue_style("$page-vehicle", plugins_url('assets/css/vehicles.css', __FILE__), ["$page-fonts"]);
+    wp_enqueue_style("$page-bookings", plugins_url('assets/css/bookings.css', __FILE__));
 });
 
-add_action('wp_enqueue_scripts', function () {
+add_action('wp_enqueue_scripts', function () use ($page) {
     if (is_singular('plan')) {
-        wp_enqueue_style('plan', plugins_url('assets/css/plan.css', __FILE__));
-        wp_enqueue_style('driver', plugins_url('assets/css/drivers.css', __FILE__));
-        wp_enqueue_style('plans', plugins_url('assets/css/plans.css', __FILE__), ['plan','driver']);
-        wp_enqueue_style('passengers', plugins_url('assets/css/passengers.css', __FILE__));
-        wp_enqueue_script('plans.js', plugins_url('assets/js/plans.js', __FILE__), ['jquery'], '0.0.0', true);
+        wp_enqueue_style("$page-plan", plugins_url('assets/css/plan.css', __FILE__));
+        wp_enqueue_style("$page-driver", plugins_url('assets/css/drivers.css', __FILE__));
+        wp_enqueue_style("$page-vehicle", plugins_url('assets/css/vehicles.css', __FILE__));
+        wp_enqueue_style("$page-plans", plugins_url('assets/css/plans.css', __FILE__), ["$page-plan","$page-driver","$page-vehicle"]);
+        wp_enqueue_style("$page-passengers", plugins_url('assets/css/passengers.css', __FILE__));
+        wp_enqueue_script("$page-plans", plugins_url('assets/js/plans.js', __FILE__), ['jquery'], '0.0.0', true);
     }
 });
 

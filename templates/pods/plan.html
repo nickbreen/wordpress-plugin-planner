@@ -4,43 +4,43 @@
     style="color: {@driver.colour,wordpress_plugin_planner_contrast_color}; background-color: {@driver.colour,current};">
     [if bookings]
     <dt class="bookings">Bookings</dt>
-    <dd class="bookings">{@bookings,count}</dd>
+    <dd class="bookings">{@bookings}</dd>
     [/if]
     [if post_title]
     <dt class="name">Plan</dt>
-    <dd class="name">{@post_title}</dd>
+    <dd class="name" title="{@post_title,esc_attr}">{@post_title}</dd>
     [/if]
     [if driver]
     <dt class="driver">Driver</dt>
-    <dd class="driver">{@driver}</dd>
+    <dd class="driver" title="{@driver}">{@driver}</dd>
     [/if]
     [if plan_date]
     <dt class="date">Date</dt>
-    <dd class="date">{@plan_date,wordpress_plugin_planner_fmt_date}</dd>
+    <dd class="date" title="{@plan_date,esc_attr}">{@plan_date,wordpress_plugin_planner_fmt_date}</dd>
     [/if]
     [if pu_loc]
     <dt class="pu_loc">Location</dt>
-    <dd class="pu_loc">{@pu_loc}</dd>
+    <dd class="pu_loc" title="{@pu_loc}">{@pu_loc}</dd>
     [/if]
     [if pu_time]
     <dt class="pu_time">Time</dt>
-    <dd class="pu_time">{@pu_time}</dd>
+    <dd class="pu_time" title="{@pu_time,esc_attr}">{@pu_time}</dd>
     [/if]
     [if flight]
     <dt class="flight">Flight</dt>
-    <dd class="flight">{@flight}</dd>
+    <dd class="flight" title="{@flight,esc_attr}">{@flight}</dd>
     [/if]
     [if vehicle]
     <dt class="vehicle">Vehicle</dt>
-    <dd class="vehicle">{@vehicle}</dd>
+    <dd class="vehicle" title="{@vehicle}">{@vehicle}</dd>
     [/if]
     [if contact_name]
     <dt class="contact">Contact Name</dt>
-    <dd class="contact">{@contact_name}</dd>
+    <dd class="contact" title="{@contact_name,esc_attr}">{@contact_name}</dd>
     [/if]
     [if contact_phone]
     <dt class="contact">Contact Phone</dt>
-    <dd class="contact">{@contact_phone}</dd>
+    <dd class="contact" title="{@contact_phone,esc_attr}">{@contact_phone}</dd>
     [/if]
 </dl>
 </a>

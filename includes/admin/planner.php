@@ -62,6 +62,7 @@
 			<?php endforeach; ?>
 		</tbody>
 	</table>
-	<?php echo $driver->template('driver'); ?>
 	<?php echo $booking->template('booking'); ?>
+	<?php echo $driver->template('driver'); ?>
+	<?php echo $vehicle->template('vehicle'); ?>
 </div>

@@ -1,5 +1,6 @@
-.drivers {
+ul.drivers {
     width: min-content;
+    max-width: 100%;
     margin: 1em auto !important;
     white-space: nowrap;
     background-color: transparent;
@@ -8,11 +9,11 @@
     padding: 1em;
 }
 
-.drivers[title] {
+ul.drivers[title] {
     margin: 4.8em auto !important;
 }
 
-.drivers[title]::before {
+ul.drivers[title]::before {
     font-size: 2em;
     line-height: 1em;
     height: 1em;
@@ -22,14 +23,14 @@
     margin: -2em 0.5em 1em;
 }
 
-.drivers li {
+ul.drivers li {
     display: inline-block;
     padding: 0.5em 1em;
     margin: 0.5em;
     white-space: nowrap;
+    font-size: 1.2310em;
 }
 
-
-.drivers li.draggable::before {
+ul.drivers li.draggable::before {
     content: '\2630\2003';
 }

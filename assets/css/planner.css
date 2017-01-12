@@ -69,15 +69,15 @@
     padding: 0.5em;
 }
 
-.drivers,
-.bookings {
+ul.drivers,
+ul.vehicles,
+ul.bookings {
     background: white;
     color: black;
 }
 
 dl.plan .contact,
 dl.plan .date,
-dl.plan .driver,
 dl.plan .notes {
     display: none;
 }
