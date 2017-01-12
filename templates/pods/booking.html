@@ -1,10 +1,12 @@
 [before]
-    <ul class="bookings" title="Bookings">
+<ul class="bookings" title="Bookings">
 [/before]
 <li>
-    [if plan]Planned[else]Unplanned[/if]
-    <a href="{@id,get_edit_post_link}" title="{@post_title}">{@id}: {@post_status}</a>
+    <span class="plan">[if plan]{@plan}[else]Unplanned[/if]</span>
+    <a class="booking" href="{@id,get_edit_post_link}" title="{@post_title}">{@id}</a>
+    {@post_status}
+    <a class="product" href="{@product_id,get_edit_post_link}" title="{@product_id,get_the_title}">{@product_id}</a>
 </li>
 [after]
-    </ul>
+</ul>
 [/after]

@@ -37,3 +37,7 @@ ul.bookings li {
 ul.bookings li.draggable::before {
     content: '\2630\2003';
 }
+
+ul.bookings a.product[title]::after {
+    content: '\a0' attr(title);
+}
