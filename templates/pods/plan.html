@@ -4,7 +4,7 @@
     style="color: {@driver.colour,wordpress_plugin_planner_contrast_color}; background-color: {@driver.colour,current};">
     [if bookings]
     <dt class="bookings">Bookings</dt>
-    <dd class="bookings">{@bookings}</dd>
+    <dd class="bookings" title="{@bookings.id}">{@bookings,count}</dd>
     [/if]
     [if post_title]
     <dt class="name">Plan</dt>

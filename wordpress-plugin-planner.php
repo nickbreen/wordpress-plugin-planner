@@ -81,8 +81,8 @@ $function = function () use ($page, $text_domain) {
         'select' => 't.*, _booking_start.*',
         'where' => sprintf(
             't.post_status IN ("confirmed", "paid", "complete" ) '.
-            'AND UNIX_TIMESTAMP(STR_TO_DATE(_booking_start.meta_value, GET_FORMAT(DATETIME,"INTERNAL"))) BETWEEN %d AND %d ',
-            //'AND plan.ID IS NULL',
+            'AND UNIX_TIMESTAMP(STR_TO_DATE(_booking_start.meta_value, GET_FORMAT(DATETIME,"INTERNAL"))) BETWEEN %d AND %d '.
+            'AND plan.ID IS NULL',
             strtotime("midnight last sunday +{$iFirstDay} days", $time),
             strtotime("midnight next sunday +{$iFirstDay} days", $time)
         )
@@ -148,10 +148,9 @@ register_activation_hook(__FILE__, function () use ($text_domain) {
     add_role('hotel', __('Hotel', $text_domain), $customer->capabilities);
     $subscriber = get_role('subscriber');
     add_role('driver', __('Driver', $text_domain), $subscriber->capabilities);
-    add_option('activated_plugin_'.__FILE__, true);
 });
 
-if (defined('WP_DEBUG')) add_action('init', function () {
+if (defined('WP_DEBUG')) add_action('plugins_loaded', function () {
     if (pods_access(['pods'])) {
         $files = glob(__DIR__.'/templates/pods/*.html');
         if (false !== $files) {
@@ -167,11 +166,9 @@ if (defined('WP_DEBUG')) add_action('init', function () {
     }
 });
 
-add_action('init', function () {
-    if (get_option('activated_plugin_'.__FILE__) && pods_access(['pods'])) {
-        pods_api()->replace_package(file_get_contents(__DIR__.'/package.json'));
-        delete_option('activated_plugin_'.__FILE__);
-    }
+if (!defined('WP_DEBUG')) add_action('plugins_loaded', function () {
+    if (pods_access(['pods']) && update_option("$page-package", file_get_contents(__DIR__.'/package.json')))
+        pods_api()->replace_package(get_option("$page-package"));
 });
 
 add_filter('custom_menu_order', function ($menu_ord) use ($page) {

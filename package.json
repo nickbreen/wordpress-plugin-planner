@@ -1,7 +1,7 @@
 {
     "meta": {
         "version": "2.6.7",
-        "build": 1484190844
+        "build": 1484194608
     },
     "pods": {
         "4054": {
@@ -298,111 +298,6 @@
             "read_all": "0",
             "write_all": "0",
             "menu_location_custom": "wordpress-plugin-planner",
-            "pfat_enable": "0",
-            "pfat_single": "driver",
-            "pfat_append_single": "append",
-            "pfat_filter_single": "the_content",
-            "pfat_append_archive": "append",
-            "pfat_filter_archive": "the_content"
-        },
-        "4060": {
-            "id": 4060,
-            "name": "wc_booking",
-            "label": "Wc Booking",
-            "description": "",
-            "type": "post_type",
-            "storage": "meta",
-            "object": "wc_booking",
-            "alias": "",
-            "fields": {
-                "plan": {
-                    "id": 4061,
-                    "name": "plan",
-                    "label": "Plan",
-                    "description": "",
-                    "help": "",
-                    "class": "",
-                    "type": "pick",
-                    "weight": 0,
-                    "pick_object": "post_type",
-                    "pick_val": "plan",
-                    "sister_id": "4074",
-                    "required": "0",
-                    "pick_format_type": "multi",
-                    "pick_format_single": "dropdown",
-                    "pick_format_multi": "autocomplete",
-                    "pick_taggable": "0",
-                    "pick_limit": "0",
-                    "pick_allow_html": "0",
-                    "pick_user_role": [],
-                    "pick_post_status": [
-                        "publish"
-                    ],
-                    "admin_only": "0",
-                    "restrict_role": "0",
-                    "restrict_capability": "0",
-                    "hidden": "0",
-                    "read_only": "0",
-                    "roles_allowed": [
-                        "administrator"
-                    ],
-                    "rest_read": "1",
-                    "rest_write": "1",
-                    "rest_pick_response": "array",
-                    "rest_pick_depth": "2",
-                    "unique": "0",
-                    "pick_select_text": "",
-                    "pick_table_id": "",
-                    "pick_table_index": "",
-                    "pick_display": "",
-                    "pick_where": "",
-                    "pick_orderby": "",
-                    "pick_groupby": ""
-                },
-                "pax": {
-                    "id": 4062,
-                    "name": "pax",
-                    "label": "Passengers",
-                    "description": "",
-                    "help": "",
-                    "class": "",
-                    "type": "pandarepeaterfield",
-                    "weight": 1,
-                    "pick_object": "",
-                    "pick_val": "",
-                    "sister_id": "",
-                    "required": "0",
-                    "pick_post_status": [
-                        "publish"
-                    ],
-                    "pandarepeaterfield_table": "pod_4079",
-                    "pandarepeaterfield_field_width": "100",
-                    "admin_only": "0",
-                    "restrict_role": "0",
-                    "restrict_capability": "0",
-                    "hidden": "0",
-                    "read_only": "0",
-                    "roles_allowed": [
-                        "administrator",
-                        "customer",
-                        "shop_manager",
-                        "planner",
-                        "school",
-                        "hotel",
-                        "driver"
-                    ],
-                    "rest_read": "0",
-                    "rest_write": "0",
-                    "rest_pick_response": "array",
-                    "rest_pick_depth": "2",
-                    "unique": "0"
-                }
-            },
-            "show_in_menu": 1,
-            "rest_enable": "0",
-            "rest_base": "wc_booking",
-            "read_all": "0",
-            "write_all": "0",
             "pfat_enable": "0",
             "pfat_single": "driver",
             "pfat_append_single": "append",
@@ -821,7 +716,7 @@
                     "weight": 10,
                     "pick_object": "post_type",
                     "pick_val": "wc_booking",
-                    "sister_id": "4061",
+                    "sister_id": "4233",
                     "required": "0",
                     "pick_format_type": "multi",
                     "pick_format_single": "dropdown",
@@ -1515,65 +1410,159 @@
                 "11": "id"
             },
             "menu_location_custom": "wordpress-plugin-planner"
+        },
+        "4232": {
+            "id": 4232,
+            "name": "wc_booking",
+            "label": "Wc Booking",
+            "description": "",
+            "type": "post_type",
+            "storage": "meta",
+            "object": "wc_booking",
+            "alias": "",
+            "fields": {
+                "plan": {
+                    "id": 4233,
+                    "name": "plan",
+                    "label": "Plan",
+                    "description": "",
+                    "help": "",
+                    "class": "",
+                    "type": "pick",
+                    "weight": 0,
+                    "pick_object": "post_type",
+                    "pick_val": "plan",
+                    "sister_id": "4074",
+                    "required": "0",
+                    "pick_format_type": "single",
+                    "pick_format_single": "dropdown",
+                    "pick_format_multi": "checkbox",
+                    "pick_taggable": "0",
+                    "pick_limit": "0",
+                    "pick_allow_html": "0",
+                    "pick_user_role": [],
+                    "pick_post_status": [
+                        "publish"
+                    ],
+                    "admin_only": "0",
+                    "restrict_role": "1",
+                    "restrict_capability": "0",
+                    "hidden": "0",
+                    "read_only": "0",
+                    "roles_allowed": [
+                        "administrator",
+                        "shop_manager",
+                        "planner",
+                        "driver"
+                    ],
+                    "rest_read": "0",
+                    "rest_write": "0",
+                    "rest_pick_response": "array",
+                    "rest_pick_depth": "2",
+                    "unique": "0",
+                    "pick_select_text": "",
+                    "pick_table_id": "",
+                    "pick_table_index": "",
+                    "pick_display": "",
+                    "pick_where": "",
+                    "pick_orderby": "",
+                    "pick_groupby": ""
+                },
+                "pax": {
+                    "id": 4234,
+                    "name": "pax",
+                    "label": "Passengers",
+                    "description": "",
+                    "help": "",
+                    "class": "",
+                    "type": "pandarepeaterfield",
+                    "weight": 1,
+                    "pick_object": "",
+                    "pick_val": "",
+                    "sister_id": "",
+                    "required": "0",
+                    "pick_post_status": [
+                        "publish"
+                    ],
+                    "pandarepeaterfield_table": "pod_4079",
+                    "pandarepeaterfield_field_width": "25",
+                    "admin_only": "0",
+                    "restrict_role": "0",
+                    "restrict_capability": "0",
+                    "hidden": "0",
+                    "read_only": "0",
+                    "roles_allowed": [
+                        "administrator"
+                    ],
+                    "rest_read": "0",
+                    "rest_write": "0",
+                    "rest_pick_response": "array",
+                    "rest_pick_depth": "2",
+                    "unique": "0"
+                }
+            },
+            "show_in_menu": 1,
+            "pfat_enable": "0",
+            "pfat_single": "booking",
+            "pfat_append_single": "append",
+            "pfat_filter_single": "the_content",
+            "pfat_append_archive": "append",
+            "pfat_filter_archive": "the_content",
+            "rest_enable": "0",
+            "rest_base": "wc_booking",
+            "read_all": "0",
+            "write_all": "0"
         }
     },
     "templates": {
         "booking": {
-            "id": 4183,
+            "id": 4259,
             "name": "booking",
             "code": "[before]\n    <ul class=\"bookings\" title=\"Bookings\">\n[/before]\n<li>\n    [if plan]Planned[else]Unplanned[/if]\n    <a href=\"{@id,get_edit_post_link}\" title=\"{@post_title}\">{@id}: {@post_status}</a>\n</li>\n[after]\n    </ul>\n[/after]\n",
             "type": "template",
-            "slug": "booking",
+            "slug": "booking-6",
             "options": {
-                "type": "template",
-                "slug": "booking"
+                "type": "template"
             }
         },
         "driver": {
-            "id": 4184,
+            "id": 4260,
             "name": "driver",
             "code": "[before]\n    <ul class=\"drivers\" title=\"Drivers\">\n[/before]\n<li style=\"color: {@colour,wordpress_plugin_planner_contrast_color}; background-color: {@colour}\">{@post_title}</li>\n[after]\n    </ul>\n[/after]\n",
             "type": "template",
-            "slug": "driver",
+            "slug": "driver-6",
             "options": {
-                "type": "template",
-                "slug": "driver"
+                "type": "template"
             }
         },
         "passenger": {
-            "id": 4185,
+            "id": 4261,
             "name": "passenger",
             "code": "[before]\n<table class=\"passengers\">\n    <caption>Passengers</caption>\n    <thead>\n        <tr>\n            <th>Name</th>\n            <th>Gender</th>\n            <th title=\"Age at time of tour\">Age</th>\n            <th>Nationality</th>\n            <th title=\"Pick up location\">Location</th>\n            <th title=\"Pick up time\">Time</th>\n            <th title=\"Amount to pay\">Price</th>\n            <th title=\"Amount paid\">Paid</th>\n            <th>Mobile #</th>\n            <th>Address</th>\n        </tr>\n    </thead>\n    <tbody>\n[/before]\n    <tr>\n        <td>{@name}</td>\n        <td>{@gender}</td>\n        <td>{@age}</td>\n        <td>{@nationality}</td>\n        <td>{@pu_loc}</td>\n        <td class=\"time\">{@pu_time}</td>\n        <td class=\"currency\">{@price}</td>\n        <td class=\"currency\">{@paid}</td>\n        <td>{@mobile}</td>\n        <td>{@address}</td>\n    </tr>\n[after]\n    </tbody>\n</table>\n[/after]\n",
             "type": "template",
-            "slug": "passenger",
+            "slug": "passenger-6",
             "options": {
-                "type": "template",
-                "slug": "passenger"
+                "type": "template"
             }
         },
         "plan": {
-            "id": 4186,
+            "id": 4262,
             "name": "plan",
-            "code": "<a href=\"{@id,wordpress_plugin_planner_plan_link}\">\n<dl class=\"plan\"\n    data-plan-id=\"{@id}\"\n    style=\"color: {@driver.colour,wordpress_plugin_planner_contrast_color}; background-color: {@driver.colour,current};\">\n    [if bookings]\n    <dt class=\"bookings\">Bookings</dt>\n    <dd class=\"bookings\">{@bookings}</dd>\n    [/if]\n    [if post_title]\n    <dt class=\"name\">Plan</dt>\n    <dd class=\"name\" title=\"{@post_title,esc_attr}\">{@post_title}</dd>\n    [/if]\n    [if driver]\n    <dt class=\"driver\">Driver</dt>\n    <dd class=\"driver\" title=\"{@driver}\">{@driver}</dd>\n    [/if]\n    [if plan_date]\n    <dt class=\"date\">Date</dt>\n    <dd class=\"date\" title=\"{@plan_date,esc_attr}\">{@plan_date,wordpress_plugin_planner_fmt_date}</dd>\n    [/if]\n    [if pu_loc]\n    <dt class=\"pu_loc\">Location</dt>\n    <dd class=\"pu_loc\" title=\"{@pu_loc}\">{@pu_loc}</dd>\n    [/if]\n    [if pu_time]\n    <dt class=\"pu_time\">Time</dt>\n    <dd class=\"pu_time\" title=\"{@pu_time,esc_attr}\">{@pu_time}</dd>\n    [/if]\n    [if flight]\n    <dt class=\"flight\">Flight</dt>\n    <dd class=\"flight\" title=\"{@flight,esc_attr}\">{@flight}</dd>\n    [/if]\n    [if vehicle]\n    <dt class=\"vehicle\">Vehicle</dt>\n    <dd class=\"vehicle\" title=\"{@vehicle}\">{@vehicle}</dd>\n    [/if]\n    [if contact_name]\n    <dt class=\"contact\">Contact Name</dt>\n    <dd class=\"contact\" title=\"{@contact_name,esc_attr}\">{@contact_name}</dd>\n    [/if]\n    [if contact_phone]\n    <dt class=\"contact\">Contact Phone</dt>\n    <dd class=\"contact\" title=\"{@contact_phone,esc_attr}\">{@contact_phone}</dd>\n    [/if]\n</dl>\n</a>\n",
+            "code": "<a href=\"{@id,wordpress_plugin_planner_plan_link}\">\n<dl class=\"plan\"\n    data-plan-id=\"{@id}\"\n    style=\"color: {@driver.colour,wordpress_plugin_planner_contrast_color}; background-color: {@driver.colour,current};\">\n    [if bookings]\n    <dt class=\"bookings\">Bookings</dt>\n    <dd class=\"bookings, {@bookings.id}\">{@bookings,count}</dd>\n    [/if]\n    [if post_title]\n    <dt class=\"name\">Plan</dt>\n    <dd class=\"name\" title=\"{@post_title,esc_attr}\">{@post_title}</dd>\n    [/if]\n    [if driver]\n    <dt class=\"driver\">Driver</dt>\n    <dd class=\"driver\" title=\"{@driver}\">{@driver}</dd>\n    [/if]\n    [if plan_date]\n    <dt class=\"date\">Date</dt>\n    <dd class=\"date\" title=\"{@plan_date,esc_attr}\">{@plan_date,wordpress_plugin_planner_fmt_date}</dd>\n    [/if]\n    [if pu_loc]\n    <dt class=\"pu_loc\">Location</dt>\n    <dd class=\"pu_loc\" title=\"{@pu_loc}\">{@pu_loc}</dd>\n    [/if]\n    [if pu_time]\n    <dt class=\"pu_time\">Time</dt>\n    <dd class=\"pu_time\" title=\"{@pu_time,esc_attr}\">{@pu_time}</dd>\n    [/if]\n    [if flight]\n    <dt class=\"flight\">Flight</dt>\n    <dd class=\"flight\" title=\"{@flight,esc_attr}\">{@flight}</dd>\n    [/if]\n    [if vehicle]\n    <dt class=\"vehicle\">Vehicle</dt>\n    <dd class=\"vehicle\" title=\"{@vehicle}\">{@vehicle}</dd>\n    [/if]\n    [if contact_name]\n    <dt class=\"contact\">Contact Name</dt>\n    <dd class=\"contact\" title=\"{@contact_name,esc_attr}\">{@contact_name}</dd>\n    [/if]\n    [if contact_phone]\n    <dt class=\"contact\">Contact Phone</dt>\n    <dd class=\"contact\" title=\"{@contact_phone,esc_attr}\">{@contact_phone}</dd>\n    [/if]\n</dl>\n</a>\n",
             "type": "template",
-            "slug": "plan",
+            "slug": "plan-6",
             "options": {
-                "type": "template",
-                "slug": "plan",
-                "_edit_lock": "1484184556:1",
-                "_edit_last": "1",
-                "pod_reference": "s:3213:\"s:3203:\"s:3193:\"s:3183:\"s:3173:\"s:3163:\"s:3153:\"s:3143:\"s:3133:\"s:3123:\"s:3113:\"s:3103:\"s:3093:\"s:3083:\"s:3073:\"s:3063:\"s:3053:\"s:3043:\"s:3033:\"s:3023:\"s:3013:\"s:3003:\"s:2993:\"s:2983:\"s:2973:\"s:2963:\"s:2953:\"s:2943:\"s:2933:\"s:2923:\"s:2913:\"s:2903:\"s:2893:\"s:2883:\"s:2873:\"s:2863:\"s:2853:\"s:2843:\"s:2833:\"s:2823:\"s:2813:\"s:2803:\"s:2793:\"s:2783:\"s:2773:\"s:2763:\"s:2753:\"s:2743:\"s:2733:\"s:2723:\"s:2713:\"s:2703:\"s:2693:\"s:2683:\"s:2673:\"s:2663:\"s:2653:\"s:2643:\"s:2633:\"s:2623:\"s:2613:\"s:2603:\"s:2593:\"s:2583:\"s:2573:\"s:2563:\"s:2553:\"s:2543:\"s:2533:\"s:2523:\"s:2513:\"s:2503:\"s:2493:\"s:2483:\"s:2473:\"s:2463:\"s:2453:\"s:2443:\"s:2433:\"s:2423:\"s:2413:\"s:2403:\"s:2393:\"s:2383:\"s:2373:\"s:2363:\"s:2353:\"s:2343:\"s:2333:\"s:2323:\"s:2313:\"s:2303:\"s:2293:\"s:2283:\"s:2273:\"s:2263:\"s:2253:\"s:2243:\"s:2233:\"s:2223:\"s:2213:\"s:2203:\"s:2193:\"s:2183:\"s:2173:\"s:2163:\"s:2153:\"s:2143:\"s:2133:\"s:2123:\"s:2113:\"s:2103:\"s:2093:\"s:2083:\"s:2073:\"s:2063:\"s:2053:\"s:2043:\"s:2033:\"s:2023:\"s:2013:\"s:2003:\"s:1993:\"s:1983:\"s:1973:\"s:1963:\"s:1953:\"s:1943:\"s:1933:\"s:1923:\"s:1913:\"s:1903:\"s:1893:\"s:1883:\"s:1873:\"s:1863:\"s:1853:\"s:1843:\"s:1833:\"s:1823:\"s:1813:\"s:1803:\"s:1793:\"s:1783:\"s:1773:\"s:1763:\"s:1753:\"s:1743:\"s:1733:\"s:1723:\"s:1713:\"s:1703:\"s:1693:\"s:1683:\"s:1673:\"s:1663:\"s:1653:\"s:1643:\"s:1633:\"s:1623:\"s:1613:\"s:1603:\"s:1593:\"s:1583:\"s:1573:\"s:1563:\"s:1553:\"s:1543:\"s:1533:\"s:1523:\"s:1513:\"s:1503:\"s:1493:\"s:1483:\"s:1473:\"s:1463:\"s:1453:\"s:1443:\"s:1433:\"s:1423:\"s:1413:\"s:1403:\"s:1393:\"s:1383:\"s:1373:\"s:1363:\"s:1353:\"s:1343:\"s:1333:\"s:1323:\"s:1313:\"s:1303:\"s:1293:\"s:1283:\"s:1273:\"s:1263:\"s:1253:\"s:1243:\"s:1233:\"s:1223:\"s:1213:\"s:1203:\"s:1193:\"s:1183:\"s:1173:\"s:1163:\"s:1153:\"s:1143:\"s:1133:\"s:1123:\"s:1113:\"s:1103:\"s:1093:\"s:1083:\"s:1073:\"s:1063:\"s:1053:\"s:1043:\"s:1033:\"s:1023:\"s:1013:\"s:1003:\"s:994:\"s:985:\"s:976:\"s:967:\"s:958:\"s:949:\"s:940:\"s:931:\"s:922:\"s:913:\"s:904:\"s:895:\"s:886:\"s:877:\"s:868:\"s:859:\"s:850:\"s:841:\"s:832:\"s:823:\"s:814:\"s:805:\"s:796:\"s:787:\"s:778:\"s:769:\"s:760:\"s:751:\"s:742:\"s:733:\"s:724:\"s:715:\"s:706:\"s:697:\"s:688:\"s:679:\"s:670:\"s:661:\"s:652:\"s:643:\"s:634:\"s:625:\"s:616:\"s:607:\"s:598:\"s:589:\"s:580:\"s:571:\"s:562:\"s:553:\"s:544:\"s:535:\"s:526:\"s:517:\"s:508:\"s:499:\"s:490:\"s:481:\"s:472:\"s:463:\"s:454:\"s:445:\"s:436:\"s:427:\"s:418:\"s:409:\"s:400:\"s:391:\"s:382:\"s:373:\"s:364:\"s:355:\"s:346:\"s:337:\"s:328:\"s:319:\"s:310:\"s:301:\"s:292:\"s:283:\"s:274:\"s:265:\"s:256:\"s:247:\"s:238:\"s:229:\"s:220:\"s:211:\"s:202:\"s:193:\"s:184:\"s:175:\"s:166:\"s:157:\"s:148:\"s:139:\"s:130:\"s:121:\"s:112:\"s:103:\"s:95:\"s:87:\"s:79:\"s:71:\"s:63:\"s:55:\"s:47:\"s:39:\"s:31:\"s:23:\"a:1:{s:3:\"pod\";s:0:\"\";}\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";\";"
+                "type": "template"
             }
         },
         "vehicle": {
-            "id": 4220,
+            "id": 4263,
             "name": "vehicle",
             "code": "[before]\n    <ul class=\"vehicles\" title=\"Vehicles\">\n[/before]\n<li>{@post_title}</li>\n[after]\n    </ul>\n[/after]\n",
             "type": "template",
-            "slug": "vehicle",
+            "slug": "vehicle-6",
             "options": {
-                "type": "template",
-                "slug": "vehicle"
+                "type": "template"
             }
         }
     }
