@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Planner
-Version: 0.9.0
+Version: 0.9.1
 Description: Uses pods to plan group tours.
 Author: Nick Breen
 Author URI: http://foobar.net.nz
@@ -166,11 +166,6 @@ if (defined('WP_DEBUG')) add_action('plugins_loaded', function () {
             }
         }
     }
-});
-
-if (!defined('WP_DEBUG')) add_action('plugins_loaded', function () {
-    if (pods_access(['pods']) && update_option("$page-package", file_get_contents(__DIR__.'/package.json')))
-        pods_api()->replace_package(get_option("$page-package"));
 });
 
 add_filter('custom_menu_order', function ($menu_ord) use ($page) {
