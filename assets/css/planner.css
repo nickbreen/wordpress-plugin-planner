@@ -1,80 +1,14 @@
 .planner a {
     text-decoration: none;
+    color: inherit;
 }
 
-.planner table {
-    border-collapse: collapse;
-    border-spacing: 0;
+.planner #calendar {
     width: auto;
     margin: 0 auto;
+    padding: 0.5em;
     background-color: white;
     border: solid 0.125em #ccc;
-}
-
-.planner table td:only-child {
-    text-align: center;
-    font-weight: normal;
-}
-
-.planner table caption {
-    font-size: 2em;
-    line-height: 1em;
-    padding: 0.5em;
-}
-
-.planner table td,
-.planner table th {
-    border-collapse: collapse;
-}
-
-table.planner td,
-table.planner th {
-    width: 12.5%;
-    min-width: 12.6em;
-    max-width: 18.9em;
-}
-
-.planner table th {
-    white-space: pre-line;
-}
-
-.planner td {
-    border: solid 0.125em #ccc;
-}
-
-table.planner td:first-child,
-.planner td,
-.planner th {
-    padding: 0.5em;
-}
-
-table.planner td {
-    vertical-align: top;
-    min-height: 4.2em; /* min-height: 3 * 1.4em */
-    height: 7.0em; /* height: 5 * 1.4em */
-    padding: 0;
-}
-
-table.planner td:first-child {
-    vertical-align: middle;
-    font-weight: bold;
-}
-
-table.planner caption form > * {
-    display: inline-block;
-}
-
-.date-picker,
-table.planner caption label {
-    text-align: center;
-    cursor: pointer;
-    width: min-content;
-    margin: 0 0.5em;
-}
-
-table.planner caption label::before {
-    content: attr(data-label);
-    font-weight: normal;
 }
 
 ul.drivers,

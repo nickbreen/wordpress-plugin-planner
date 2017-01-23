@@ -32,7 +32,6 @@ dl.plan dd {
     box-sizing: border-box;
     overflow: hidden;
     display: inline-block;
-    color: inherit;
     line-height: 1.6em;
     min-height: 1.6em;
 }

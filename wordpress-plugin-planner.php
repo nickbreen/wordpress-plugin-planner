@@ -12,6 +12,7 @@ Domain Path: /languages
 
 $text_domain = 'wordpress-plugin-planner';
 $page = 'wordpress-plugin-planner';
+$ns = '/wp/v2';
 
 function wordpress_plugin_planner_contrast_color($ch) {
     if (is_array($ch))
@@ -32,7 +33,7 @@ function wordpress_plugin_planner_plan_link($id) {
     return get_edit_post_link($id) ?? get_permalink($id);
 }
 
-$function = function () use ($page, $text_domain) {
+$function = function () use ($page, $text_domain, $ns) {
 
     // Work out the first day of the week
     $iFirstDay = get_option('start_of_week', 1);
@@ -43,15 +44,6 @@ $function = function () use ($page, $text_domain) {
         }
     ]) ?: strtotime("midnight last sunday +{$iFirstDay} days", time());
 
-    $plans = [];
-
-    $planName = pods('plan_group', []);
-
-    while ($planName->fetch()) {
-        $plans[$planName->field('name')] = array_fill($iFirstDay, 7, []);
-    }
-    $plans[''] = array_fill($iFirstDay, 7, []);
-
     $plan = pods('plan', [
         'where' => sprintf(
             'UNIX_TIMESTAMP(plan_date.meta_value) BETWEEN %d AND %d',
@@ -59,18 +51,6 @@ $function = function () use ($page, $text_domain) {
             strtotime("midnight next sunday +{$iFirstDay} days", $time)
         )
     ]);
-
-    while ($plan->fetch()) {
-        $plans[$plan->field('plan_group.name', null, true) ? $plan->field('plan_group.name', null, true) : '']
-            [date('w', strtotime($plan->field('plan_date')))]
-            [$plan->id()] = 'plan';
-    }
-
-    $plans = array_filter($plans, function ($days) {
-        return array_reduce($days, function ($carry, $item) {
-            return $carry + count($item);
-        }, 0);
-    });
 
     $driver = pods('driver', []);
 
@@ -90,27 +70,95 @@ $function = function () use ($page, $text_domain) {
         )
     ]);
 
-    wp_enqueue_script('planner', plugins_url('assets/js/planner.js', __FILE__), ['jquery-ui-datepicker']);
-    wp_enqueue_style('planner', plugins_url('assets/css/planner.css', __FILE__), ['jquery-ui', "$page-plan", "$page-driver"]);
+    wp_enqueue_script('planner');
+    wp_enqueue_style('planner');
+    wp_localize_script('planner', 'planner', [
+        'calendar' => [
+            'defaultView' => 'basicWeek',
+            'firstDay' => intval($iFirstDay),
+            'eventSources' => [[
+                'url' => rest_url($ns . '/calendar'),
+                'cache' => true,
+                'color' => '#eee',
+                'data' => [
+                    'group' => null // TODO groups
+                ]
+            ]
+            ],
+        ],
+        'pods' => [
+            'plan' => pods('plan')
+        ]
+    ]);
 
     return require __DIR__ . '/includes/admin/planner.php';
-    // TODO use pods_view, but this is wrong
-    // return pods_view(__DIR__ . '/includes/admin/planner.php', compact(array('page', 'text_domain', 'plans', 'driver', 'time')), 0, 'cache', true);
 };
 
+add_action('rest_api_init', function (WP_REST_Server $server) use ($ns) {
+    register_rest_route($ns, '/calendar', array(
+        'methods' => WP_REST_Server::READABLE,
+        'callback' => function (WP_REST_Request $request) {
+            $plan = pods('plan', [
+                'where' => sprintf(
+                    'UNIX_TIMESTAMP(plan_date.meta_value) BETWEEN %d AND %d ',
+                    strtotime($request['start']),
+                    strtotime($request['end'])
+                )
+            ]);
+            error_log("Found: ".$plan->total_found());
+            $data = [];
+            while ($plan->fetch())
+                $data[] = [
+                    'pod' => $plan->export(),
+                    'title' => $plan->field('post_title'),
+                    'content' => pods('plan', $plan->id())->template('plan'),
+                    'start' => $plan->field('plan_date'),
+                    'end' => date('Y-m-d', strtotime(sprintf('%s +%d days', $plan->field('plan_date'), $plan->field('duration')))),
+                    'color' => $plan->field('driver.color'),
+                    'textColor' => wordpress_plugin_planner_contrast_color($plan->field('driver.color')),
+                    'url' => get_edit_post_link($plan->id())
+                ];
+            return $data;
+        },
+        'args' => array(
+            'start' => array(
+                'required' => true,
+                'validate_callback' => function ($param, WP_REST_Request $request, $key) {
+                    return strtotime($param);
+                },
+            ),
+            'end' => array(
+                'required' => true,
+                'validate_callback' => function ($param, WP_REST_Request $request, $key) {
+                    return strtotime($param);
+                },
+            )
+        ),
+    ));
+});
+
 add_action('admin_enqueue_scripts', function () use ($page) {
-    wp_enqueue_style("$page-fonts", 'https://fonts.googleapis.com/css?family=Share+Tech+Mono');
-    wp_enqueue_style("$page-plan", plugins_url('assets/css/plan.css', __FILE__));
-    wp_enqueue_style("$page-driver", plugins_url('assets/css/drivers.css', __FILE__));
-    wp_enqueue_style("$page-vehicle", plugins_url('assets/css/vehicles.css', __FILE__), ["$page-fonts"]);
-    wp_enqueue_style("$page-bookings", plugins_url('assets/css/bookings.css', __FILE__));
+    wp_register_script('moment', 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js', [], '2.17.1', true);
+    wp_register_script('fullcalendar', 'https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.js', ['jquery','moment'], '3.1.0', true);
+    wp_register_style('fullcalendar-all', 'https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.css', [], '3.1.0');
+    wp_register_style('fullcalendar-print', 'https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.print.css', [], '3.1.0', 'print');
+
+    wp_register_style("$page-fonts", 'https://fonts.googleapis.com/css?family=Share+Tech+Mono');
+    wp_register_style("$page-vehicle", plugins_url('assets/css/vehicles.css', __FILE__), ["$page-fonts"]);
+    wp_register_style("$page-plan", plugins_url('assets/css/plan.css', __FILE__));
+    wp_register_style("$page-driver", plugins_url('assets/css/drivers.css', __FILE__));
+    wp_register_style("$page-bookings", plugins_url('assets/css/bookings.css', __FILE__));
+
+    wp_register_script('planner', plugins_url('assets/js/planner.js', __FILE__), ['fullcalendar'], null, true);
+    wp_register_style('planner', plugins_url('assets/css/planner.css', __FILE__), ["$page-vehicle", "$page-plan", "$page-driver", "$page-bookings", 'fullcalendar-all', 'fullcalendar-print']);
 });
 
 add_action('wp_enqueue_scripts', function () use ($page) {
     if (is_singular('plan')) {
-        wp_enqueue_style("$page-plan", plugins_url('assets/css/plan.css', __FILE__));
-        wp_enqueue_style("$page-driver", plugins_url('assets/css/drivers.css', __FILE__));
-        wp_enqueue_style("$page-vehicle", plugins_url('assets/css/vehicles.css', __FILE__));
+        wp_register_style("$page-plan", plugins_url('assets/css/plan.css', __FILE__));
+        wp_register_style("$page-driver", plugins_url('assets/css/drivers.css', __FILE__));
+        wp_register_style("$page-vehicle", plugins_url('assets/css/vehicles.css', __FILE__));
+
         wp_enqueue_style("$page-plans", plugins_url('assets/css/plans.css', __FILE__), ["$page-plan","$page-driver","$page-vehicle"]);
         wp_enqueue_style("$page-passengers", plugins_url('assets/css/passengers.css', __FILE__));
         wp_enqueue_script("$page-plans", plugins_url('assets/js/plans.js', __FILE__), ['jquery'], '0.0.0', true);

@@ -1,6 +1,4 @@
-<a href="{@id,wordpress_plugin_planner_plan_link}">
-<dl class="plan" data-plan-id="{@id}"
-    style="color: {@driver.colour,wordpress_plugin_planner_contrast_color}; background-color: {@driver.colour,current};">
+<dl class="plan" data-plan-id="{@id}">
     [if bookings]
     <dt class="bookings">Bookings</dt>
     <dd class="bookings" title="{@bookings.id}">{@bookings,count}</dd>
@@ -42,4 +40,3 @@
     <dd class="contact" title="{@contact_phone,esc_attr}">{@contact_phone}</dd>
     [/if]
 </dl>
-</a>
