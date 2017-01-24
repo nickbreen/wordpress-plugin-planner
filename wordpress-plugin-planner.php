@@ -75,14 +75,18 @@ $function = function () use ($page, $text_domain, $ns) {
     wp_localize_script('planner', 'planner', [
         'calendar' => [
             'defaultView' => 'basicWeek',
+            'aspectRatio' =>  2.2, // This seems to fit nicely with a 16:9 1080p screen with a little room for admin menus etc.
             'firstDay' => intval($iFirstDay),
             'eventSources' => [[
                 'url' => rest_url($ns . '/calendar'),
                 'cache' => true,
-                'color' => '#eee',
+                'color' => '#eee', // Boring neutral color for driver-less plans
                 'data' => [
-                    'group' => null // TODO groups
-                ]
+                    'group' => null, // TODO groups
+                ],
+                'headers' => [
+                    'X-WP-Nonce' => wp_create_nonce('wp_rest'),
+                ],
             ]
             ],
         ],
@@ -97,6 +101,9 @@ $function = function () use ($page, $text_domain, $ns) {
 add_action('rest_api_init', function (WP_REST_Server $server) use ($ns) {
     register_rest_route($ns, '/calendar', array(
         'methods' => WP_REST_Server::READABLE,
+        'permission_callback' => function (WP_REST_Request $request) {
+            return current_user_can('planner');
+        },
         'callback' => function (WP_REST_Request $request) {
             $plan = pods('plan', [
                 'where' => sprintf(
@@ -116,7 +123,7 @@ add_action('rest_api_init', function (WP_REST_Server $server) use ($ns) {
                     'end' => date('Y-m-d', strtotime(sprintf('%s +%d days', $plan->field('plan_date'), $plan->field('duration')))),
                     'color' => $plan->field('driver.color'),
                     'textColor' => wordpress_plugin_planner_contrast_color($plan->field('driver.color')),
-                    'url' => get_edit_post_link($plan->id())
+                    'url' => get_edit_post_link($plan->id(), null)
                 ];
             return $data;
         },
