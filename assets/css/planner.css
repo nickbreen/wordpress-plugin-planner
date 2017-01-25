@@ -3,12 +3,21 @@
     color: inherit;
 }
 
-.planner #calendar {
-    width: auto;
-    margin: 0 auto;
-    padding: 0.5em;
+.planner a .fc-time,
+.planner a .fc-title {
+    text-decoration: underline;
+}
+
+.planner .fc-view {
     background-color: white;
-    border: solid 0.125em #ccc;
+}
+
+.planner .fc-content {
+    padding: 0.5em;
+}
+
+.planner .fc-event {
+    margin-bottom: 2px;
 }
 
 ul.drivers,
@@ -17,6 +26,8 @@ ul.vehicles {
     color: black;
 }
 
+dl.plan .pu_time,
+dl.plan .name,
 dl.plan .contact,
 dl.plan .date,
 dl.plan .notes {

@@ -25,14 +25,6 @@ function wordpress_plugin_planner_contrast_color($ch) {
     return ((($r*299)+($g*587)+($b*144))/1000) >= 131.5 ? "black" : "white";
 };
 
-function wordpress_plugin_planner_fmt_date($time) {
-    return date(get_option('date_format'), strtotime($time));
-}
-
-function wordpress_plugin_planner_plan_link($id) {
-    return get_edit_post_link($id) ?? get_permalink($id);
-}
-
 $function = function () use ($page, $text_domain, $ns) {
 
     // Work out the first day of the week
@@ -70,29 +62,36 @@ $function = function () use ($page, $text_domain, $ns) {
         )
     ]);
 
+
+
     wp_enqueue_script('planner');
     wp_enqueue_style('planner');
     wp_localize_script('planner', 'planner', [
         'calendar' => [
+            'titleFormat' => '[Week] w',
+            'columnFormat' => 'ddd, Do MMM',
+            'timeFormat' => 'h:mm a',
             'defaultView' => 'basicWeek',
             'aspectRatio' =>  2.2, // This seems to fit nicely with a 16:9 1080p screen with a little room for admin menus etc.
             'firstDay' => intval($iFirstDay),
-            'eventSources' => [[
-                'url' => rest_url($ns . '/calendar'),
-                'cache' => true,
-                'color' => '#eee', // Boring neutral color for driver-less plans
-                'data' => [
-                    'group' => null, // TODO groups
+            'eventSources' => [
+                [
+                    'url' => rest_url($ns . '/calendar'),
+                    'cache' => true,
+                    'color' => '#eee', // Boring neutral color for driver-less plans
+                    'borderColor' => '#ccc',
+                    'data' => [
+                        'group' => null, // TODO groups
+                    ],
+                    'headers' => [
+                        'X-WP-Nonce' => wp_create_nonce('wp_rest'),
+                    ],
                 ],
-                'headers' => [
-                    'X-WP-Nonce' => wp_create_nonce('wp_rest'),
-                ],
-            ]
             ],
         ],
         'pods' => [
             'plan' => pods('plan')
-        ]
+        ],
     ]);
 
     return require __DIR__ . '/includes/admin/planner.php';
@@ -107,24 +106,28 @@ add_action('rest_api_init', function (WP_REST_Server $server) use ($ns) {
         'callback' => function (WP_REST_Request $request) {
             $plan = pods('plan', [
                 'where' => sprintf(
-                    'UNIX_TIMESTAMP(plan_date.meta_value) BETWEEN %d AND %d ',
+                    'UNIX_TIMESTAMP(plan_date.meta_value) BETWEEN %1$d AND %2$d '.
+                    'OR '.
+                    'UNIX_TIMESTAMP(DATE_ADD(plan_date.meta_value, INTERVAL duration.meta_value DAY)) BETWEEN %1$d AND %2$d ',
+                    // TODO support duations > 7 days
                     strtotime($request['start']),
                     strtotime($request['end'])
                 )
             ]);
-            error_log("Found: ".$plan->total_found());
             $data = [];
-            while ($plan->fetch())
+            while ($plan->fetch()) {
                 $data[] = [
+                    'id' => $plan->id(),
                     'pod' => $plan->export(),
                     'title' => $plan->field('post_title'),
                     'content' => pods('plan', $plan->id())->template('plan'),
-                    'start' => $plan->field('plan_date'),
+                    'start' => $plan->field('plan_date').'T'.$plan->field('pu_time'),
                     'end' => date('Y-m-d', strtotime(sprintf('%s +%d days', $plan->field('plan_date'), $plan->field('duration')))),
-                    'color' => $plan->field('driver.color'),
-                    'textColor' => wordpress_plugin_planner_contrast_color($plan->field('driver.color')),
+                    'color' => current($plan->field('driver.colour')),
+                    'textColor' => wordpress_plugin_planner_contrast_color(current($plan->field('driver.colour'))),
                     'url' => get_edit_post_link($plan->id(), null)
                 ];
+            }
             return $data;
         },
         'args' => array(
