@@ -25,3 +25,12 @@ dl.plan .date,
 dl.plan .notes {
     display: none;
 }
+
+.fixCalendarOverlay {
+    z-index: 1;
+}
+
+#drivers,
+#vehicles {
+    display: none;
+}

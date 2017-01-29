@@ -94,10 +94,52 @@ $function = function () use ($page, $text_domain, $ns) {
                 'headers' => [
                     'X-WP-Nonce' => wp_create_nonce('wp_rest'),
                 ],
+            ],
+            'header' => [
+                'left' => '',
+                'center' => 'prev title next',
+                'right' => 'plan driver vehicle'
+            ],
+            'customButtons' => [
+                'plan' => [
+                    'text' => sprintf(__("Add New %s", $text_domain), pods_data('plan')->pod_data['options']['label_singular']),
+                    'url' => admin_url("post-new.php?post_type=plan")
+                ],
+                'driver' => [
+                    'text' => sprintf(__("Assign %s", $text_domain), pods_data('driver')->pod_data['options']['label_singular']),
+                ],
+                'vehicle' => [
+                    'text' => sprintf(__("Assign %s", $text_domain), pods_data('vehicle')->pod_data['options']['label_singular']),
+                ]
             ]
         ],
-        'pods' => [
-            'plan' => pods('plan')
+        'dialogs' => [
+            'drivers' => [
+                'buttons' => [
+                    'new' => [
+                        'text' => sprintf(__("Add New %s", $text_domain), pods_data('driver')->pod_data['options']['label_singular']),
+                        'icons' => [ 'primary' => 'ui-icon-plus' ],
+                        'url' => admin_url("post-new.php?post_type=driver"),
+                    ]
+                ],
+                'url' => rest_url($ns . '/driver'),
+                'headers' => [
+                    'X-WP-Nonce' => wp_create_nonce('wp_rest'),
+                ],
+            ],
+            'vehicles' => [
+                'buttons' => [
+                    'new' => [
+                        'text' => sprintf(__("Add New %s", $text_domain), pods_data('vehicle')->pod_data['options']['label_singular']),
+                        'icons' => [ 'primary' => 'ui-icon-plus' ],
+                        'url' => admin_url("post-new.php?post_type=vehicle")
+                    ]
+                ],
+                'url' => rest_url($ns . '/vehicle'),
+                'headers' => [
+                    'X-WP-Nonce' => wp_create_nonce('wp_rest'),
+                ],
+            ]
         ],
     ]);
 
@@ -126,7 +168,6 @@ add_action('rest_api_init', function (WP_REST_Server $server) use ($ns) {
                 $color = $pod->field('driver.colour') ?? null;
                 $data[] = [
                     'id' => $pod->id(),
-                    'pod' => $pod->export(),
                     'title' => $pod->field('post_title'),
                     'content' => pods('plan', $pod->id())->template('plan'),
                     'start' => $pod->field('plan_date').'T'.$pod->field('pu_time'),
@@ -170,7 +211,6 @@ add_action('rest_api_init', function (WP_REST_Server $server) use ($ns) {
             while ($pod->fetch()) {
                 $data[] = [
                     'id' => $pod->id(),
-                    'pod' => $pod->export(),
                     'title' => $pod->field('name'),
                     'url' => get_edit_post_link($pod->id(), null)
                 ];
@@ -194,8 +234,8 @@ add_action('admin_enqueue_scripts', function () use ($page) {
     wp_register_style("$page-driver", plugins_url('assets/css/drivers.css', __FILE__));
     wp_register_style("$page-bookings", plugins_url('assets/css/bookings.css', __FILE__));
 
-    wp_register_script('planner', plugins_url('assets/js/planner.js', __FILE__), ['fullcalendar-scheduler'], null, true);
-    wp_register_style('planner', plugins_url('assets/css/planner.css', __FILE__), ["$page-vehicle", "$page-plan", "$page-driver", "$page-bookings", 'fullcalendar-scheduler-all']);
+    wp_register_script('planner', plugins_url('assets/js/planner.js', __FILE__), ['fullcalendar-scheduler', 'jquery-ui-dialog'], null, true);
+    wp_register_style('planner', plugins_url('assets/css/planner.css', __FILE__), ["$page-vehicle", "$page-plan", "$page-driver", "$page-bookings", 'fullcalendar-scheduler-all', 'wp-jquery-ui-dialog']);
 });
 
 add_action('wp_enqueue_scripts', function () use ($page) {
