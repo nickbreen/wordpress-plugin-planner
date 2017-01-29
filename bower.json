@@ -1,0 +1,21 @@
+{
+  "name": "wordpress-plugin-planner",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Nick Breen <nick@foobar.net.nz>"
+  ],
+  "license": "GPLv2",
+  "homepage": "https://github.com/nickbreen/wordpress-plugin-planner",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "fullcalendar-scheduler": "^1.5.0"
+  }
+}

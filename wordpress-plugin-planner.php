@@ -68,6 +68,7 @@ $function = function () use ($page, $text_domain, $ns) {
     wp_enqueue_style('planner');
     wp_localize_script('planner', 'planner', [
         'calendar' => [
+            'schedulerLicenseKey' => 'GPL-My-Project-Is-Open-Source',
             'titleFormat' => '[Week] w',
             'columnFormat' => 'ddd, Do MMM',
             'timeFormat' => 'h:mm a',
@@ -148,10 +149,12 @@ add_action('rest_api_init', function (WP_REST_Server $server) use ($ns) {
 });
 
 add_action('admin_enqueue_scripts', function () use ($page) {
-    wp_register_script('moment', 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js', [], '2.17.1', true);
-    wp_register_script('fullcalendar', 'https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.js', ['jquery','moment'], '3.1.0', true);
-    wp_register_style('fullcalendar-all', 'https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.css', [], '3.1.0');
-    wp_register_style('fullcalendar-print', 'https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.print.css', [], '3.1.0', 'print');
+    wp_register_script('moment', plugins_url('bower_components/moment/min/moment.min.js', __FILE__), [], '2.17.1', true);
+    wp_register_script('fullcalendar', plugins_url('bower_components/fullcalendar/dist/fullcalendar.min.js', __FILE__), ['jquery','moment'], '3.1.0', true);
+    wp_register_style('fullcalendar-all', plugins_url('bower_components/fullcalendar/dist/fullcalendar.min.css', __FILE__), [], '3.1.0');
+    wp_register_style('fullcalendar-print', plugins_url('bower_components/fullcalendar/dist/fullcalendar.print.min.css', __FILE__), [], '3.1.0', 'print');
+    wp_register_script('fullcalendar-scheduler', plugins_url('bower_components/fullcalendar-scheduler/dist/scheduler.min.js', __FILE__), ['fullcalendar'], '1.5.0', true);
+    wp_register_style('fullcalendar-scheduler-all', plugins_url('bower_components/fullcalendar-scheduler/dist/scheduler.min.css', __FILE__), ['fullcalendar-all', 'fullcalendar-print'], '1.5.0');
 
     wp_register_style("$page-fonts", 'https://fonts.googleapis.com/css?family=Share+Tech+Mono');
     wp_register_style("$page-vehicle", plugins_url('assets/css/vehicles.css', __FILE__), ["$page-fonts"]);
@@ -159,19 +162,21 @@ add_action('admin_enqueue_scripts', function () use ($page) {
     wp_register_style("$page-driver", plugins_url('assets/css/drivers.css', __FILE__));
     wp_register_style("$page-bookings", plugins_url('assets/css/bookings.css', __FILE__));
 
-    wp_register_script('planner', plugins_url('assets/js/planner.js', __FILE__), ['fullcalendar'], null, true);
-    wp_register_style('planner', plugins_url('assets/css/planner.css', __FILE__), ["$page-vehicle", "$page-plan", "$page-driver", "$page-bookings", 'fullcalendar-all', 'fullcalendar-print']);
+    wp_register_script('planner', plugins_url('assets/js/planner.js', __FILE__), ['fullcalendar-scheduler'], null, true);
+    wp_register_style('planner', plugins_url('assets/css/planner.css', __FILE__), ["$page-vehicle", "$page-plan", "$page-driver", "$page-bookings", 'fullcalendar-scheduler-all']);
 });
 
 add_action('wp_enqueue_scripts', function () use ($page) {
     if (is_singular('plan')) {
-        wp_register_style("$page-plan", plugins_url('assets/css/plan.css', __FILE__));
+        wp_register_style("$page-plan", plugins_url('assets/css/plan.css', __FILE__), ["$page-plan","$page-driver","$page-vehicle"]);
         wp_register_style("$page-driver", plugins_url('assets/css/drivers.css', __FILE__));
         wp_register_style("$page-vehicle", plugins_url('assets/css/vehicles.css', __FILE__));
+        wp_register_style("$page-passengers", plugins_url('assets/css/passengers.css', __FILE__));
+        wp_register_script("$page-plans", plugins_url('assets/js/plans.js', __FILE__), ['jquery'], null, true);
 
-        wp_enqueue_style("$page-plans", plugins_url('assets/css/plans.css', __FILE__), ["$page-plan","$page-driver","$page-vehicle"]);
-        wp_enqueue_style("$page-passengers", plugins_url('assets/css/passengers.css', __FILE__));
-        wp_enqueue_script("$page-plans", plugins_url('assets/js/plans.js', __FILE__), ['jquery'], '0.0.0', true);
+        wp_enqueue_style("$page-plans");
+        wp_enqueue_style("$page-passengers");
+        wp_enqueue_script("$page-plans");
     }
 });
 
