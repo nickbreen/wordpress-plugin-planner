@@ -72,23 +72,29 @@ $function = function () use ($page, $text_domain, $ns) {
             'titleFormat' => '[Week] w',
             'columnFormat' => 'ddd, Do MMM',
             'timeFormat' => 'h:mm a',
-            'defaultView' => 'basicWeek',
+            // 'defaultView' => 'basicWeek',
+            'defaultView' => 'timelineWeek',
+            'resourceAreaWidth' => '12.5%',
+            'resourceLabelText' => 'Groups',
+            'slotDuration' => [ 'days' => 1],
+            'slotLabelFormat' => [ 'ddd', 'Do MMM' ],
             'aspectRatio' =>  2.2, // This seems to fit nicely with a 16:9 1080p screen with a little room for admin menus etc.
             'firstDay' => intval($iFirstDay),
             'eventSources' => [
-                [
-                    'url' => rest_url($ns . '/calendar'),
-                    'cache' => true,
-                    'color' => '#eee', // Boring neutral color for driver-less plans
-                    'borderColor' => '#ccc',
-                    'data' => [
-                        'group' => null, // TODO groups
-                    ],
-                    'headers' => [
-                        'X-WP-Nonce' => wp_create_nonce('wp_rest'),
-                    ],
+                'url' => rest_url($ns . '/calendar/event'),
+                'cache' => true,
+                'color' => '#eee', // Boring neutral color for driver-less plans
+                'headers' => [
+                    'X-WP-Nonce' => wp_create_nonce('wp_rest'),
                 ],
             ],
+            'resources' => [
+                'url' => rest_url($ns . '/calendar/resource'),
+                'cache' => true,
+                'headers' => [
+                    'X-WP-Nonce' => wp_create_nonce('wp_rest'),
+                ],
+            ]
         ],
         'pods' => [
             'plan' => pods('plan')
@@ -99,13 +105,13 @@ $function = function () use ($page, $text_domain, $ns) {
 };
 
 add_action('rest_api_init', function (WP_REST_Server $server) use ($ns) {
-    register_rest_route($ns, '/calendar', array(
+    register_rest_route($ns, '/calendar/event', array(
         'methods' => WP_REST_Server::READABLE,
         'permission_callback' => function (WP_REST_Request $request) {
             return current_user_can('planner');
         },
         'callback' => function (WP_REST_Request $request) {
-            $plan = pods('plan', [
+            $pod = pods('plan', [
                 'where' => sprintf(
                     'UNIX_TIMESTAMP(plan_date.meta_value) BETWEEN %1$d AND %2$d '.
                     'OR '.
@@ -116,17 +122,19 @@ add_action('rest_api_init', function (WP_REST_Server $server) use ($ns) {
                 )
             ]);
             $data = [];
-            while ($plan->fetch()) {
+            while ($pod->fetch()) {
+                $color = $pod->field('driver.colour') ?? null;
                 $data[] = [
-                    'id' => $plan->id(),
-                    'pod' => $plan->export(),
-                    'title' => $plan->field('post_title'),
-                    'content' => pods('plan', $plan->id())->template('plan'),
-                    'start' => $plan->field('plan_date').'T'.$plan->field('pu_time'),
-                    'end' => date('Y-m-d', strtotime(sprintf('%s +%d days', $plan->field('plan_date'), $plan->field('duration')))),
-                    'color' => current($plan->field('driver.colour')),
-                    'textColor' => wordpress_plugin_planner_contrast_color(current($plan->field('driver.colour'))),
-                    'url' => get_edit_post_link($plan->id(), null)
+                    'id' => $pod->id(),
+                    'pod' => $pod->export(),
+                    'title' => $pod->field('post_title'),
+                    'content' => pods('plan', $pod->id())->template('plan'),
+                    'start' => $pod->field('plan_date').'T'.$pod->field('pu_time'),
+                    'end' => date('Y-m-d', strtotime(sprintf('%s +%d days', $pod->field('plan_date'), $pod->field('duration')))),
+                    'color' => is_array($color) ? current($color) : $color,
+                    'textColor' => wordpress_plugin_planner_contrast_color(is_array($color) ? current($color) : $color),
+                    'url' => get_edit_post_link($pod->id(), null),
+                    'resourceId' => $pod->field('plan_group.term_id') ? $pod->field('plan_group.term_id') : 0
                 ];
             }
             return $data;
@@ -145,6 +153,30 @@ add_action('rest_api_init', function (WP_REST_Server $server) use ($ns) {
                 },
             )
         ),
+    ));
+    register_rest_route($ns, '/calendar/resource', array(
+        'methods' => WP_REST_Server::READABLE,
+        'permission_callback' => function (WP_REST_Request $request) {
+            return current_user_can('planner');
+        },
+        'callback' => function (WP_REST_Request $request) {
+            $pod = pods('plan_group', []);
+            $data = [
+                [
+                    'id' => 0,
+                    'title' => 'Ungrouped'
+                ]
+            ];
+            while ($pod->fetch()) {
+                $data[] = [
+                    'id' => $pod->id(),
+                    'pod' => $pod->export(),
+                    'title' => $pod->field('name'),
+                    'url' => get_edit_post_link($pod->id(), null)
+                ];
+            }
+            return $data;
+        },
     ));
 });
 

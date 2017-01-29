@@ -12,14 +12,6 @@
     background-color: white;
 }
 
-.planner .fc-content {
-    padding: 0.5em;
-}
-
-.planner .fc-event {
-    margin-bottom: 2px;
-}
-
 ul.drivers,
 ul.vehicles {
     background: white;
