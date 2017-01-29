@@ -2,7 +2,7 @@ ul.drivers {
     columns: 4;
 }
 
-li.driver,
+li.driver.ui-draggable-dragging,
 ul.drivers li {
     display: inline-block;
     padding: 0.5em 1em;

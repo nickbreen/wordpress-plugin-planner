@@ -12,11 +12,11 @@
     background-color: white;
 }
 
-dl.plan .pu_time,
-dl.plan .name,
-dl.plan .contact,
-dl.plan .date,
-dl.plan .notes {
+ul.plan .pu_time,
+ul.plan .name,
+ul.plan .contact,
+ul.plan .date,
+ul.plan .notes {
     display: none;
 }
 

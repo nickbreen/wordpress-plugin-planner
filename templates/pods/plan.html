@@ -1,42 +1,32 @@
-<dl class="plan" data-plan-id="{@id}">
+<ul class="plan" data-id="{@id}">
     [if bookings]
-    <dt class="bookings">Bookings</dt>
-    <dd class="bookings" title="{@bookings.id}">{@bookings,count}</dd>
+    <li class="bookings" data-label="Bookings" title="Bookings: {@bookings.id,esc_attr}">{@bookings,count}</li>
     [/if]
     [if post_title]
-    <dt class="name">Plan</dt>
-    <dd class="name" title="{@post_title,esc_attr}">{@post_title}</dd>
+    <li class="name" data-label="Plan" title="{@post_title,esc_attr}">{@post_title}</li>
     [/if]
     [if driver]
-    <dt class="driver">Driver</dt>
-    <dd class="driver" title="{@driver}">{@driver}</dd>
+    <li class="driver" data-label="Driver" title="{@driver,esc_attr}">{@driver}</li>
     [/if]
     [if plan_date]
-    <dt class="date">Date</dt>
-    <dd class="date" title="{@plan_date,esc_attr}">{@plan_date,wordpress_plugin_planner_fmt_date}</dd>
+    <li class="date" data-label="Date" title="{@plan_date,esc_attr}">{@plan_date,wordpress_plugin_planner_fmt_date}</li>
     [/if]
     [if pu_loc]
-    <dt class="pu_loc">Location</dt>
-    <dd class="pu_loc" title="{@pu_loc}">{@pu_loc}</dd>
+    <li class="pu_loc" data-label="Location" title="{@pu_loc,esc_attr}">{@pu_loc}</li>
     [/if]
     [if pu_time]
-    <dt class="pu_time">Time</dt>
-    <dd class="pu_time" title="{@pu_time,esc_attr}">{@pu_time}</dd>
+    <li class="pu_time" data-label="Time" title="{@pu_time,esc_attr}">{@pu_time}</li>
     [/if]
     [if flight]
-    <dt class="flight">Flight</dt>
-    <dd class="flight" title="{@flight,esc_attr}">{@flight}</dd>
+    <li class="flight" data-label="Flight" title="{@flight,esc_attr}">{@flight}</li>
     [/if]
     [if vehicle]
-    <dt class="vehicle">Vehicle</dt>
-    <dd class="vehicle" title="{@vehicle}">{@vehicle}</dd>
+    <li class="vehicle" data-label="Vehicle" title="{@vehicle,esc_attr}">{@vehicle}</li>
     [/if]
     [if contact_name]
-    <dt class="contact">Contact Name</dt>
-    <dd class="contact" title="{@contact_name,esc_attr}">{@contact_name}</dd>
+    <li class="contact" data-label="Contact Name" title="{@contact_name,esc_attr}">{@contact_name}</li>
     [/if]
     [if contact_phone]
-    <dt class="contact">Contact Phone</dt>
-    <dd class="contact" title="{@contact_phone,esc_attr}">{@contact_phone}</dd>
+    <li class="contact" data-label="Contact Phone" title="{@contact_phone,esc_attr}">{@contact_phone}</li>
     [/if]
-</dl>
+</ul>

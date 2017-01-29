@@ -1,17 +1,20 @@
 <?php
 /*
 Plugin Name: Planner
-Version: 0.9.2
+Version: 0.10.0
 Description: Uses pods to plan group tours.
 Author: Nick Breen
 Author URI: http://foobar.net.nz
 Plugin URI: https://github.com/nickbreen/wordpress-plugin-planner
 Text Domain: wordpress-plugin-planner
 Domain Path: /languages
+License: GPL2
 */
 
-$text_domain = 'wordpress-plugin-planner';
-$page = 'wordpress-plugin-planner';
+$plugin = get_plugin_data(__FILE__);
+$text_domain = $plugin['TextDomain'];
+$version = $plugin['Version'];
+$page = plugin_basename(__DIR__);
 $ns = '/wp/v2';
 
 function wordpress_plugin_planner_contrast_color($ch) {
@@ -36,14 +39,6 @@ $function = function () use ($page, $text_domain, $ns) {
         }
     ]) ?: strtotime("midnight last sunday +{$iFirstDay} days", time());
 
-    $plan = pods('plan', [
-        'where' => sprintf(
-            'UNIX_TIMESTAMP(plan_date.meta_value) BETWEEN %d AND %d',
-            strtotime("midnight last sunday +{$iFirstDay} days", $time),
-            strtotime("midnight next sunday +{$iFirstDay} days", $time)
-        )
-    ]);
-
     $driver = pods('driver', []);
 
     $vehicle = pods('vehicle', []);
@@ -61,8 +56,6 @@ $function = function () use ($page, $text_domain, $ns) {
             strtotime("midnight next sunday +{$iFirstDay} days", $time)
         )
     ]);
-
-
 
     wp_enqueue_script('planner');
     wp_enqueue_style('planner');
@@ -223,7 +216,7 @@ add_action('rest_api_init', function (WP_REST_Server $server) use ($ns) {
     ));
 });
 
-add_action('admin_enqueue_scripts', function () use ($page) {
+add_action('admin_enqueue_scripts', function () use ($page, $version) {
     wp_register_script('moment', plugins_url('bower_components/moment/min/moment.min.js', __FILE__), [], '2.17.1', true);
     wp_register_script('fullcalendar', plugins_url('bower_components/fullcalendar/dist/fullcalendar.min.js', __FILE__), ['jquery','moment'], '3.1.0', true);
     wp_register_style('fullcalendar-all', plugins_url('bower_components/fullcalendar/dist/fullcalendar.min.css', __FILE__), [], '3.1.0');
@@ -232,13 +225,13 @@ add_action('admin_enqueue_scripts', function () use ($page) {
     wp_register_style('fullcalendar-scheduler-all', plugins_url('bower_components/fullcalendar-scheduler/dist/scheduler.min.css', __FILE__), ['fullcalendar-all', 'fullcalendar-print'], '1.5.0');
 
     wp_register_style("$page-fonts", 'https://fonts.googleapis.com/css?family=Share+Tech+Mono');
-    wp_register_style("$page-vehicle", plugins_url('assets/css/vehicles.css', __FILE__), ["$page-fonts"]);
-    wp_register_style("$page-plan", plugins_url('assets/css/plan.css', __FILE__));
-    wp_register_style("$page-driver", plugins_url('assets/css/drivers.css', __FILE__));
-    wp_register_style("$page-bookings", plugins_url('assets/css/bookings.css', __FILE__));
+    wp_register_style("$page-vehicle", plugins_url('assets/css/vehicles.css', __FILE__), ["$page-fonts"], $version);
+    wp_register_style("$page-plan", plugins_url('assets/css/plan.css', __FILE__), [], $version);
+    wp_register_style("$page-driver", plugins_url('assets/css/drivers.css', __FILE__), [], $version);
+    wp_register_style("$page-bookings", plugins_url('assets/css/bookings.css', __FILE__), [], $version);
 
-    wp_register_script('planner', plugins_url('assets/js/planner.js', __FILE__), ['fullcalendar-scheduler', 'jquery-ui-dialog'], null, true);
-    wp_register_style('planner', plugins_url('assets/css/planner.css', __FILE__), ["$page-vehicle", "$page-plan", "$page-driver", "$page-bookings", 'fullcalendar-scheduler-all', 'wp-jquery-ui-dialog']);
+    wp_register_script('planner', plugins_url('assets/js/planner.js', __FILE__), ['fullcalendar-scheduler', 'jquery-ui-dialog'], $version, true);
+    wp_register_style('planner', plugins_url('assets/css/planner.css', __FILE__), ["$page-vehicle", "$page-plan", "$page-driver", "$page-bookings", 'fullcalendar-scheduler-all', 'wp-jquery-ui-dialog'], $version);
 });
 
 add_action('wp_enqueue_scripts', function () use ($page) {

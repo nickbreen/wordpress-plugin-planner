@@ -2,7 +2,7 @@ ul.vehicles {
     columns: 4;
 }
 
-li.plate,
+li.plate.ui-draggable-dragging,
 ul.vehicles li {
     display: inline-block;
     padding: 0.25em 0.5em;

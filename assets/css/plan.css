@@ -1,4 +1,4 @@
-dl.plan {
+ul.plan {
     margin: 0;
     line-height: 1.6em;
     min-height: 3.2em;
@@ -6,33 +6,13 @@ dl.plan {
     white-space: normal;
 }
 
-dl.plan dt,
-dl.plan dd {
-    margin: initial;
-    display: inline;
+ul.plan li {
+    margin: 0;
+    break-inside: avoid;
 }
 
-dl.plan dt {
-    min-width: 4em;
+ul.plan li[data-label]::before {
+    content: attr(data-label) ':\a0';
     font-weight: bold;
-}
-
-dl.plan[title]::before {
-    content: attr(title);
-    text-align: center;
-    text-decoration: underline;
-    width: 100%;
-}
-
-dl.plan dd {
-    min-width: 8em;
-}
-
-dl.plan dt::after {
-    content: ':\a0';
-}
-
-dl.plan dd::after {
-    content: '\a';
-    white-space: pre;
+    white-space: nowrap;
 }
