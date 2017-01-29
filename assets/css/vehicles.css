@@ -2,10 +2,12 @@ ul.vehicles {
     columns: 4;
 }
 
+li.plate,
 ul.vehicles li {
     display: inline-block;
     padding: 0.25em 0.5em;
     white-space: nowrap;
+    box-sizing: border-box;
     border: solid 0.125em #000;
     border-radius: 0.3333em;
     font-family: "Share Tech Mono", monospace;
@@ -13,5 +15,4 @@ ul.vehicles li {
     font-size: 1.2310em;
     width: 6em;
     text-align: center;
-    box-sizing: border-box;
 }

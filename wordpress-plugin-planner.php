@@ -72,13 +72,11 @@ $function = function () use ($page, $text_domain, $ns) {
             'titleFormat' => '[Week] w',
             'columnFormat' => 'ddd, Do MMM',
             'timeFormat' => 'h:mm a',
-            // 'defaultView' => 'basicWeek',
             'defaultView' => 'timelineWeek',
             'resourceAreaWidth' => '12.5%',
             'resourceLabelText' => 'Groups',
             'slotDuration' => [ 'days' => 1],
             'slotLabelFormat' => [ 'ddd', 'Do MMM' ],
-            'aspectRatio' =>  2.2, // This seems to fit nicely with a 16:9 1080p screen with a little room for admin menus etc.
             'firstDay' => intval($iFirstDay),
             'eventSources' => [
                 'url' => rest_url($ns . '/calendar/event'),
@@ -87,6 +85,7 @@ $function = function () use ($page, $text_domain, $ns) {
                 'headers' => [
                     'X-WP-Nonce' => wp_create_nonce('wp_rest'),
                 ],
+                'editable' => false,
             ],
             'resources' => [
                 'url' => rest_url($ns . '/calendar/resource'),
@@ -96,9 +95,9 @@ $function = function () use ($page, $text_domain, $ns) {
                 ],
             ],
             'header' => [
-                'left' => '',
+                'left' => 'plan',
                 'center' => 'prev title next',
-                'right' => 'plan driver vehicle'
+                'right' => 'driver vehicle'
             ],
             'customButtons' => [
                 'plan' => [
@@ -152,7 +151,7 @@ add_action('rest_api_init', function (WP_REST_Server $server) use ($ns) {
         'permission_callback' => function (WP_REST_Request $request) {
             return current_user_can('planner');
         },
-        'callback' => function (WP_REST_Request $request) {
+        'callback' => function (WP_REST_Request $request) use ($ns) {
             $pod = pods('plan', [
                 'where' => sprintf(
                     'UNIX_TIMESTAMP(plan_date.meta_value) BETWEEN %1$d AND %2$d '.
@@ -170,6 +169,10 @@ add_action('rest_api_init', function (WP_REST_Server $server) use ($ns) {
                     'id' => $pod->id(),
                     'title' => $pod->field('post_title'),
                     'content' => pods('plan', $pod->id())->template('plan'),
+                    'data' => [
+                        'url' => rest_url($ns . '/plan/' . $pod->id()),
+                        'nonce' => wp_create_nonce('wp_rest'),
+                    ],
                     'start' => $pod->field('plan_date').'T'.$pod->field('pu_time'),
                     'end' => date('Y-m-d', strtotime(sprintf('%s +%d days', $pod->field('plan_date'), $pod->field('duration')))),
                     'color' => is_array($color) ? current($color) : $color,

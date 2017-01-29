@@ -12,12 +12,6 @@
     background-color: white;
 }
 
-ul.drivers,
-ul.vehicles {
-    background: white;
-    color: black;
-}
-
 dl.plan .pu_time,
 dl.plan .name,
 dl.plan .contact,
@@ -26,11 +20,15 @@ dl.plan .notes {
     display: none;
 }
 
-.fixCalendarOverlay {
-    z-index: 1;
-}
-
 #drivers,
 #vehicles {
     display: none;
+}
+
+.assignable {
+    border: dotted white !important;
+}
+
+.assign {
+    border: dashed white !important;
 }
