@@ -1,20 +1,19 @@
 [before]
-<table class="bookings">
-    <caption>Available Bookings</caption>
+<table class="bookings widefat">
     <thead>
         <tr>
-            <th colspan="2">Booking</th>
-            <th>Status</th>
-            <th>Start Date</th>
-            <th>Time</th>
-            <th>Product</th>
-            <th>Plan</th>
+            <th colspan="2" class="manage-column column-booking">Booking</th>
+            <th class="manage-column column-status">Status</th>
+            <th class="manage-column column-date">Start Date</th>
+            <th class="manage-column column-time">Time</th>
+            <th class="manage-column column-product">Product</th>
+            <th class="manage-column column-plan">Plan</th>
         </tr>
     </thead>
     <tbody>
 [/before]
-<tr class="[if plan]planned[/if]">
-    <td>{@id}</td>
+<tr class="[if plan]planned alternate[/if] booking" data-id="{@id}">
+    <td><a href="{@id,get_edit_post_link}">{@id}</a></td>
     <td><a href="{@id,get_edit_post_link}">{@post_title}</a></td>
     <td>{@post_status}</td>
     <td>{@booking_start_date,wordpress_plugin_planner_fmt_date}</td>
@@ -24,5 +23,15 @@
 </tr>
 [after]
     </tbody>
+    <tfoot>
+        <tr>
+            <th colspan="2" class="manage-column column-booking">Booking</th>
+            <th class="manage-column column-status">Status</th>
+            <th class="manage-column column-date">Start Date</th>
+            <th class="manage-column column-time">Time</th>
+            <th class="manage-column column-product">Product</th>
+            <th class="manage-column column-plan">Plan</th>
+        </tr>
+    </tfoot>
 </table>
 [/after]

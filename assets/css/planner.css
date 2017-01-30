@@ -1,8 +1,3 @@
-.planner a {
-    text-decoration: none;
-    color: inherit;
-}
-
 .planner a .fc-time,
 .planner a .fc-title {
     text-decoration: underline;
@@ -12,23 +7,24 @@
     background-color: white;
 }
 
-ul.plan .pu_time,
-ul.plan .name,
-ul.plan .contact,
-ul.plan .date,
-ul.plan .notes {
-    display: none;
-}
-
-#drivers,
-#vehicles {
+.planner ul.plan .pu_time,
+.planner ul.plan .name,
+.planner ul.plan .contact,
+.planner .fc-start ul.plan .date,
+.planner ul.plan .notes {
     display: none;
 }
 
 .assignable {
-    border: dotted white !important;
+    border-style: dashed;
+    border-color: white;
 }
 
 .assign {
-    border: dashed white !important;
+    border-style: solid;
+    border-color: black;
+}
+
+.ui-draggable-dragging {
+    box-shadow: 0 3px 6px rgba(0,0,0,.3)
 }

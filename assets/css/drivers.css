@@ -1,14 +1,18 @@
 ul.drivers {
     columns: 4;
+    width: min-content;
 }
 
 li.driver.ui-draggable-dragging,
 ul.drivers li {
-    display: inline-block;
     padding: 0.5em 1em;
     white-space: nowrap;
     font-size: 1.2310em;
-    min-width: 6em;
-    max-width: 8em;
+    min-width: 5em;
+    width: min-content;
+    text-align: center;
     box-sizing: border-box;
+    text-overflow: ellipsis;
+    border: rgba(0,0,0,0.25) solid thin;
+    border-radius: 0.25em;
 }

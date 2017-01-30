@@ -5,45 +5,55 @@ jQuery(function($) {
     if (date)
         planner.calendar.defaultDate = date;
 
-    var dialogOptions = {
-        appendTo: '#calendar',
-        modal: true,
-        width: 16 * 8 * 4 + 1 * 3,
-    };
-
-    var customButton = function (dialogSelector, buttons) {
+    var ajaxDialog = function (options) {
         return {
             click: function (event) {
-                $(dialogSelector).dialog($.extend(true, {
-                    buttons: {
-                        "new": {
-                            click: function (event) {
-                                if (buttons.new.url)
-                                    window.location = buttons.new.url;
-                            }
+                var dialog = $('<div/>').attr('title', options.dialog.title).append(options.dialog.content);
+                $.ajax($.extend(
+                    true,
+                    options.rest,
+                    options.rest.data.start ? { data: { start: $('#calendar').fullCalendar('getView').start.toISOString() }} : {},
+                    options.rest.data.end ? { data: { end: $('#calendar').fullCalendar('getView').end.toISOString() }} : {},
+                    {
+                        success: function (data, textStatus, jqXHR) {
+                            dialog.append(data);
+                            dialog.dialog(
+                                    $.extend(
+                                        true,
+                                        options.dialog,
+                                        {
+                                            buttons: {
+                                                "new": {
+                                                    click: function (event) {
+                                                        if (options.dialog.buttons.new.url)
+                                                            window.location = options.dialog.buttons.new.url;
+                                                    }
+                                                }
+                                            },
+                                            focus: function (event) {
+                                                var dialog = $(this);
+                                                dialog.find('li.driver, li.vehicle').draggable({ //, tr.booking
+                                                    appendTo: '.planner',
+                                                    containment: '#calendar',
+                                                    stack: '.ui-dialog, .ui-dialog-content',
+                                                    zIndex: 50,
+                                                    helper: "clone"
+                                                });
+                                            },
+                                            appendTo: '.planner',
+                                            width: 'auto'
+                                        }
+                                    )
+                                )
                         }
-                    },
-                    focus: function (event) {
-                        var dialog = $(this);
-                        dialog.find('li').draggable({
-                            appendTo: '#calendar',
-                            containment: '#calendar',
-                            stack: '#calendar',
-                            zIndex: 1,
-                            helper: "clone",
-                            start: function (event, ui) {
-                                dialog.dialog('close');
-                            }
-                        });
                     }
-                }, planner.dialogs.vehicles, dialogOptions));
+                ));
             }
         };
     };
 
     var options = $.extend(true, {
         eventRender: function(event, element) {
-            // console.log(element);
             element.data(event.data);
             element.find('.fc-content').append(event.content);
             element.droppable({
@@ -63,10 +73,7 @@ jQuery(function($) {
                             'X-WP-Nonce': $(this).data('nonce')
                         },
                         contentType: 'application/json; charset=UTF-8',
-                        beforeSend: console.log,
                         success: function (data, textStatus, jqXHR) {
-                            // console.log(data, textStatus, jqXHR);
-                            // console.log(ui.draggable.prop('dataset'))
                             $.ajax({
                                 url: $(this).data('url'),
                                 context: this,
@@ -80,9 +87,7 @@ jQuery(function($) {
                                     driver: ui.draggable.is('li.driver') ? [parseInt(ui.draggable.prop('dataset').id)].concat(data.driver) : data.driver,
                                     vehicle: ui.draggable.is('li.vehicle') ? [parseInt(ui.draggable.prop('dataset').id)].concat(data.vehicle) : data.vehicle
                                 }),
-                                beforeSend: console.log,
                                 success: function (data, textStatus, jqXHR) {
-                                    // console.log(data, textStatus, jqXHR, this);
                                     $('#calendar').fullCalendar('refetchEvents');
                                 }
                             });
@@ -95,17 +100,18 @@ jQuery(function($) {
             storage.setItem(key, view.start);
         },
         customButtons: {
+            booking: ajaxDialog(planner.booking),
             plan: {
                 click: function (event) {
                     if (planner.calendar.customButtons.plan.url)
                         window.location = planner.calendar.customButtons.plan.url
                 }
             },
-            driver: customButton('#drivers', planner.dialogs.drivers.buttons),
-            vehicle: customButton('#vehicles', planner.dialogs.vehicles.buttons),
+            driver: ajaxDialog(planner.driver),
+            vehicle: ajaxDialog(planner.vehicle),
         }
     }, planner.calendar)
 
-    $('#calendar').fullCalendar(options);
+    var calendar = $('#calendar').fullCalendar(options);
 
 });

@@ -1,5 +1,6 @@
 ul.vehicles {
     columns: 4;
+    width: min-content;
 }
 
 li.plate.ui-draggable-dragging,
@@ -8,11 +9,14 @@ ul.vehicles li {
     padding: 0.25em 0.5em;
     white-space: nowrap;
     box-sizing: border-box;
+    text-align: center;
+}
+
+li.plate {
     border: solid 0.125em #000;
     border-radius: 0.3333em;
     font-family: "Share Tech Mono", monospace;
-    background-color: white;
+    background-color: #fcfcfc;
     font-size: 1.2310em;
-    width: 6em;
-    text-align: center;
+    min-width: 6em;
 }

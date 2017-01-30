@@ -1,39 +1,20 @@
-table.bookings {
-    width: auto;
-    margin: 1em auto !important;
-    background-color: transparent;
-    border: solid 0.125em #ccc;
-    column-rule: solid 0.125em #ccc;
-    padding: 1em;
-    columns: 4 25em;
-    column-fill: auto;
-}
-
-table.bookings[title] {
-    margin: 4.8em auto !important;
-}
-
-table.bookings[title]::before {
-    font-size: 2em;
-    line-height: 1em;
-    height: 1em;
-    content: attr(title);
-    text-align: center;
-    display: block;
-    margin: -2em 0.5em 1em;
-    column-span: all;
-}
-
-table.bookings li {
-    display: inline-block;
-    max-width: 40em; /* ~80 chars */
-    min-width: 25em; /* ~50 chars */
-    padding: 0.5em 1em;
-    margin: 0.5em;
-    white-space: nowrap;
-}
-
+table.bookings tr.alternate,
+table.bookings tr.alternate a,
 table.bookings tr.planned,
 table.bookings tr.planned a {
-    color: #999;
+    opacity: 0.5;
+    color: inherit;
+}
+
+
+tr.booking.ui-draggable-dragging {
+    display: table-row;
+}
+
+tr.booking.ui-draggable-dragging td {
+    padding: 0.25em;
+    border-collapse: collapse;
+    border-spacing: 0;
+    border: 1px #ccc solid;
+    background: white;
 }
