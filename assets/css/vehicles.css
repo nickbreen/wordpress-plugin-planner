@@ -5,7 +5,7 @@ ul.vehicles {
 
 li.plate.ui-draggable-dragging,
 ul.vehicles li {
-    display: inline-block;
+    list-style: none;
     padding: 0.25em 0.5em;
     white-space: nowrap;
     box-sizing: border-box;

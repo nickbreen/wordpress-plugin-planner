@@ -42,7 +42,7 @@ $function = function () use ($page, $text_domain, $ns) {
             'resourceLabelText' => 'Groups',
             'slotDuration' => [ 'days' => 1],
             'slotLabelFormat' => [ 'ddd', 'Do MMM' ],
-            'firstDay' => intval($iFirstDay),
+            'firstDay' => intval(get_option('start_of_week', 0)),
             'eventSources' => [
                 'url' => rest_url($ns . '/calendar/event'),
                 'cache' => true,
@@ -106,7 +106,7 @@ $function = function () use ($page, $text_domain, $ns) {
         'driver' => [
             'dialog' => [
                 'title' => get_post_type_object('driver')->label,
-                'content' => '<p>Drag a Driver onto a plan.</p>',
+                'content' => '<p>Drag a driver onto a plan.</p>',
                 'buttons' => [
                     'new' => [
                         'text' => get_post_type_object('driver')->labels->add_new_item,
@@ -127,7 +127,7 @@ $function = function () use ($page, $text_domain, $ns) {
         'vehicle' => [
             'dialog' => [
                 'title' => get_post_type_object('vehicle')->label,
-                'content' => '<p>Drag a Driver onto a plan.</p>',
+                'content' => '<p>Drag a vehicle onto a plan.</p>',
                 'buttons' => [
                     'new' => [
                         'text' => get_post_type_object('vehicle')->labels->add_new_item,
@@ -182,6 +182,7 @@ add_action('rest_api_init', function (WP_REST_Server $server) use ($ns) {
                     'end' => date('Y-m-d', strtotime(sprintf('%s +%d days', $pod->field('plan_date'), $pod->field('duration')))),
                     'color' => is_array($color) ? current($color) : $color,
                     'textColor' => wordpress_plugin_planner_contrast_color(is_array($color) ? current($color) : $color),
+                    'borderColor' => 'rgba(0,0,0,0.25)',
                     'url' => get_edit_post_link($pod->id(), null),
                     'resourceId' => $pod->field('plan_group.term_id') ? $pod->field('plan_group.term_id') : 0
                 ];
@@ -317,7 +318,7 @@ add_action('rest_api_init', function (WP_REST_Server $server) use ($ns) {
     ));
 });
 
-add_action('admin_enqueue_scripts', function () use ($page, $version) {
+$scripts = function () use ($page, $version) {
     wp_register_script('moment', plugins_url('bower_components/moment/min/moment.min.js', __FILE__), [], '2.17.1', true);
     wp_register_script('fullcalendar', plugins_url('bower_components/fullcalendar/dist/fullcalendar.min.js', __FILE__), ['jquery','moment'], '3.1.0', true);
     wp_register_style('fullcalendar-all', plugins_url('bower_components/fullcalendar/dist/fullcalendar.min.css', __FILE__), [], '3.1.0');
@@ -333,21 +334,20 @@ add_action('admin_enqueue_scripts', function () use ($page, $version) {
 
     wp_register_script('planner', plugins_url('assets/js/planner.js', __FILE__), ['fullcalendar-scheduler', 'jquery-ui-dialog'], $version, true);
     wp_register_style('planner', plugins_url('assets/css/planner.css', __FILE__), ["$page-vehicle", "$page-plan", "$page-driver", "$page-bookings", 'fullcalendar-scheduler-all', 'wp-jquery-ui-dialog'], $version);
-});
 
-add_action('wp_enqueue_scripts', function () use ($page) {
+    wp_register_style("$page-plans", plugins_url('assets/css/plan.css', __FILE__), [], $version);
+    wp_register_style("$page-passengers", plugins_url('assets/css/passengers.css', __FILE__), [], $version);
+
+    wp_register_script("$page-plans", plugins_url('assets/js/plans.js', __FILE__), ['jquery'], $version, true);
+
     if (is_singular('plan')) {
-        wp_register_style("$page-plan", plugins_url('assets/css/plan.css', __FILE__), ["$page-plan","$page-driver","$page-vehicle"]);
-        wp_register_style("$page-driver", plugins_url('assets/css/drivers.css', __FILE__));
-        wp_register_style("$page-vehicle", plugins_url('assets/css/vehicles.css', __FILE__));
-        wp_register_style("$page-passengers", plugins_url('assets/css/passengers.css', __FILE__));
-        wp_register_script("$page-plans", plugins_url('assets/js/plans.js', __FILE__), ['jquery'], null, true);
-
         wp_enqueue_style("$page-plans");
         wp_enqueue_style("$page-passengers");
         wp_enqueue_script("$page-plans");
     }
-});
+};
+add_action('wp_enqueue_scripts', $scripts);
+add_action('admin_enqueue_scripts', $scripts);
 
 register_deactivation_hook(__FILE__, function () {
     remove_role('planner');
