@@ -10,6 +10,7 @@ ul.vehicles li {
     white-space: nowrap;
     box-sizing: border-box;
     text-align: center;
+    break-inside: avoid;
 }
 
 li.plate {
