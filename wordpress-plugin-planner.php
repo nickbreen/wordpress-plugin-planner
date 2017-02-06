@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Planner
-Version: 0.11.0
+Version: 0.12.0
 Description: Uses pods to plan group tours.
 Author: Nick Breen
 Author URI: https://github.com/nickbreen
@@ -168,7 +168,7 @@ $scripts = function () use ($page, $version) {
     wp_register_style("$page-planner", plugins_url('assets/css/planner.css', __FILE__), ["$page-vehicle", "$page-plan", "$page-driver", "$page-bookings", 'fullcalendar-scheduler-all', 'wp-jquery-ui-dialog'], $version);
 
     wp_register_script("$page-planner-driver", plugins_url('assets/js/planner-driver.js', __FILE__), ['fullcalendar-scheduler'], $version, true);
-    wp_register_style("$page-planner-driver", plugins_url('assets/css/planner-driver.css', __FILE__), ["$page-plan"], $version);
+    wp_register_style("$page-planner-driver", plugins_url('assets/css/planner-driver.css', __FILE__), ["$page-plan", 'fullcalendar-scheduler-all', 'wp-jquery-ui-dialog'], $version);
 
     wp_register_style("$page-passengers", plugins_url('assets/css/passengers.css', __FILE__), [], $version);
 };
