@@ -1,0 +1,9 @@
+.planner .plan li {
+    list-style: none;
+}
+
+.planner .plan li.name,
+.planner .plan li.date,
+.planner .plan li.pu_time {
+    display: none;
+}

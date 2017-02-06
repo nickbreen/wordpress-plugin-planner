@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Planner
-Version: 0.10.0
+Version: 0.11.0
 Description: Uses pods to plan group tours.
 Author: Nick Breen
 Author URI: https://github.com/nickbreen
@@ -29,9 +29,9 @@ function wordpress_plugin_planner_contrast_color($ch) {
 };
 
 $function = function () use ($page, $text_domain, $ns) {
-    wp_enqueue_script('planner');
-    wp_enqueue_style('planner');
-    wp_localize_script('planner', 'planner', [
+    wp_enqueue_script("$page-planner");
+    wp_enqueue_style("$page-planner");
+    wp_localize_script("$page-planner", 'planner', [
         'calendar' => [
             'schedulerLicenseKey' => 'GPL-My-Project-Is-Open-Source',
             'titleFormat' => '[Week] w Y',
@@ -150,8 +150,6 @@ $function = function () use ($page, $text_domain, $ns) {
     return require __DIR__ . '/templates/admin/planner.php';
 };
 
-
-
 $scripts = function () use ($page, $version) {
     wp_register_script('moment', plugins_url('bower_components/moment/min/moment.min.js', __FILE__), [], '2.17.1', true);
     wp_register_script('fullcalendar', plugins_url('bower_components/fullcalendar/dist/fullcalendar.min.js', __FILE__), ['jquery','moment'], '3.1.0', true);
@@ -166,19 +164,16 @@ $scripts = function () use ($page, $version) {
     wp_register_style("$page-driver", plugins_url('assets/css/drivers.css', __FILE__), [], $version);
     wp_register_style("$page-bookings", plugins_url('assets/css/bookings.css', __FILE__), [], $version);
 
-    wp_register_script('planner', plugins_url('assets/js/planner.js', __FILE__), ['fullcalendar-scheduler', 'jquery-ui-dialog'], $version, true);
-    wp_register_style('planner', plugins_url('assets/css/planner.css', __FILE__), ["$page-vehicle", "$page-plan", "$page-driver", "$page-bookings", 'fullcalendar-scheduler-all', 'wp-jquery-ui-dialog'], $version);
+    wp_register_script("$page-planner", plugins_url('assets/js/planner.js', __FILE__), ['fullcalendar-scheduler', 'jquery-ui-dialog'], $version, true);
+    wp_register_style("$page-planner", plugins_url('assets/css/planner.css', __FILE__), ["$page-vehicle", "$page-plan", "$page-driver", "$page-bookings", 'fullcalendar-scheduler-all', 'wp-jquery-ui-dialog'], $version);
+
+    wp_register_script("$page-planner-driver", plugins_url('assets/js/planner-driver.js', __FILE__), ['fullcalendar-scheduler', 'jquery-ui-dialog'], $version, true);
+    wp_register_style("$page-planner-driver", plugins_url('assets/css/planner-driver.css', __FILE__), ["$page-vehicle", "$page-plan", "$page-driver", "$page-bookings", 'fullcalendar-scheduler-all', 'wp-jquery-ui-dialog'], $version);
 
     wp_register_style("$page-plans", plugins_url('assets/css/plan.css', __FILE__), [], $version);
     wp_register_style("$page-passengers", plugins_url('assets/css/passengers.css', __FILE__), [], $version);
 
     wp_register_script("$page-plans", plugins_url('assets/js/plans.js', __FILE__), ['jquery'], $version, true);
-
-    if (is_singular('plan')) {
-        wp_enqueue_style("$page-plans");
-        wp_enqueue_style("$page-passengers");
-        wp_enqueue_script("$page-plans");
-    }
 };
 add_action('wp_enqueue_scripts', $scripts);
 add_action('admin_enqueue_scripts', $scripts);
@@ -213,7 +208,7 @@ register_activation_hook(__FILE__, function () use ($text_domain) {
     $customer = get_role('customer');
     add_role('school', __('School', $text_domain), $customer->capabilities);
     add_role('hotel', __('Hotel', $text_domain), $customer->capabilities);
-    $subscriber = get_role('subscriber');
+    $subscriber = $customer; //get_role('subscriber');
     add_role('driver', __('Driver', $text_domain), $subscriber->capabilities);
 });
 
@@ -301,35 +296,53 @@ add_filter('woocommerce_account_menu_items', function ($items) use ($endpoint, $
     return $items;
 });
 
-add_action('init', function () use ($endpoint) {
+register_activation_hook(__FILE__, function () use ($endpoint) {
     add_rewrite_endpoint($endpoint, EP_ROOT|EP_PAGES);
+    flush_rewrite_rules();
+});
+
+add_filter('query_vars', function ($vars) use ($endpoint) {
+    $vars[] = $endpoint;
+    return $vars;
 });
 
 add_filter("woocommerce_endpoint_${endpoint}_title", function ($items) use ($label, $text_domain) {
     return __($label, $text_domain);
 });
 
-add_action("woocommerce_account_${endpoint}_endpoint", function ($value) use ($endpoint, $label, $text_domain) {
-    $iFirstDay = get_option('start_of_week', 1);
-    $time = strtotime("midnight last sunday +{$iFirstDay} days", time());
-    $driver = pods('driver', [
-        'where' => sprintf('user.ID = %d', get_current_user_id())
+add_action("woocommerce_account_${endpoint}_endpoint", function ($value) use ($endpoint, $label, $text_domain, $page, $ns) {
+    wp_enqueue_style("$page-planner-driver");
+    wp_enqueue_script("$page-planner-driver");
+    wp_localize_script("$page-planner-driver", 'planner', [
+        'calendar' => [
+            'schedulerLicenseKey' => 'GPL-My-Project-Is-Open-Source',
+            'timeFormat' => 'h:mm a',
+            'height' => 'auto',
+            'contentHeight' => 'auto',
+            'defaultView' => 'listWeek',
+            'firstDay' => intval(get_option('start_of_week', 0)),
+            'eventSources' => [
+                'url' => rest_url($ns . '/calendar/event'),
+                'cache' => true,
+                'headers' => [
+                    'X-WP-Nonce' => wp_create_nonce('wp_rest'),
+                ],
+                'editable' => false,
+            ],
+            'header' => [
+                'left' => '',
+                'center' => 'prev title next',
+                'right' => 'today'
+            ],
+        ],
     ]);
-    $plan = pods('plan', [
-        'where' => sprintf(
-            'driver.user.ID = %d AND UNIX_TIMESTAMP(plan_date.meta_value) BETWEEN %d AND %d',
-            get_current_user_id(),
-            strtotime("midnight last sunday +{$iFirstDay} days", $time),
-            strtotime("midnight next sunday +{$iFirstDay} days + 1 year", $time)
-        ),
-        'orderby' => 'plan_date.meta_value, time.meta_value, driver.post_title'
-    ]);
-    wp_enqueue_style('plan', plugins_url('assets/css/plan.css', __FILE__));
-    wp_enqueue_style('driver', plugins_url('assets/css/driver.css', __FILE__));
-    wp_enqueue_style('plans', plugins_url('assets/css/plans.css', __FILE__), ['plan','driver']);
-    wp_enqueue_script('plans.js', plugins_url('assets/js/plans.js', __FILE__), ['jquery'], '0.0.0', true);
+
     return require __DIR__ . "/templates/my-account/$endpoint.php";
 });
+
+// add_filter('wc_get_template', function ($located, $template_name, $args, $template_path, $default_path) {
+//     error_log(print_r(func_get_args(), true));
+// }, 10, 5);
 
 add_filter('the_content', function ($content) {
     global $post;
