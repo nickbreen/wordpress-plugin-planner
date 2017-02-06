@@ -29,4 +29,7 @@
     [if contact_phone]
     <li class="contact" data-label="Contact Phone" title="{@contact_phone,esc_attr}">{@contact_phone}</li>
     [/if]
+    [if post_content]
+    <li class="notes" data-label="Notes">{@post_content}</li>
+    [/if]
 </ul>

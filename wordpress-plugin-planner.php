@@ -167,16 +167,18 @@ $scripts = function () use ($page, $version) {
     wp_register_script("$page-planner", plugins_url('assets/js/planner.js', __FILE__), ['fullcalendar-scheduler', 'jquery-ui-dialog'], $version, true);
     wp_register_style("$page-planner", plugins_url('assets/css/planner.css', __FILE__), ["$page-vehicle", "$page-plan", "$page-driver", "$page-bookings", 'fullcalendar-scheduler-all', 'wp-jquery-ui-dialog'], $version);
 
-    wp_register_script("$page-planner-driver", plugins_url('assets/js/planner-driver.js', __FILE__), ['fullcalendar-scheduler', 'jquery-ui-dialog'], $version, true);
-    wp_register_style("$page-planner-driver", plugins_url('assets/css/planner-driver.css', __FILE__), ["$page-vehicle", "$page-plan", "$page-driver", "$page-bookings", 'fullcalendar-scheduler-all', 'wp-jquery-ui-dialog'], $version);
+    wp_register_script("$page-planner-driver", plugins_url('assets/js/planner-driver.js', __FILE__), ['fullcalendar-scheduler'], $version, true);
+    wp_register_style("$page-planner-driver", plugins_url('assets/css/planner-driver.css', __FILE__), ["$page-plan"], $version);
 
-    wp_register_style("$page-plans", plugins_url('assets/css/plan.css', __FILE__), [], $version);
     wp_register_style("$page-passengers", plugins_url('assets/css/passengers.css', __FILE__), [], $version);
-
-    wp_register_script("$page-plans", plugins_url('assets/js/plans.js', __FILE__), ['jquery'], $version, true);
 };
 add_action('wp_enqueue_scripts', $scripts);
 add_action('admin_enqueue_scripts', $scripts);
+add_action('wp_enqueue_scripts', function () use ($page) {
+    if (is_singular('plan')) {
+        wp_enqueue_style("$page-planner-driver");
+    }
+}, 50);
 
 register_deactivation_hook(__FILE__, function () {
     remove_role('planner');

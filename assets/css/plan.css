@@ -11,6 +11,10 @@ ul.plan li {
     break-inside: avoid;
 }
 
+ul.plan li.notes {
+    column-span: all;
+}
+
 ul.plan li[data-label]::before {
     content: attr(data-label) ':\a0';
     font-weight: bold;

@@ -32,7 +32,7 @@ register_rest_route($ns, '/calendar/event', array(
                 'textColor' => wordpress_plugin_planner_contrast_color(is_array($color) ? current($color) : $color),
                 'borderColor' => 'rgba(0,0,0,0.25)',
                 'url' => get_edit_post_link($pod->id(), null) ?? get_permalink($pod->id()),
-                'resourceId' => $pod->field('plan_group.term_id') ? $pod->field('plan_group.term_id') : 0
+                'resourceId' => $pod->field('group.term_id') ? $pod->field('group.term_id') : 0
             ];
         }
         $res = new WP_REST_Response($data);

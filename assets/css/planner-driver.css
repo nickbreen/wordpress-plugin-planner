@@ -1,9 +1,11 @@
-.planner .plan li {
+.main-content ul.plan li,
+.planner ul.plan li {
     list-style: none;
 }
 
-.planner .plan li.name,
-.planner .plan li.date,
-.planner .plan li.pu_time {
+.main-content ul.plan li.name,
+.planner ul.plan li.name,
+.planner ul.plan li.date,
+.planner ul.plan li.pu_time {
     display: none;
 }
