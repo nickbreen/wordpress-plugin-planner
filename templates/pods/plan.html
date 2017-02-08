@@ -1,7 +1,4 @@
 <ul class="plan" data-id="{@id}">
-    [if bookings]
-    <li class="bookings" data-label="Bookings" title="Bookings: {@bookings.id,esc_attr}">{@bookings,count}</li>
-    [/if]
     [if post_title]
     <li class="name" data-label="Plan" title="{@post_title,esc_attr}">{@post_title}</li>
     [/if]
@@ -29,7 +26,7 @@
     [if contact_phone]
     <li class="contact" data-label="Contact Phone" title="{@contact_phone,esc_attr}">{@contact_phone}</li>
     [/if]
-    [if post_content]
-    <li class="notes" data-label="Notes">{@post_content}</li>
+    [if notes]
+    <li class="notes" data-label="Notes">{@notes}</li>
     [/if]
 </ul>

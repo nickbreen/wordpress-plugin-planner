@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Planner
-Version: 0.12.0
+Version: 0.13.0
 Description: Uses pods to plan group tours.
 Author: Nick Breen
 Author URI: https://github.com/nickbreen
@@ -214,20 +214,24 @@ register_activation_hook(__FILE__, function () use ($text_domain) {
     add_role('driver', __('Driver', $text_domain), $subscriber->capabilities);
 });
 
-if (defined('WP_DEBUG') && constant('WP_DEBUG')) add_action('admin_init', function () {
-    if (pods_access(['pods'])) {
-        $templates = pods_api()->load_templates();
-        if ($templates) {
-            foreach ($templates as $name => $template) {
-                $file = __DIR__."/templates/pods/{$name}.html";
-                if (file_exists($file)){
-                    $template['code'] = file_get_contents($file);
-                    $id = pods_api()->save_template($template);
-                }
-            }
-        }
-    }
-});
+// if (defined('WP_DEBUG') && constant('WP_DEBUG')) add_action('admin_init', function () {
+//     if (pods_access(['pods'])) {
+//         $templates = pods_api()->load_templates();
+//         if ($templates) {
+//             foreach ($templates as $name => $template) {
+//                 $file = __DIR__."/templates/pods/{$name}.html";
+//                 if (file_exists($file)){
+//                     $id = pods_api()->save_template([
+//                         'id' => $template['id'],
+//                         'name' => $name,
+//                         'code' => file_get_contents($file),
+//                     ]);
+//                     error_log(print_r(["Updated template $id ({$template['name']})"], true));
+//                 }
+//             }
+//         }
+//     }
+// });
 
 add_filter('custom_menu_order', function ($menu_ord) use ($page) {
     global $submenu;
@@ -342,10 +346,6 @@ add_action("woocommerce_account_${endpoint}_endpoint", function ($value) use ($e
     return require __DIR__ . "/templates/my-account/$endpoint.php";
 });
 
-// add_filter('wc_get_template', function ($located, $template_name, $args, $template_path, $default_path) {
-//     error_log(print_r(func_get_args(), true));
-// }, 10, 5);
-
 add_filter('the_content', function ($content) {
     global $post;
     if (is_singular('plan')) {
@@ -359,6 +359,37 @@ add_filter('the_content', function ($content) {
                 ),
                 'orderby' => 'pandarf_order'
             ])->template('passenger');
+    }
+    return $content;
+});
+
+add_filter('the_content', function ($content) {
+    if (!function_exists('have_rows')) return $content;
+    global $post, $wpdb;
+    if (is_singular('plan')) {
+        // TODO ACF passengers
+        $orders = pods('wc_booking', [
+            'select' => 'o.id',
+            'join' => "INNER JOIN {$wpdb->posts} AS o ON o.ID = t.post_parent",
+            'where' => "t.post_status IN ('confirmed', 'paid', 'complete') AND plan.ID = {$post->ID}",
+        ])->data();
+
+        $pax = array_map(function ($order) {
+            return get_field_object('passenger', $order->id);
+        }, $orders);
+
+        $content.='<hr/><table class="'.$pax[0]['name'].'"><caption>'.$pax[0]['label'].'</caption><thead><tr>';
+        foreach ($pax[0]['sub_fields'] as $f) {
+            $content.='<th>'.$f['label'].'</th>';
+        }
+        $content.='</tr></thead><tbody>';
+        foreach ($pax as $p) foreach ($p['value'] as $f) {
+            $content.='<tr>';
+            foreach ($f as $i => $v)
+                $content.="<td class=\"{$i}\">{$v}</td>";
+            $content.='</tr>';
+        }
+        $content.='</tbody></table>';
     }
     return $content;
 });

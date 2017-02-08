@@ -4,7 +4,7 @@ register_rest_route($ns, '/booking', array(
     'permission_callback' => function (WP_REST_Request $request) {
         return current_user_can('planner');
     },
-    'callback' => function (WP_REST_Request $request) use ($templates) {
+    'callback' => function (WP_REST_Request $request)  {
         $pod = pods('wc_booking', [
             'orderby' => '_booking_start.meta_value',
             'select' => 't.*, '.
@@ -49,6 +49,8 @@ register_rest_route($ns, '/booking', array(
             'validate_callback' => function ($param, WP_REST_Request $request, $key) use ($templates) {
                 return isset($templates[$param]);
             },
+
+
         )
     ),
 ));

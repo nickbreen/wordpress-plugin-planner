@@ -9,3 +9,19 @@
 .planner ul.plan li.pu_time {
     display: none;
 }
+
+table.passenger {
+    width: 100%;
+}
+
+table.passenger caption {
+    font-weight: bold;
+}
+
+table.passenger caption::after {
+    content: ":";
+}
+
+table.passenger td.address {
+    white-space: pre-line;
+}
