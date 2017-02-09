@@ -214,24 +214,6 @@ register_activation_hook(__FILE__, function () use ($text_domain) {
     add_role('driver', __('Driver', $text_domain), $subscriber->capabilities);
 });
 
-// if (defined('WP_DEBUG') && constant('WP_DEBUG')) add_action('admin_init', function () {
-//     if (pods_access(['pods'])) {
-//         $templates = pods_api()->load_templates();
-//         if ($templates) {
-//             foreach ($templates as $name => $template) {
-//                 $file = __DIR__."/templates/pods/{$name}.html";
-//                 if (file_exists($file)){
-//                     $id = pods_api()->save_template([
-//                         'id' => $template['id'],
-//                         'name' => $name,
-//                         'code' => file_get_contents($file),
-//                     ]);
-//                     error_log(print_r(["Updated template $id ({$template['name']})"], true));
-//                 }
-//             }
-//         }
-//     }
-// });
 
 add_filter('custom_menu_order', function ($menu_ord) use ($page) {
     global $submenu;

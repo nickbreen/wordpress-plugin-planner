@@ -5,14 +5,18 @@ register_rest_route($ns, '/calendar/event', array(
         return current_user_can('planner') || current_user_can('driver');
     },
     'callback' => function (WP_REST_Request $request) use ($ns) {
+        $driver = current_user_can('planner') ? false : pods('driver', [
+            'where' => sprintf('user.id = %d', get_current_user_id())
+        ]);
+
         $pod = pods('plan', [
             'where' => sprintf(
-                'UNIX_TIMESTAMP(plan_date.meta_value) BETWEEN %1$d AND %2$d '.
-                'OR '.
-                'UNIX_TIMESTAMP(DATE_ADD(plan_date.meta_value, INTERVAL duration.meta_value DAY)) BETWEEN %1$d AND %2$d ',
+                '(%3$d IN (0, driver.id) ) AND '.
+                '(UNIX_TIMESTAMP(plan_date.meta_value) BETWEEN %1$d AND %2$d OR UNIX_TIMESTAMP(DATE_ADD(plan_date.meta_value, INTERVAL duration.meta_value DAY)) BETWEEN %1$d AND %2$d) ',
                 // TODO support duations > 7 days
                 strtotime($request['start']),
-                strtotime($request['end'])
+                strtotime($request['end']),
+                $driver ? ($driver->id() ?? -1 ) : 0 // show all to planners, and only the driver's to a driver
             )
         ]);
         $data = [];
