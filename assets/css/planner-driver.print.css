@@ -1,0 +1,45 @@
+body.woocommerce-account,
+.container-wrap,
+body.single-plan {
+    background-color: transparent !important;
+    color: initial !important;
+}
+
+body.single-plan #call-to-action,
+body.single-plan #footer-outer,
+body.single-plan #header-secondary-outer,
+body.single-plan #header-space,
+body.single-plan #header-outer,
+body.single-plan .woocommerce nav,
+body.single-plan #single-meta,
+body.woocommerce-account #call-to-action,
+body.woocommerce-account #footer-outer,
+body.woocommerce-account #header-secondary-outer,
+body.woocommerce-account #header-space,
+body.woocommerce-account #header-outer,
+body.woocommerce-account .woocommerce nav,
+body.woocommerce-account #single-meta {
+    display: none;
+}
+
+body.woocommerce-account .container.main-content,
+body.single-plan .container.main-content {
+    width: auto;
+    margin: initial;
+    padding: initial;
+    max-width: initial;
+}
+
+body.single-plan .container-wrap,
+body.woocommerce-account .woocommerce-MyAccount-content {
+    float: none !important;
+    max-width: 100em;
+    margin: auto;
+    width: auto !important;
+}
+
+body.woocommerce-account .fc-list-item-title.ui-widget-content {
+    break-inside: avoid-page;
+}
+
+
