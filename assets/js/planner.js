@@ -1,10 +1,18 @@
 jQuery(function($) {
     var storage = sessionStorage;
     var key = 'calendar.defaultDate';
-    var date = storage.getItem(key);
-    if (date)
-        planner.calendar.defaultDate = date;
-
+    try {
+        var d = storage.getItem(key);
+        m = $.fullCalendar.moment(d, moment.ISO_8601);
+        if (m && m.isValid()) {
+            planner.calendar.defaultDate = m;
+        } else {
+            console.error("Invalid Moment", m.creationData()); 
+            storage.removeItem(key);
+        }
+    } catch (e) {
+        console.error(e);
+    }
     var ajaxDialog = function (options) {
         return {
             click: function (event) {
@@ -97,7 +105,12 @@ jQuery(function($) {
             });
         },
         viewRender: function (view, element) {
-            storage.setItem(key, view.start);
+            try {
+                storage.setItem(key, view.start.toISOString());
+            } catch (e) {
+                console.error(e);
+                alert(e.message);
+            }
         },
         customButtons: {
             booking: ajaxDialog(planner.booking),
