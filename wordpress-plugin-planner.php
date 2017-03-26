@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Planner
-Version: 0.15.0
+Version: 0.16.0
 Description: Uses pods to plan group tours.
 Author: Nick Breen
 Author URI: https://github.com/nickbreen
@@ -152,6 +152,7 @@ $function = function () use ($page, $text_domain, $ns) {
 };
 
 $scripts = function () use ($page, $version) {
+    wp_register_script('notifyjs', plugins_url('bower_components/notifyjs/dist/notify.js', __FILE__), ['jquery'], '0.4 2', true);
     wp_register_script('polyfill-storage', plugins_url('bower_components/polyfill-storage/dist/storage.js', __FILE__), [], '1.0.0', true);
     wp_register_script('moment', plugins_url('bower_components/moment/min/moment.min.js', __FILE__), [], '2.17.1', true);
     wp_register_script('fullcalendar', plugins_url('bower_components/fullcalendar/dist/fullcalendar.min.js', __FILE__), ['jquery','moment'], '3.1.0', true);
@@ -166,7 +167,7 @@ $scripts = function () use ($page, $version) {
     wp_register_style("$page-driver", plugins_url('assets/css/drivers.css', __FILE__), [], $version);
     wp_register_style("$page-bookings", plugins_url('assets/css/bookings.css', __FILE__), [], $version);
 
-    wp_register_script("$page-planner", plugins_url('assets/js/planner.js', __FILE__), ['polyfill-storage', 'fullcalendar-scheduler', 'jquery-ui-dialog', 'jquery-ui-droppable'], $version, true);
+    wp_register_script("$page-planner", plugins_url('assets/js/planner.js', __FILE__), ['notifyjs', 'polyfill-storage', 'fullcalendar-scheduler', 'jquery-ui-dialog', 'jquery-ui-droppable'], $version, true);
     wp_register_style("$page-planner", plugins_url('assets/css/planner.css', __FILE__), ["$page-vehicle", "$page-plan", "$page-driver", "$page-bookings", 'fullcalendar-scheduler-all', 'wp-jquery-ui-dialog'], $version);
     wp_register_style("$page-planner-print", plugins_url('assets/css/planner.print.css', __FILE__), ["$page-planner"], $version, 'print');
 

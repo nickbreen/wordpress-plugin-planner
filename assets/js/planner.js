@@ -122,6 +122,20 @@ jQuery(function($) {
             },
             driver: ajaxDialog(planner.driver),
             vehicle: ajaxDialog(planner.vehicle),
+        },
+        loading: function (isLoading, view) {
+            if (isLoading) {
+                jQuery("#calendar .fc-view-container").notify(
+                    "Loading" + (view.title ? ' ' + view.title : '') + '\u2026',
+                    {
+                        autoHide: false,
+                        className: "info",
+                        position: "top center"
+                    }
+                )
+            } else {
+                $('#calendar .notifyjs-wrapper').trigger('notify-hide');
+            }
         }
     }, planner.calendar)
 
