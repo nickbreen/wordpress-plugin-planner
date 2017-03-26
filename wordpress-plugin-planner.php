@@ -1,11 +1,12 @@
 <?php
 /*
 Plugin Name: Planner
-Version: 0.16.0
+Version: 0.17.0
 Description: Uses pods to plan group tours.
 Author: Nick Breen
 Author URI: https://github.com/nickbreen
 Plugin URI: https://github.com/nickbreen/wordpress-plugin-planner
+GitHub Plugin URI: https://github.com/nickbreen/wordpress-plugin-planner
 Text Domain: wordpress-plugin-planner
 Domain Path: /languages
 License: GPL2
