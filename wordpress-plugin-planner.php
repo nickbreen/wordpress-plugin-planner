@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Planner
-Version: 0.17.1
+Version: 0.17.2
 Description: Uses pods to plan group tours.
 Author: Nick Breen
 Author URI: https://github.com/nickbreen
@@ -13,7 +13,7 @@ License: GPL2
 */
 
 $text_domain = "wordpress-plugin-planner";
-$version = "0.17.1";
+$version = "0.17.2";
 $page = plugin_basename(__DIR__);
 $ns = "/{$page}/v{$version}";
 
@@ -290,8 +290,11 @@ add_filter('woocommerce_account_menu_items', function ($items) use ($endpoint, $
     return $items;
 });
 
-register_activation_hook(__FILE__, function () use ($endpoint) {
+add_action('init', function () use ($endpoint) {
     add_rewrite_endpoint($endpoint, EP_ROOT|EP_PAGES);
+});
+
+register_activation_hook(__FILE__, function () {
     flush_rewrite_rules();
 });
 

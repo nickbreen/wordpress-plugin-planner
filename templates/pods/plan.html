@@ -1,4 +1,7 @@
 <ul class="plan" data-id="{@id}">
+    [if group]
+    <li class="client" data-label="Client" title="{@group,esc_attr}">{@group}</li>
+    [/if]
     [if post_title]
     <li class="name" data-label="Plan" title="{@post_title,esc_attr}">{@post_title}</li>
     [/if]

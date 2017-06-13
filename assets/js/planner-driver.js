@@ -1,9 +1,18 @@
 jQuery(function($) {
     var storage = sessionStorage;
     var key = 'calendar.defaultDate';
-    var date = storage.getItem(key);
-    if (date)
-        planner.calendar.defaultDate = date;
+    try {
+        var d = storage.getItem(key);
+        m = $.fullCalendar.moment(d, moment.ISO_8601);
+        if (m && m.isValid()) {
+            planner.calendar.defaultDate = m;
+        } else {
+            console.error("Invalid Moment", m.creationData()); 
+            storage.removeItem(key);
+        }
+    } catch (e) {
+        console.error(e);
+    }
     var options = $.extend(true, {
         theme: true,
         eventRender: function(event, element) {
