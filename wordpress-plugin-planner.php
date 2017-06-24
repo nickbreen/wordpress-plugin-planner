@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Planner
-Version: 0.17.2
+Version: 0.18.0
 Description: Uses pods to plan group tours.
 Author: Nick Breen
 Author URI: https://github.com/nickbreen
@@ -13,7 +13,7 @@ License: GPL2
 */
 
 $text_domain = "wordpress-plugin-planner";
-$version = "0.17.2";
+$version = "0.18.0";
 $page = plugin_basename(__DIR__);
 $ns = "/{$page}/v{$version}";
 
@@ -61,18 +61,26 @@ $function = function () use ($page, $text_domain, $ns) {
                 ],
             ],
             'header' => [
-                'left' => 'plan booking',
+                'left' => 'airport transfer tour',
                 'center' => 'prev title next today',
-                'right' => 'driver vehicle'
+                'right' => 'driver vehicle booking'
             ],
             'customButtons' => [
                 'booking' => [
                     'text' => get_post_type_object('wc_booking')->label,
                     'url' => admin_url("post-new.php?post_type=wc_booking")
                 ],
-                'plan' => [
-                    'text' => get_post_type_object('plan')->labels->add_new_item,
-                    'url' => admin_url("post-new.php?post_type=plan")
+                'airport' => [
+                    'text' => pods_api('airport')->pod_data->label ?: "airport",
+                    'url' => admin_url("admin.php?page=pods-manage-airport&action=add")
+                ],
+                'transfer' => [
+                    'text' => pods_api('transfer')->pod_data->label ?: "transfer",
+                    'url' => admin_url("admin.php?page=pods-manage-transfer&action=add")
+                ],
+                'tour' => [
+                    'text' => pods_api('tour')->pod_data->label ?: "tour",
+                    'url' => admin_url("admin.php?page=pods-manage-tour&action=add")
                 ],
                 'driver' => [
                     'text' => get_post_type_object('driver')->label,

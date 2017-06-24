@@ -113,13 +113,25 @@ jQuery(function($) {
             }
         },
         customButtons: {
-            booking: ajaxDialog(planner.booking),
-            plan: {
+            airport: {
                 click: function (event) {
-                    if (planner.calendar.customButtons.plan.url)
-                        window.location = planner.calendar.customButtons.plan.url
+                    if (planner.calendar.customButtons.airport.url)
+                        window.location = planner.calendar.customButtons.airport.url
                 }
             },
+            transfer: {
+                click: function (event) {
+                    if (planner.calendar.customButtons.transfer.url)
+                        window.location = planner.calendar.customButtons.transfer.url
+                }
+            },
+            tour: {
+                click: function (event) {
+                    if (planner.calendar.customButtons.tour.url)
+                        window.location = planner.calendar.customButtons.tour.url
+                }
+            },
+            booking: ajaxDialog(planner.booking),
             driver: ajaxDialog(planner.driver),
             vehicle: ajaxDialog(planner.vehicle),
         },

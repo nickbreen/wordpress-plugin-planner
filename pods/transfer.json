@@ -1,7 +1,7 @@
 {
     "meta": {
         "version": "2.6.9",
-        "build": 1498281324
+        "build": 1498290719
     },
     "pods": {
         "19614": {
@@ -52,24 +52,27 @@
                     "pick_orderby": "",
                     "pick_groupby": ""
                 },
-                "client": {
+                "client_name": {
                     "id": 19616,
-                    "name": "client",
+                    "name": "client_name",
                     "label": "Client Name",
                     "description": "",
                     "help": "",
                     "class": "",
-                    "type": "text",
+                    "type": "pick",
                     "weight": 1,
-                    "pick_object": "",
-                    "pick_val": "",
+                    "pick_object": "taxonomy",
+                    "pick_val": "client",
                     "sister_id": "",
                     "required": "1",
                     "unique": "0",
-                    "text_allow_shortcode": "0",
-                    "text_allow_html": "0",
-                    "text_allowed_html_tags": "strong em a ul ol li b i",
-                    "text_max_length": "255",
+                    "pick_format_type": "single",
+                    "pick_format_single": "autocomplete",
+                    "pick_format_multi": "checkbox",
+                    "pick_taggable": "1",
+                    "pick_limit": "0",
+                    "pick_allow_html": "0",
+                    "pick_user_role": [],
                     "pick_post_status": ["publish"],
                     "admin_only": "0",
                     "restrict_role": "0",
@@ -77,7 +80,13 @@
                     "hidden": "0",
                     "read_only": "0",
                     "roles_allowed": ["administrator"],
-                    "text_repeatable": "0"
+                    "pick_select_text": "",
+                    "pick_table_id": "",
+                    "pick_table_index": "",
+                    "pick_display": "",
+                    "pick_where": "",
+                    "pick_orderby": "",
+                    "pick_groupby": ""
                 },
                 "destination": {
                     "id": 19630,
