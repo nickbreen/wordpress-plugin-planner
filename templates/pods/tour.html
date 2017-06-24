@@ -1,0 +1,45 @@
+<ul class="job tour {@job_type,esc_attr}" data-id="{@id}">
+    [if client_name]
+    <li class="client name" data-label="Client Name">{@client_name}</li>
+    [/if]
+    [if tour_name]
+    <li class="tour name" data-label="Tour Name">{@tour_name}</li>
+    [/if]
+    [if start_date]
+    <li class="start date" data-label="Start Date">{@start_date}</li>
+    [/if]
+    [if end_date]
+    <li class="end date" data-label="End Date">{@end_date}</li>
+    [/if]
+    [if pick_up_time]
+    <li class="pick_up time" data-label="Pick Up Time">{@pick_up_time}</li>
+    [/if]
+    [if accomodataion]
+    <li class="accomodation plain paragraph" data-label="Accomodation">{@accomodataion}</li>
+    [/if]
+    [if activity]
+    <li class="activity plain paragraph" data-label="Activity">{@activity}</li>
+    [/if]
+    [if activity_time]
+    <li class="activity time" data-label="Activity Time">{@activity_time}</li>
+    [/if]
+    [if booking_reference]
+    <li class="booking" data-label="Address">{@booking_reference}</li>
+    [/if]
+    [if emergency_name]
+    <li class="emergency name" data-label="Emerg. Name">{@emergency_name}</li>
+    [/if]
+    [if emergency_phone_number]
+    <li class="emergency phone" data-label="Emerg. Phone">{@emergency_phone_number}</li>
+    [/if]
+    
+    [if driver]
+    <li class="driver" data-label="Driver">{@driver}</li>
+    [/if]
+    [if vehicle]
+    <li class="vehicle" data-label="Vehicle">{@vehicle}</li>
+    [/if]
+    [if notes]
+    <li class="notes plain paragraph" data-label="Notes">{@notes}</li>
+    [/if]
+</ul>

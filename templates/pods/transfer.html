@@ -1,0 +1,39 @@
+<ul class="job transfer {@job_type,esc_attr}" data-id="{@id}">
+    [if client_name]
+    <li class="client name" data-label="Client Name">{@client_name}</li>
+    [/if]
+    [if destination_name]
+    <li class="destination name" data-label="Destination Name">{@destination_name}</li>
+    [/if]
+    [if no_pax]
+    <li class="number pax" data-label="&#8470; Pax">{@no_pax}</li>
+    [/if]
+    [if pick_up_time]
+    <li class="pick-up time" data-label="Pick Up Time">{@pick_up_time}</li>
+    [/if]
+    [if pick_up_address]
+    <li class="pick-up address plain paragraph" data-label="Pick Up Address">{@pick_up_address}</li>
+    [/if]
+    [if drop_off_time]
+    <li class="drop-off time" data-label="Drop Off Time">{@drop_off_time}</li>
+    [/if]
+    [if drop_off_address]
+    <li class="drop-off address plain paragraph" data-label="Drop Off Address">{@drop_off_address}</li>
+    [/if]
+    [if emergency_name]
+    <li class="emergency name" data-label="Emerg. Name">{@emergency_name}</li>
+    [/if]
+    [if emergency_phone_number]
+    <li class="emergency phone" data-label="Emerg. Ph.">{@emergency_phone_number}</li>
+    [/if]
+    
+    [if driver]
+    <li class="driver" data-label="Driver">{@driver}</li>
+    [/if]
+    [if vehicle]
+    <li class="vehicle" data-label="Vehicle">{@vehicle}</li>
+    [/if]
+    [if notes]
+    <li class="notes plain paragraph" data-label="Notes">{@notes}</li>
+    [/if]
+</ul>

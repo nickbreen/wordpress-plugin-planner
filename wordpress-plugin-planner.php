@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Planner
-Version: 0.18.0
+Version: 0.18.1
 Description: Uses pods to plan group tours.
 Author: Nick Breen
 Author URI: https://github.com/nickbreen
@@ -13,7 +13,7 @@ License: GPL2
 */
 
 $text_domain = "wordpress-plugin-planner";
-$version = "0.18.0";
+$version = "0.18.1";
 $page = plugin_basename(__DIR__);
 $ns = "/{$page}/v{$version}";
 
@@ -71,15 +71,15 @@ $function = function () use ($page, $text_domain, $ns) {
                     'url' => admin_url("post-new.php?post_type=wc_booking")
                 ],
                 'airport' => [
-                    'text' => pods_api('airport')->pod_data->label ?: "airport",
+                    'text' => pods_api('airport')->pod_data['options']['label_add_new_item'] ?: pods_api('airport')->pod_data['label'],
                     'url' => admin_url("admin.php?page=pods-manage-airport&action=add")
                 ],
                 'transfer' => [
-                    'text' => pods_api('transfer')->pod_data->label ?: "transfer",
+                    'text' => pods_api('transfer')->pod_data['options']['label_add_new_item'] ?: pods_api('transfer')->pod_data['label'],
                     'url' => admin_url("admin.php?page=pods-manage-transfer&action=add")
                 ],
                 'tour' => [
-                    'text' => pods_api('tour')->pod_data->label ?: "tour",
+                    'text' => pods_api('tour')->pod_data['options']['label_add_new_item'] ?: pods_api('tour')->pod_data['label'],
                     'url' => admin_url("admin.php?page=pods-manage-tour&action=add")
                 ],
                 'driver' => [
@@ -171,16 +171,16 @@ $scripts = function () use ($page, $version) {
 
     wp_register_style("$page-fonts", 'https://fonts.googleapis.com/css?family=Share+Tech+Mono');
     wp_register_style("$page-vehicle", plugins_url('assets/css/vehicles.css', __FILE__), ["$page-fonts"], $version);
-    wp_register_style("$page-plan", plugins_url('assets/css/plan.css', __FILE__), [], $version);
+    wp_register_style("$page-job", plugins_url('assets/css/job.css', __FILE__), [], $version);
     wp_register_style("$page-driver", plugins_url('assets/css/drivers.css', __FILE__), [], $version);
     wp_register_style("$page-bookings", plugins_url('assets/css/bookings.css', __FILE__), [], $version);
 
     wp_register_script("$page-planner", plugins_url('assets/js/planner.js', __FILE__), ['notifyjs', 'polyfill-storage', 'fullcalendar-scheduler', 'jquery-ui-dialog', 'jquery-ui-droppable'], $version, true);
-    wp_register_style("$page-planner", plugins_url('assets/css/planner.css', __FILE__), ["$page-vehicle", "$page-plan", "$page-driver", "$page-bookings", 'fullcalendar-scheduler-all', 'wp-jquery-ui-dialog'], $version);
+    wp_register_style("$page-planner", plugins_url('assets/css/planner.css', __FILE__), ["$page-vehicle", "$page-job", "$page-driver", "$page-bookings", 'fullcalendar-scheduler-all', 'wp-jquery-ui-dialog'], $version);
     wp_register_style("$page-planner-print", plugins_url('assets/css/planner.print.css', __FILE__), ["$page-planner"], $version, 'print');
 
     wp_register_script("$page-planner-driver", plugins_url('assets/js/planner-driver.js', __FILE__), ['fullcalendar-scheduler'], $version, true);
-    wp_register_style("$page-planner-driver", plugins_url('assets/css/planner-driver.css', __FILE__), ["$page-plan", 'fullcalendar-scheduler-all', 'wp-jquery-ui-dialog'], $version);
+    wp_register_style("$page-planner-driver", plugins_url('assets/css/planner-driver.css', __FILE__), ["$page-job", 'fullcalendar-scheduler-all', 'wp-jquery-ui-dialog'], $version);
     wp_register_style("$page-planner-driver-print", plugins_url('assets/css/planner-driver.print.css', __FILE__), ["$page-planner-driver"], $version, 'print');
 
     wp_register_style("$page-passengers", plugins_url('assets/css/passengers.css', __FILE__), [], $version);

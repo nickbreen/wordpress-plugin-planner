@@ -1,0 +1,39 @@
+ul.job {
+    margin: 0;
+    line-height: 1.6em;
+    -moz-columns: 12em;
+    -webkit-columns: 12em;
+    columns: 12em;
+    white-space: normal;
+}
+
+ul.job li {
+    margin: 0;
+    break-inside: avoid;
+    min-width: 12em;
+    max-width: 24em;
+}
+
+ul.job li.notes {
+    column-span: all;
+}
+
+ul.job li[data-label]::before {
+    content: attr(data-label) ':\a0';
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.plain {
+    white-space: pre;
+}
+
+.paragraph {
+    white-space: pre-line;
+}
+
+.flight,
+.time,
+.phone {
+    white-space: nowrap;
+}

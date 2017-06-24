@@ -1,0 +1,45 @@
+<ul class="job airport {@job_type,esc_attr}" data-id="{@id}">
+    [if client_name]
+    <li class="client name" data-label="Client Name">{@client_name}</li>
+    [/if]
+    [if date]
+    <li class="date" data-label="Date">{@date}</li>
+    [/if]
+    [if flight_time]
+    <li class="flight time" data-label="Flight Time">{@flight_time}</li>
+    [/if]
+    [if flight_details]
+    <li class="flight details" data-label="Flight Details">{@flight_details}</li>
+    [/if]
+    [if no_pax]
+    <li class="number pax" data-label="&#8470; Pax">{@no_pax}</li>
+    [/if]
+    [if pax]
+    <li class="pax plain paragraph" data-label="Pax Names">{@pax}</li>
+    [/if]
+    [if address]
+    <li class="address plain paragraph" data-label="Address">{@address}</li>
+    [/if]
+    [if host_name]
+    <li class="host name" data-label="Host Name">{@host_name}</li>
+    [/if]
+    [if host_phone_number]
+    <li class="host phone" data-label="Host Ph.">{@host_phone_number}</li>
+    [/if]
+    [if emergency_name]
+    <li class="emergency name" data-label="Emerg. Name">{@emergency_name}</li>
+    [/if]
+    [if emergency_phone_number]
+    <li class="emergency phone" data-label="Emerg. Ph.">{@emergency_phone_number}</li>
+    [/if]
+    
+    [if driver]
+    <li class="driver" data-label="Driver">{@driver}</li>
+    [/if]
+    [if vehicle]
+    <li class="vehicle" data-label="Vehicle">{@vehicle}</li>
+    [/if]
+    [if notes]
+    <li class="notes plain paragraph" data-label="Notes">{@notes}</li>
+    [/if]
+</ul>

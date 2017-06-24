@@ -1,13 +1,6 @@
-.main-content ul.plan li,
-.planner ul.plan li {
+.main-content ul.job li,
+.planner ul.job li {
     list-style: none;
-}
-
-.main-content ul.plan li.name,
-.planner ul.plan li.name,
-.planner ul.plan li.date,
-.planner ul.plan li.pu_time {
-    display: none;
 }
 
 table.passenger {
