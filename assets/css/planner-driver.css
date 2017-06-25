@@ -3,13 +3,13 @@
     list-style: none;
 }
 
-ul.job {
+#job ul.job {
     columns: 24em;
 }
 
 ul.job li.paragraph {
     column-span: all;
-    max-width: 48em;
+    max-width: none;
 }
 
 ul.job li.phone {
