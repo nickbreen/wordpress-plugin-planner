@@ -32,6 +32,9 @@ register_rest_route($ns, '/calendar/event', array(
             while ($pod->fetch()) {
                 $color = $pod->field('driver.colour') ?? null;
                 global $ns;
+                $haystack = wp_get_referer();
+                $needle = get_admin_url();
+                $is_admin = (substr($haystack, 0, strlen($needle)) === $needle);
                 $data[] = [
                     'id' => $pod->id(),
                     'title' => $pod->field('job_type') . ($pod->field('tour_name') ? ': '.$pod->field('tour_name') : ''),
@@ -45,13 +48,14 @@ register_rest_route($ns, '/calendar/event', array(
                     'color' => is_array($color) ? current($color) : $color,
                     'textColor' => wordpress_plugin_planner_contrast_color(is_array($color) ? current($color) : $color),
                     'borderColor' => 'rgba(0,0,0,0.25)',
-                    'url' => admin_url(sprintf("admin.php?page=pods-manage-%s&action=add&id=%d", $event_pod, $pod->id())) ?: get_permalink($pod->id()),
+                    'url' => $is_admin ? admin_url(sprintf("admin.php?page=pods-manage-%s&action=edit&id=%d", $event_pod, $pod->id())) : sprintf("%s/%d", $event_pod, $pod->id()),
                     'resourceId' => $pod->field('client_name.term_id')
                 ];
             }
         }
         $res = new WP_REST_Response($data);
         $res->header('Content-Type', 'application/event+json');
+        user_error('REFERRER:'.wp_get_referer());
         return $res;
     },
     'args' => array(

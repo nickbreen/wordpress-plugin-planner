@@ -7,14 +7,12 @@ register_rest_route($ns, '/(?<pod>driver|vehicle)', array(
     'callback' => function (WP_REST_Request $request) use ($templates) {
         $pod = pods($request->get_param('pod'), []);
         if ($request->get_param('template')) {
-            $data = $pod->template($request->get_param('template'));
+            return $pod->template($request->get_param('template'));
         } else {
             $data = [];
-            while ($pod->fetch()) {
-                $data[] = $pod->export_data();
-            }
+            while ($data[] = $pod->fetch());
+            return $data;
         }
-        return $data;
     },
     'args' => array(
         'pod' => array(

@@ -3,6 +3,22 @@
     list-style: none;
 }
 
+ul.job {
+    columns: 24em;
+}
+
+ul.job li.paragraph {
+    column-span: all;
+    max-width: 48em;
+}
+
+ul.job li.phone {
+    font-size: inherit;
+    background-color: inherit;
+    vertical-align: inherit;
+    padding: inherit;
+}
+
 table.passenger {
     width: 100%;
 }

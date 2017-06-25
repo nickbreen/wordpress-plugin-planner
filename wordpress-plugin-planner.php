@@ -289,8 +289,8 @@ add_action('admin_menu', function () use ($function, $page, $text_domain) {
 
 }, 49 );
 
-$endpoint = get_option('wordpress-plugin-planner-driver-plans-endpoint', 'plans');
-$label = get_option('wordpress-plugin-planner-driver-plans-label', 'Plans');
+$endpoint = get_option('wordpress-plugin-planner-driver-planner-endpoint', 'planner');
+$label = get_option('wordpress-plugin-planner-driver-planner-label', 'Planner');
 
 add_filter('woocommerce_account_menu_items', function ($items) use ($endpoint, $label, $text_domain) {
     if (current_user_can('driver'))
@@ -300,9 +300,6 @@ add_filter('woocommerce_account_menu_items', function ($items) use ($endpoint, $
 
 add_action('init', function () use ($endpoint) {
     add_rewrite_endpoint($endpoint, EP_ROOT|EP_PAGES);
-});
-
-register_activation_hook(__FILE__, function () {
     flush_rewrite_rules();
 });
 
@@ -342,56 +339,19 @@ add_action("woocommerce_account_${endpoint}_endpoint", function ($value) use ($e
             ],
         ],
     ]);
-
-    return require __DIR__ . "/templates/my-account/$endpoint.php";
-});
-
-add_filter('the_content', function ($content) {
-    global $post;
-    if (is_singular('plan')) {
-        $field = pods('plan')->fields['passengers'];
-        $content .= pods('passenger', [
-                'where' => sprintf(
-                    'pandarf_parent_pod_id = %d AND pandarf_parent_post_id = %d AND pandarf_pod_field_id = %d',
-                    $field['pod_id'],
-                    $post->ID,
-                    $field['id']
-                ),
-                'orderby' => 'pandarf_order'
-            ])->template('passenger');
+    if ($value) {
+        list ($pod, $id) = explode('/', $value);
+        $content = pods($pod, $id)->template($pod);
+        return require __DIR__ . "/templates/my-account/$endpoint.job.php";
+    } else {
+        return require __DIR__ . "/templates/my-account/$endpoint.php";
     }
-    return $content;
 });
 
-add_filter('the_content', function ($content) {
-    if (!function_exists('have_rows')) return $content;
-    global $post, $wpdb;
-    if (is_singular('plan')) {
-        // TODO ACF passengers
-        $orders = pods('wc_booking', [
-            'select' => 'o.id',
-            'join' => "INNER JOIN {$wpdb->posts} AS o ON o.ID = t.post_parent",
-            'where' => "t.post_status IN ('confirmed', 'paid', 'complete') AND plan.ID = {$post->ID}",
-        ])->data();
-
-        $pax = array_map(function ($order) {
-            return get_field_object('passenger', $order->id);
-        }, $orders);
-
-        $content.='<hr/><table class="'.$pax[0]['name'].'"><caption>'.$pax[0]['label'].'</caption><thead><tr>';
-        foreach ($pax[0]['sub_fields'] as $f) {
-            $content.='<th>'.$f['label'].'</th>';
-        }
-        $content.='</tr></thead><tbody>';
-        foreach ($pax as $p) foreach ($p['value'] as $f) {
-            $content.='<tr>';
-            foreach ($f as $i => $v)
-                $content.="<td class=\"{$i}\">{$v}</td>";
-            $content.='</tr>';
-        }
-        $content.='</tbody></table>';
-    }
-    return $content;
+add_action('rest_api_init', function (WP_REST_Server $server) use ($ns) {
+    $templates = pods_api()->load_templates();
+    $rests = glob(__DIR__ . '/includes/rest/*.php');
+    foreach ($rests as $rest)
+        require $rest;
 });
 
-require_once __DIR__ . '/includes/rest.php';
