@@ -92,8 +92,8 @@ jQuery(function($) {
                                 contentType: 'application/json; charset=UTF-8',
                                 processData: false,
                                 data: JSON.stringify({
-                                    driver: ui.draggable.is('li.driver') ? [parseInt(ui.draggable.prop('dataset').id)].concat(data.driver) : data.driver,
-                                    vehicle: ui.draggable.is('li.vehicle') ? [parseInt(ui.draggable.prop('dataset').id)].concat(data.vehicle) : data.vehicle
+                                    driver: ui.draggable.is('li.driver') ? [parseInt(ui.draggable.prop('dataset').id)].concat(Object.keys(data.driver)) : Object.keys(data.driver),
+                                    vehicle: ui.draggable.is('li.vehicle') ? [parseInt(ui.draggable.prop('dataset').id)].concat(Object.keys(data.vehicle)) : Object.keys(data.vehicle)
                                 }),
                                 success: function (data, textStatus, jqXHR) {
                                     $('#calendar').fullCalendar('refetchEvents');

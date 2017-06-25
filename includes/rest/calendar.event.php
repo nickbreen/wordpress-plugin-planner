@@ -11,8 +11,8 @@ register_rest_route($ns, '/calendar/event', array(
 
         $event_pods = get_option('wordpress-plugin-planner-calendar-event-pods', [
             'tour' => ['start_date', 'end_date', 'pick_up_time', 'midnight tomorrow'],
-            'airport' => ['date', 'date', 'flight_time'],
-            'transfer' => ['pick_up_datetime', 'drop_off_datetime'],
+            'airport' => ['date', 'date', 'flight_time', null],
+            'transfer' => ['pick_up_datetime', 'drop_off_datetime', null, null],
         ]);
         $data = [];
         foreach ($event_pods as $event_pod => $date_column) {
@@ -31,12 +31,13 @@ register_rest_route($ns, '/calendar/event', array(
             ]);
             while ($pod->fetch()) {
                 $color = $pod->field('driver.colour') ?? null;
+                global $ns;
                 $data[] = [
                     'id' => $pod->id(),
                     'title' => $pod->field('job_type') . ($pod->field('tour_name') ? ': '.$pod->field('tour_name') : ''),
                     'content' => pods($event_pod, $pod->id())->template($event_pod),
                     'data' => [
-                        'url' => rest_url('/wp/v2/plan/' . $pod->id()),
+                        'url' => rest_url(sprintf('%s/%s/%d', $ns, $event_pod, $pod->id())),
                         'nonce' => wp_create_nonce('wp_rest'),
                     ],
                     'start' => date('c', strtotime($pod->field($date_column[0]).' '.$pod->field($date_column[2]))),
