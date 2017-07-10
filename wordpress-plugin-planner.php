@@ -228,38 +228,6 @@ register_activation_hook(__FILE__, function () use ($text_domain) {
     add_role('driver', __('Driver', $text_domain), $subscriber->capabilities);
 });
 
-
-add_filter('custom_menu_order', function ($menu_ord) use ($page) {
-    global $submenu;
-    // www: PHP Warning: next() expects parameter 1 to be array, null given in /var/www/wp-content/plugins/wordpress-plugin-planner/wordpress-plugin-planner.php on line 165
-    if (!array_key_exists($page, $submenu) || !is_array($submenu[$page]))
-        return $menu_ord;
-    while (next($submenu[$page])[2] != $page);
-    if (key($submenu[$page]))
-        array_unshift($submenu[$page], array_splice($submenu[$page], key($submenu[$page]), 1)[0]);
-    return $menu_ord;
-});
-
-add_filter('redirect_post_location', function ($location) {
-    global $post;
-    if (
-        ($ref = wp_get_original_referer()) && $post &&
-        in_array($post->post_type, ['plan', 'driver', 'vehicle']) &&
-        (isset($_POST['publish']) || $post->post_status == 'publish')
-    ) {
-        return $ref;
-    }
-    return $location;
-});
-
-add_filter('default_title', function ($post_title, $post) {
-    if (in_array($post->post_type, ["plan"])) {
-        $post_type = get_post_type_object($post->post_type);
-        $post_title = sprintf("%s %s", $post_type->labels->singular_name, date("Y-m-d", strtotime($post->post_date)));
-    }
-    return $post_title;
-}, 10, 2);
-
 add_action('admin_menu', function () use ($function, $page, $text_domain) {
 
     /**
