@@ -199,6 +199,7 @@ register_deactivation_hook(__FILE__, function () {
     remove_role('driver');
     remove_role('school');
     remove_role('hotel');
+    remove_role('agent');
 });
 
 register_activation_hook(__FILE__, function () use ($text_domain) {
@@ -221,11 +222,12 @@ register_activation_hook(__FILE__, function () use ($text_domain) {
         $post_type_caps + $taxonomy_caps + $custom_type_caps + $user_caps,
         true
     ));
-    $customer = get_role('customer');
-    add_role('school', __('School', $text_domain), $customer->capabilities);
-    add_role('hotel', __('Hotel', $text_domain), $customer->capabilities);
-    $subscriber = $customer; //get_role('subscriber');
-    add_role('driver', __('Driver', $text_domain), $subscriber->capabilities);
+    $role = get_role('customer');
+    add_role('school', __('School', $text_domain), $role->capabilities);
+    add_role('hotel', __('Hotel', $text_domain), $role->capabilities);
+    add_role('agent', __('Agent', $text_domain), $role->capabilities);
+    $role = get_role('subscriber');
+    add_role('driver', __('Driver', $text_domain), $role->capabilities);
 });
 
 add_action('admin_menu', function () use ($function, $page, $text_domain) {
