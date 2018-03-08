@@ -25,15 +25,14 @@
   "scripts": {
     "pre-archive-cmd": [ "@assets" ],
     "assets": [
-      "php -r 'copy(\"vendor/boser-asset/polyfill-storage/dist/storage.js\", \"assets/js/storage.js\");'",
-      "php -r 'copy(\"vendor/npm-asset/notifyjs/dist/notify.js\", \"assets/js/notify.js\");'",
-      "php -r 'copy(\"vendor/npm-asset/moment/min/moment.min.js\", \"assets/js/moment.js\");'",
-      "php -r 'copy(\"vendor/npm-asset/fullcalendar/dist/fullcalendar.min.js\", \"assets/js/fullcalendar.js\");'",
-      "php -r 'copy(\"vendor/npm-asset/fullcalendar/dist/fullcalendar.min.css\", \"assets/css/fullcalendar.css\");'",
-      "php -r 'copy(\"vendor/npm-asset/fullcalendar/dist/fullcalendar.print.min.css\", \"assets/css/fullcalendar.print.css\");'",
-      "php -r 'copy(\"vendor/npm-asset/fullcalendar-scheduler/dist/scheduler.min.js\", \"assets/js/scheduler.js\");'",
-      "php -r 'copy(\"vendor/npm-asset/fullcalendar-scheduler/dist/scheduler.min.css\", \"assets/css/scheduler.css\");'",
-      "find assets/"
+      "cp vendor/bower-asset/polyfill-storage/dist/storage.js assets/js/storage.js",
+      "cp vendor/npm-asset/notifyjs/dist/notify.js assets/js/notify.js",
+      "cp vendor/npm-asset/moment/min/moment.min.js assets/js/moment.js",
+      "cp vendor/npm-asset/fullcalendar/dist/fullcalendar.min.js assets/js/fullcalendar.js",
+      "cp vendor/npm-asset/fullcalendar/dist/fullcalendar.min.css assets/css/fullcalendar.css",
+      "cp vendor/npm-asset/fullcalendar/dist/fullcalendar.print.min.css assets/css/fullcalendar.print.css",
+      "cp vendor/npm-asset/fullcalendar-scheduler/dist/scheduler.min.js assets/js/scheduler.js",
+      "cp vendor/npm-asset/fullcalendar-scheduler/dist/scheduler.min.css assets/css/scheduler.css"
     ]
   }
 }
