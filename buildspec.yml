@@ -14,7 +14,7 @@ phases:
     - composer install
   post_build:
     commands:
-    - composer archive --dir dist --file ${FILENAME_PREFIX}_${CODEBUILD_SOURCE_VERSION} --format zip
+    - composer archive --dir dist ${CODEBUILD_SOURCE_VERSION:+--file ${CODEBUILD_SOURCE_VERSION}} --format zip
     - find dist -ls
 artifacts:
   files:
