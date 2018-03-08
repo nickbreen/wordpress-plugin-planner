@@ -1,11 +1,23 @@
 version: 0.2
 
 phases:
+  install:
+    commands:
+    - echo Installing Composer
+    - curl -fsS https://getcomposer.org/installer -o /tmp/composer-setup.php https://composer.github.io/installer.sha384sum -o /tmp/installer.sha384sum
+    - ( cd /tmp; sha384sum -c installer.sha384sum )
+    - php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer
+    - composer --version
+    - rm -f /tmp/installer.sha384sum /tmp/composer-setup.php
   pre_build:
     commands:
     - composer install
   post_build:
     commands:
-    - composer archive --dir dist --file ${FILENAME_PREFIX}_$CODEBUILD_SOURCE_VERSION --format zip
+    - composer archive --dir dist --file ${FILENAME_PREFIX}_${CODEBUILD_SOURCE_VERSION} --format zip
+    - find dist -ls
 artifacts:
-  files: dist/*
+  files:
+  - dist/*
+  discard-paths: yes
+
