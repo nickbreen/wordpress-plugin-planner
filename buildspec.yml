@@ -1,0 +1,11 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+    - composer install
+  post_build:
+    commands:
+    - composer archive --dir dist --file ${FILENAME_PREFIX}_$CODEBUILD_SOURCE_VERSION --format zip
+artifacts:
+  files: dist/*
