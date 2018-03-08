@@ -160,14 +160,14 @@ $function = function () use ($page, $text_domain, $ns) {
 };
 
 $scripts = function () use ($page, $version) {
-    wp_register_script('notifyjs', plugins_url('bower_components/notifyjs/dist/notify.js', __FILE__), ['jquery'], '0.4 2', true);
-    wp_register_script('polyfill-storage', plugins_url('bower_components/polyfill-storage/dist/storage.js', __FILE__), [], '1.0.0', true);
-    wp_register_script('moment', plugins_url('bower_components/moment/min/moment.min.js', __FILE__), [], '2.17.1', true);
-    wp_register_script('fullcalendar', plugins_url('bower_components/fullcalendar/dist/fullcalendar.min.js', __FILE__), ['jquery','moment'], '3.1.0', true);
-    wp_register_style('fullcalendar-all', plugins_url('bower_components/fullcalendar/dist/fullcalendar.min.css', __FILE__), [], '3.1.0');
-    wp_register_style('fullcalendar-print', plugins_url('bower_components/fullcalendar/dist/fullcalendar.print.min.css', __FILE__), [], '3.1.0', 'print');
-    wp_register_script('fullcalendar-scheduler', plugins_url('bower_components/fullcalendar-scheduler/dist/scheduler.min.js', __FILE__), ['fullcalendar'], '1.5.0', true);
-    wp_register_style('fullcalendar-scheduler-all', plugins_url('bower_components/fullcalendar-scheduler/dist/scheduler.min.css', __FILE__), ['fullcalendar-all', 'fullcalendar-print'], '1.5.0');
+    wp_register_script('notifyjs', plugins_url('assets/js/notify.js', __FILE__), ['jquery'], '0.4 2', true);
+    wp_register_script('polyfill-storage', plugins_url('assets/js/storage.js', __FILE__), [], '1.0.0', true);
+    wp_register_script('moment', plugins_url('assets/js/moment.js', __FILE__), [], '2.17.1', true);
+    wp_register_script('fullcalendar', plugins_url('assets/js/fullcalendar.js', __FILE__), ['jquery','moment'], '3.1.0', true);
+    wp_register_style('fullcalendar-all', plugins_url('assets/css/fullcalendar.css', __FILE__), [], '3.1.0');
+    wp_register_style('fullcalendar-print', plugins_url('assets/css/fullcalendar.print.css', __FILE__), [], '3.1.0', 'print');
+    wp_register_script('fullcalendar-scheduler', plugins_url('assets/js/scheduler.js', __FILE__), ['fullcalendar'], '1.5.0', true);
+    wp_register_style('fullcalendar-scheduler-all', plugins_url('assets/css/scheduler.css', __FILE__), ['fullcalendar-all', 'fullcalendar-print'], '1.5.0');
 
     wp_register_style("$page-fonts", 'https://fonts.googleapis.com/css?family=Share+Tech+Mono');
     wp_register_style("$page-vehicle", plugins_url('assets/css/vehicles.css', __FILE__), ["$page-fonts"], $version);

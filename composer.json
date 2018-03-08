@@ -1,18 +1,39 @@
 {
-    "name": "nickbreen/wordpress-plugin-planner",
-    "description": "Manatours planner.",
-    "type": "wordpress-plugin",
-    "require": {
-        "composer/installers": "^1.0",
-        "php": ">=5.3"
-    },
-    "license": "GPLv3",
-    "repositories": [{
-        "type": "vcs",
-        "url": "https://github.com/nickbreen/wordpress-plugin-planner"
-    }],
-    "authors": [{
-        "name": "Nick Breen",
-        "email": "nick@foobar.net.nz"
-    }]
+  "name": "nickbreen/wordpress-plugin-planner",
+  "description": "Manatours planner.",
+  "type": "wordpress-plugin",
+  "require": {
+    "composer/installers": "^1.0",
+    "php": ">=5.3",
+    "npm-asset/fullcalendar-scheduler": "^1.9",
+    "npm-asset/notifyjs": "^3.0",
+    "bower-asset/polyfill-storage": "^1.0.0"
+  },
+  "license": "GPLv3",
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://asset-packagist.org"
+    }
+  ],
+  "authors": [
+    {
+      "name": "Nick Breen",
+      "email": "nick@foobar.net.nz"
+    }
+  ],
+  "scripts": {
+    "pre-archive-cmd": [ "@assets" ],
+    "assets": [
+      "php -r 'copy(\"vendor/boser-asset/polyfill-storage/dist/storage.js\", \"assets/js/storage.js\");'",
+      "php -r 'copy(\"vendor/npm-asset/notifyjs/dist/notify.js\", \"assets/js/notify.js\");'",
+      "php -r 'copy(\"vendor/npm-asset/moment/min/moment.min.js\", \"assets/js/moment.js\");'",
+      "php -r 'copy(\"vendor/npm-asset/fullcalendar/dist/fullcalendar.min.js\", \"assets/js/fullcalendar.js\");'",
+      "php -r 'copy(\"vendor/npm-asset/fullcalendar/dist/fullcalendar.min.css\", \"assets/css/fullcalendar.css\");'",
+      "php -r 'copy(\"vendor/npm-asset/fullcalendar/dist/fullcalendar.print.min.css\", \"assets/css/fullcalendar.print.css\");'",
+      "php -r 'copy(\"vendor/npm-asset/fullcalendar-scheduler/dist/scheduler.min.js\", \"assets/js/scheduler.js\");'",
+      "php -r 'copy(\"vendor/npm-asset/fullcalendar-scheduler/dist/scheduler.min.css\", \"assets/css/scheduler.css\");'",
+      "find assets/"
+    ]
+  }
 }

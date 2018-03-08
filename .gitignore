@@ -1,2 +1,7 @@
 .*
 fix.sql
+vendor/
+*.zip
+*.tar
+assets/*
+
